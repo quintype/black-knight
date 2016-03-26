@@ -1,3 +1,3 @@
 ActiveAdmin.register Deployment do
-  actions :all, except: [:create, :update, :edit]
+  config.clear_action_items!
 end
