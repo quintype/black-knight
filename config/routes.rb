@@ -4,5 +4,9 @@ Rails.application.routes.draw do
 
   get "/deploy" => "deploy#index"
 
+  namespace :api do
+    resources :publishers, only: :index
+  end
+
   ActiveAdmin.routes(self)
 end
