@@ -10,8 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 
-import deployPage from './pages/deploy';
-
 window.cycleMeter = {
-  deployPage: deployPage
+  deployPage: require("./pages/deploy")
 };
