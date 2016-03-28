@@ -1,3 +1,72 @@
 // Place all the styles related to the deploy controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+	background: #16293F;
+}
+.wrapper {
+	width: 60%;
+	margin: 0 auto;
+	background: #16293F;
+	padding: 3%;
+	color: #fff;
+}
+
+.deploy-env {
+	float:none;
+	width: 100%;
+	margin: 0 auto;
+	input {
+		margin: 2%;
+		width: 70%;
+		padding: 10px;
+		font-size: 1.5em;
+	}
+	button {
+		margin-top: 5%;
+	}
+}
+
+.history {
+	margin: 5%;
+}
+
+table {
+	width: 90%;
+	padding: 3px;
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 10px;
+	font-size: 1.9em;
+	thead {
+		th {
+			padding-left: 10%;
+			background: #627492;
+		}
+	}
+	tbody {
+		td {
+			padding-left: 10%;
+			background: #fff;
+			color: #000;
+			padding: 2%;
+			border: 1px solid #ccc;
+		}
+	}
+}
+
+h1{
+	color: #fff;
+	text-align: center;
+	margin-top: 5%;
+}
+
+h2 {
+	text-align: center;
+	margin: 2%;
+	color: #fff;
+}
+.enter {
+	width: 60%;
+	margin: 0 auto;
+}

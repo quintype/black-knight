@@ -1,1 +1,32 @@
-<div>Hello, World</div>
+<div class="wrapper" rt-if="this.state.publishers">
+	<div class="publisher" rt-repeat="publisher in this.state.publishers">
+		<div class="deploy-env" rt-repeat="deployEnv in publisher['deploy_environments']">
+			<h1>{publisher.name} {deployEnv.name}</h1>
+
+			<div class="enter">
+				<input type="text" name="deploy" placeholder="Enter Tag">
+				<button>Deploy</button>
+			</div>
+
+			<div class="history">
+				<h2>History</h2>
+				<table rt-repeat="publisher in this.state.publishers">
+					<thead>
+						<tr>
+							<th>Tag</th>
+							<th>Slug</th>
+							<th>Deployed On</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{publisher.name}</td>
+							<td></td>
+							<td>{publisher.updated_at}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
