@@ -49,3 +49,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise', '~> 4.x'
 gem 'activeadmin', github: 'activeadmin'
+gem 'browserify-rails'
