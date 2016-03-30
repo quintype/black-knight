@@ -12,8 +12,4 @@ class DeployEnvironment < ApplicationRecord
       h
     end
   end
-
-  def config_files_as_tar
-    Tarball.new(config_files_as_json).to_s
-  end
 end

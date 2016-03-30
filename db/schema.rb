@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330134041) do
+ActiveRecord::Schema.define(version: 20160330145838) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -77,6 +77,15 @@ ActiveRecord::Schema.define(version: 20160330134041) do
     t.datetime "finished_at"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.string   "deploy_tag"
+    t.datetime "build_started"
+    t.datetime "build_ended"
+    t.string   "build_status"
+    t.text     "build_output"
+    t.datetime "deploy_started"
+    t.datetime "deploy_ended"
+    t.string   "deploy_status"
+    t.text     "deploy_output"
   end
 
   add_index "deployments", ["deploy_environment_id"], name: "index_deployments_on_deploy_environment_id"

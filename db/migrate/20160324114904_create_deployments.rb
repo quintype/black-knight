@@ -5,9 +5,6 @@ class CreateDeployments < ActiveRecord::Migration[5.0]
       t.string :status, null: false
       t.string :version, null: false
       t.text :configuration, null: false
-      t.text :output
-      t.timestamp :started_at
-      t.timestamp :finished_at
 
       t.timestamps
     end
