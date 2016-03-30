@@ -1,3 +1,3 @@
 ActiveAdmin.register Publisher do
-  permit_params :name, :admin_email, :quintype_id_of_publisher
+  permit_params :name, :admin_email, :quintype_id_of_publisher, :username
 end
