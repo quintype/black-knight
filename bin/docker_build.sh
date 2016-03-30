@@ -12,11 +12,9 @@ if [ -z "$QT_ENV" ]; then
 fi
 
 TEMPORARY_DIR=`mktemp -d -t docker_compile`
-mkdir $TEMPORARY_DIR
+mkdir -p $TEMPORARY_DIR
+cp $local_files $TEMPORARY_DIR/config.tar
 pushd $TEMPORARY_DIR
-
-mkdir toupload
-cp $local_files config.tar
 
 cat > Dockerfile <<EOF
 FROM $repo:$old_tag
@@ -28,9 +26,11 @@ EOF
 docker build -t "$repo:$new_tag" .
 docker push "$repo:$new_tag"
 
+mkdir toupload
 container_id=`docker create $repo:$new_tag`
 docker cp "$container_id:/app/public/$publisher_name" "toupload/$publisher_name"
 s3cmd sync "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/"
-docker rm "$container_id"
+rm -rf toupload
 
+docker rm "$container_id"
 docker rmi "$repo:$new_tag" "$repo:$old_tag"
