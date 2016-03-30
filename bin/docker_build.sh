@@ -1,10 +1,11 @@
 #/bin/bash -e
 
+# local files come from stdin
+
 publisher_name="$1"
 repo="$2"
-local_files="$3"
-old_tag="$4"
-new_tag="$5"
+old_tag="$3"
+new_tag="$4"
 
 if [ -z "$QT_ENV" ]; then
   echo Please provide an environment
@@ -13,7 +14,7 @@ fi
 
 TEMPORARY_DIR=`mktemp -d -t docker_compile`
 mkdir -p $TEMPORARY_DIR
-cp $local_files $TEMPORARY_DIR/config.tar
+cat > $TEMPORARY_DIR/config.tar
 pushd $TEMPORARY_DIR
 
 cat > Dockerfile <<EOF

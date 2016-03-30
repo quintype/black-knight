@@ -18,7 +18,7 @@ class BuildContainer
     read_output, write_output = IO.pipe
 
     pid_result = system({"QT_ENV" => Rails.application.secrets.qt_environment},
-                        "#{Rails.root}/bin/awesome", @deploy_env.publisher.username, @deploy_env.repository, old_tag, new_tag,
+                        "#{Rails.root}/bin/docker_build.sh", @deploy_env.publisher.username, @deploy_env.repository, old_tag, new_tag,
                         :in => read_tar, :out => write_output, :err => [:child, :out])
 
     read_tar.close
@@ -33,7 +33,7 @@ class BuildContainer
     read_output, write_output = IO.pipe
 
     pid_result = system({"KUBE_MASTER" => Rails.application.secrets.kube_master},
-                        "#{Rails.root}/bin/foobar", @deploy_env.app_name, @deploy_env.repository, new_tag,
+                        "#{Rails.root}/bin/docker_deploy.sh", @deploy_env.app_name, @deploy_env.repository, new_tag,
                         :out => write_output, :err => [:child, :out])
 
     write_output.close
