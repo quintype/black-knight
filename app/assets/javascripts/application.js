@@ -10,6 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 
-window.cycleMeter = {
+window.cycleYard = {
   deployPage: require("./pages/deploy")
 };
