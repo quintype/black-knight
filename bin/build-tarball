@@ -18,7 +18,7 @@ npm install
 mv public/assets output/public/assets
 
 cd output
-sed -i "" 's/development/production/g' run
+sed -i.bak 's/development/production/g' run
 ruby -S bundle install --deployment --without development
 cd ..
 
