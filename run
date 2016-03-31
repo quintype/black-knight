@@ -2,4 +2,4 @@
 
 cd "$(dirname "$0")"
 
-exec bundle exec puma
+RAILS_ENV=development exec bundle exec puma
