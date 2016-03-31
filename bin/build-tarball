@@ -11,9 +11,9 @@ npm install
 ./bin/rails assets:precompile
 mv public/assets output/public/assets
 
-pushd output
-
+cd output
 ruby -S bundle install --deployment --without development
+cd ..
 
 tar cf $output -C output . 
 rm -rf output
