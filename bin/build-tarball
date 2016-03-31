@@ -6,14 +6,14 @@ rm -rf output
 mkdir -p output
 git archive HEAD | tar x -C output
 
-bundle install 
+ruby -S bundle install 
 npm install
-rails assets:precompile
+./bin/rails assets:precompile
 mv public/assets output/public/assets
 
 pushd output
 
-bundle install --deployment --without development
+ruby -S bundle install --deployment --without development
 
 tar cf $output -C output . 
 rm -rf output
