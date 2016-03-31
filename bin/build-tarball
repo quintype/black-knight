@@ -1,6 +1,12 @@
 #!/bin/sh -e
 
 export RAILS_ENV=production
+output="$1"
+
+if [ -z "$output" ]; then
+  echo "Usage: $0 /path/to/output.tar"
+  exit -1
+fi
 
 rm -rf output
 mkdir -p output
