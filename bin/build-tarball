@@ -1,0 +1,19 @@
+#!/bin/sh -e
+
+export RAILS_ENV=production
+
+rm -rf output
+mkdir -p output
+git archive HEAD | tar x -C output
+
+bundle install 
+npm install
+rails assets:precompile
+mv public/assets output/public/assets
+
+pushd output
+
+bundle install --deployment --without development
+
+tar cf $output -C output . 
+rm -rf output
