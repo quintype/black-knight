@@ -22,6 +22,9 @@ FROM $repo:$old_tag
 
 COPY config.tar /tmp/config.tar
 RUN tar xvf /tmp/config.tar -C /
+
+WORKDIR /app
+RUN bundle exec rake assets:precompile
 EOF
 
 docker build -t "$repo:$new_tag" .
