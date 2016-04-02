@@ -2,7 +2,7 @@
 class BuildContainer
   attr_reader :old_tag, :new_tag, :config_files
 
-  def initialize(deploy_env, deploy_tag)
+  def initialize(deploy_env, deploy_tag, config_files)
     @deploy_env = deploy_env
     @old_tag = deploy_tag
     @new_tag = "#{deploy_env.publisher.username}-#{deploy_env.name}-" + DateTime.now.strftime("%Y%m%d%H%M%S")
@@ -55,10 +55,9 @@ class BuildContainer
   end
 
   def self.build_and_deploy!(deployment)
-    build_container = new(deployment.deploy_environment, deployment.version)
+    build_container = new(deployment.deploy_environment, deployment.version, JSON.parse(deployment.configuration))
 
     deployment.update!(status: "building",
-                       configuration: build_container.config_files.to_json,
                        deploy_tag: build_container.new_tag)
 
     deployment.update!(build_started: DateTime.now,
@@ -84,7 +83,7 @@ class BuildContainer
     record = Deployment.create!(deploy_environment: deploy_env,
                                 status: "pending",
                                 version: deploy_tag,
-                                configuration: "pending")
+                                configuration: deploy_env.config_files_as_json.to_json)
     build_and_deploy!(record)
   end
 end
