@@ -39,8 +39,8 @@
   </table>
 
   <h2>Build Output</h2>
-  <pre>{this.state.deployment.build_output}</pre>
+  <pre style="background: white">{this.state.deployment.build_output}</pre>
 
   <h2>Deploy Output</h2>
-  <pre>{this.state.deployment.deploy_output}</pre>
+  <pre style="background: white">{this.state.deployment.deploy_output}</pre>
 </div>
