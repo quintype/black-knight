@@ -4,8 +4,8 @@
 			<h1>{publisher.name} {deployEnv.name}</h1>
 
 			<div class="enter">
-				<input type="text" name="deploy" placeholder="Enter Tag">
-				<button>Deploy</button>
+				<input type="text" placeholder="Enter Tag" onChange="(e) => this.setTag(deployEnv, e)" value="{this.state.tags[deployEnv.id]}">
+				<button onClick="() => this.deploy(deployEnv)">Deploy</button>
 			</div>
 
 			<div class="history">

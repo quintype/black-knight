@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :publishers, only: :index
-    resources :deployments, only: :show
+    resources :deployments, only: [:show, :create]
   end
 
   ActiveAdmin.routes(self)

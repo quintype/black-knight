@@ -7,6 +7,14 @@ class DeployEnvironment < ApplicationRecord
     "#{name} (#{publisher.name})"
   end
 
+  # FIXME: No Test
+  def new_deployment(version)
+    deployments.new(status: "pending",
+                    version: version,
+                    configuration: config_files_as_json.to_json)
+  end
+
+  # FIXME: No Test
   def config_files_as_json
     config_files.inject({}) do |h, config_file|
       h[config_file.path] = config_file.value
