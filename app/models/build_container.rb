@@ -1,3 +1,4 @@
+# This class is hacky. Need to figure out how to test this
 class BuildContainer
   attr_reader :old_tag, :new_tag, :config_files
 
@@ -53,26 +54,37 @@ class BuildContainer
     [read_output, write_output].each(&:close)
   end
 
-  def self.build_and_deploy!(deploy_env, deploy_tag)
-    build_container = new(deploy_env, deploy_tag)
+  def self.build_and_deploy!(deployment)
+    build_container = new(deployment.deploy_environment, deployment.version)
+
+    deployment.update!(status: "building",
+                       configuration: build_container.config_files.to_json,
+                       deploy_tag: build_container.new_tag)
+
+    deployment.update!(build_started: DateTime.now,
+                       build_output: "")
+    result = build_container.build! { |op| deployment.update!(build_output: deployment.build_output + op) }
+    deployment.update!(build_ended: DateTime.now,
+                       build_status: result[:success] ? "success": "failed",
+                       status: result[:success] ? "deploying" : "failed-build")
+
+    return deployment if not result[:success]
+
+    deployment.update!(deploy_started: DateTime.now,
+                       deploy_output: "")
+    result = build_container.deploy! { |op| deployment.update!(deploy_output: deployment.deploy_output + op) }
+    deployment.update!(deploy_ended: DateTime.now,
+                       deploy_status: result[:success] ? "success": "failed",
+                       status: result[:success] ? "success" : "failed-deploy")
+
+    deployment
+  end
+
+  def self.test_build_and_deploy!(deploy_env, deploy_tag)
     record = Deployment.create!(deploy_environment: deploy_env,
-                                status: "running",
-                                version: build_container.old_tag,
-                                configuration: build_container.config_files.to_json,
-                                deploy_tag: build_container.new_tag)
-
-    record.update!(build_started: DateTime.now)
-    result = build_container.build! { |op| record.update!(build_output: record.build_output + op) }
-    record.update!(build_ended: DateTime.now,
-                   build_status: result[:success] ? "success": "failed",)
-
-    return record if not record.build_status?
-
-    record.update!(deploy_started: DateTime.now)
-    result = build_container.deploy! { |op| record.update!(deploy_output: record.deploy_output + op) }
-    record.update!(deploy_ended: DateTime.now,
-                   deploy_status: result[:success] ? "success": "failed",)
-
-    record
+                                status: "pending",
+                                version: deploy_tag,
+                                configuration: "pending")
+    build_and_deploy!(record)
   end
 end
