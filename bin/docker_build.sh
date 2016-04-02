@@ -12,10 +12,10 @@ if [ -z "$QT_ENV" ]; then
   exit 1
 fi
 
-TEMPORARY_DIR=`mktemp -d -t docker_compile`
+TEMPORARY_DIR=`mktemp -d -t docker-compileXXXXXXXX`
 mkdir -p $TEMPORARY_DIR
 cat > $TEMPORARY_DIR/config.tar
-pushd $TEMPORARY_DIR
+cd $TEMPORARY_DIR
 
 cat > Dockerfile <<EOF
 FROM $repo:$old_tag
