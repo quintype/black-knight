@@ -10,6 +10,7 @@ class Api::DeploymentsController < ApplicationController
     deployment = environment.new_deployment(deploy_params[:version])
     if(deployment.save)
       respond_with({deployment: deployment}, location: "/deploy/#{deployment.id}")
+      DeployContainerJob.perform_later deployment.id
     else
       respond_with deployment
     end
