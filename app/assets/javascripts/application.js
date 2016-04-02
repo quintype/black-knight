@@ -11,5 +11,6 @@
 // about supported directives.
 
 window.cycleYard = {
-  deployPage: require("./pages/deploy")
+  deployPage: require("./pages/deploy"),
+  deploymentPage: require("./pages/deployment")
 };

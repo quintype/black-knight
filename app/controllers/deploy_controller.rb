@@ -3,4 +3,8 @@ class DeployController < ApplicationController
 
   def index
   end
+
+  def show
+    @deployment = current_user.deployments.find(params[:deployment_id])
+  end
 end

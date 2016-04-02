@@ -1,6 +1,7 @@
 class DeployEnvironment < ApplicationRecord
   belongs_to :publisher
   has_many :config_files
+  has_many :deployments
 
   def display_name
     "#{name} (#{publisher.name})"

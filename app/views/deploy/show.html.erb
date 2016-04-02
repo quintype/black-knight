@@ -1,0 +1,10 @@
+<div>
+  <h1>Deployment <%= @deployment.id %></h1>
+  <h2><%= @deployment.deploy_environment.name %> (<%= @deployment.publisher.name %>)</h2>
+
+  <div id="container">
+  </div>
+  <script type="text/javascript">
+    cycleYard.deploymentPage(document.getElementById("container"), <%= @deployment.id %>)
+  </script>
+</div>

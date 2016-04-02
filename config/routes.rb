@@ -3,9 +3,11 @@ Rails.application.routes.draw do
   devise_for :users
 
   get "/deploy" => "deploy#index"
+  get "/deploy/:deployment_id" => "deploy#show"
 
   namespace :api do
     resources :publishers, only: :index
+    resources :deployments, only: :show
   end
 
   ActiveAdmin.routes(self)
