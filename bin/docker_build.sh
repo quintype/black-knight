@@ -1,4 +1,4 @@
-#/bin/bash -e
+#!/bin/bash -e
 
 # local files come from stdin
 
