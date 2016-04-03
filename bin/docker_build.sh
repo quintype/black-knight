@@ -24,9 +24,11 @@ COPY config.tar /tmp/config.tar
 RUN tar xvf /tmp/config.tar -C /
 EOF
 
+echo Building Container
 docker build -t "$repo:$new_tag" .
 docker push "$repo:$new_tag"
 
+echo Uploading Assets to S3
 mkdir toupload
 container_id=`docker create $repo:$new_tag`
 docker cp "$container_id:/app/public/$publisher_name" "toupload/$publisher_name"
@@ -34,4 +36,3 @@ s3cmd sync "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$p
 rm -rf toupload
 
 docker rm "$container_id"
-docker rmi "$repo:$new_tag" "$repo:$old_tag"
