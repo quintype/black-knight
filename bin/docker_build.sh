@@ -36,3 +36,4 @@ s3cmd sync "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$p
 rm -rf toupload
 
 docker rm "$container_id"
+docker rmi "$repo:$new_tag" "$repo:$old_tag"
