@@ -10,19 +10,21 @@
 
 			<div class="history">
 				<h2>History</h2>
-				<table rt-repeat="publisher in this.state.publishers">
+				<table>
 					<thead>
 						<tr>
-							<th>Tag</th>
-							<th>Slug</th>
-							<th>Deployed On</th>
+							<th>Id</th>
+							<th>Version</th>
+							<th>Deploy Tag</th>
+							<th>Status</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>{publisher.name}</td>
-							<td></td>
-							<td>{publisher.updated_at}</td>
+						<tr rt-repeat="deployment in deployEnv.deployments">
+							<td><a href="/deploy/{deployment.id}">{deployment.id}</a></td>
+							<td>{deployment.version}</td>
+							<td>{deployment.deploy_tag}</td>
+							<td>{deployment.status}</td>
 						</tr>
 					</tbody>
 				</table>
