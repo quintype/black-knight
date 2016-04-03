@@ -26,14 +26,18 @@ EOF
 
 echo Building Container
 docker build -t "$repo:$new_tag" .
-docker push "$repo:$new_tag"
+docker rmi "$repo:$old_tag"
 
-echo Uploading Assets to S3
+echo Copying assets from /app/public/$publisher_name
 mkdir toupload
 container_id=`docker create $repo:$new_tag`
 docker cp "$container_id:/app/public/$publisher_name" "toupload/$publisher_name"
+
+echo Uploading to S3
 s3cmd sync "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/"
 rm -rf toupload
 
+docker push "$repo:$new_tag"
+
 docker rm "$container_id"
-docker rmi "$repo:$new_tag" "$repo:$old_tag"
+docker rmi "$repo:$new_tag"
