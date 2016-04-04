@@ -28,7 +28,7 @@ class DeploymentPage extends React.Component {
 
   deploymentUpdated(data) {
     this.setState({
-      deployment: _.merge({}, deployment, data)
+      deployment: _.merge({}, this.state.deployment, data)
     });
   }
 };
