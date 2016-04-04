@@ -10,6 +10,8 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 
+//= require action_cable
+
 window.cycleYard = {
   deployPage: require("./pages/deploy"),
   deploymentPage: require("./pages/deployment")

@@ -10,5 +10,7 @@ Rails.application.routes.draw do
     resources :deployments, only: [:show, :create]
   end
 
+  mount ActionCable.server => '/cable'
+
   ActiveAdmin.routes(self)
 end
