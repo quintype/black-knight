@@ -5,6 +5,7 @@ class DeployContainerJob < ApplicationJob
 
   def update_deployment(attrs)
     @deployment.update!(attrs)
+    ActionCable.server.broadcast "deployment_{@deployment.id}", attrs
   end
 
   def perform(deployment_id)
@@ -16,7 +17,7 @@ class DeployContainerJob < ApplicationJob
                       build_started: DateTime.now,
                       build_output: "")
 
-    result = build_container.build! { |op| deployment.update!(build_output: deployment.build_output + op) }
+    result = build_container.build! { |op| update_deployment(build_output: deployment.build_output + op) }
     update_deployment(build_ended: DateTime.now,
                       build_status: result[:success] ? "success": "failed",
                       status: result[:success] ? "deploying" : "failed-build")
@@ -25,7 +26,7 @@ class DeployContainerJob < ApplicationJob
 
     update_deployment(deploy_started: DateTime.now,
                       deploy_output: "")
-    result = build_container.deploy! { |op| deployment.update!(deploy_output: deployment.deploy_output + op) }
+    result = build_container.deploy! { |op| update_deployment(deploy_output: deployment.deploy_output + op) }
     update_deployment(deploy_ended: DateTime.now,
                       deploy_status: result[:success] ? "success": "failed",
                       status: result[:success] ? "success" : "failed-deploy")

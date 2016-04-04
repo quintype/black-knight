@@ -21,7 +21,7 @@ class DeploymentPage extends React.Component {
   componentDidMount() {
     this.getDeployment();
     cable.subscribe({channel: "DeploymentChannel", deployment_id: this.props.deploymentId}, {
-      recieved: this.deploymentUpdated
+      received: this.deploymentUpdated
     })
   }
 
