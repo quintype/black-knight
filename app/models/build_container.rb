@@ -40,6 +40,7 @@ class BuildContainer
 
     # Stream output to listener, then exit with result
     PipeReader.new(read_output).read(100) { |o| yield o}
+
     thread.value
   ensure
     [read_tar, write_tar, read_output, write_output].each(&:close)
@@ -62,38 +63,5 @@ class BuildContainer
     thread.value
   ensure
     [read_output, write_output].each(&:close)
-  end
-
-  def self.build_and_deploy!(deployment)
-    build_container = new(deployment)
-
-    deployment.update!(status: "building",
-                       deploy_tag: build_container.new_tag)
-
-    deployment.update!(build_started: DateTime.now,
-                       build_output: "")
-    result = build_container.build! { |op| deployment.update!(build_output: deployment.build_output + op) }
-    deployment.update!(build_ended: DateTime.now,
-                       build_status: result[:success] ? "success": "failed",
-                       status: result[:success] ? "deploying" : "failed-build")
-
-    return deployment if not result[:success]
-
-    deployment.update!(deploy_started: DateTime.now,
-                       deploy_output: "")
-    result = build_container.deploy! { |op| deployment.update!(deploy_output: deployment.deploy_output + op) }
-    deployment.update!(deploy_ended: DateTime.now,
-                       deploy_status: result[:success] ? "success": "failed",
-                       status: result[:success] ? "success" : "failed-deploy")
-
-    deployment
-  end
-
-  def self.test_build_and_deploy!(deploy_env, deploy_tag)
-    record = Deployment.create!(deploy_environment: deploy_env,
-                                status: "pending",
-                                version: deploy_tag,
-                                configuration: deploy_env.config_files_as_json.to_json)
-    build_and_deploy!(record)
   end
 end
