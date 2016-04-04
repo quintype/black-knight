@@ -5,7 +5,7 @@ class DeployContainerJob < ApplicationJob
 
   def update_deployment(attrs)
     @deployment.update!(attrs)
-    ActionCable.server.broadcast "deployment_#{@deployment.id}", attrs
+    ActionCable.server.broadcast("deployment_#{@deployment.id}", attrs) rescue nil
   end
 
   def perform(deployment_id)
