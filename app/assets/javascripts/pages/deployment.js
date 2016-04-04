@@ -2,6 +2,7 @@ import React from "react";
 import ReactDom from "react-dom";
 import superagent from "superagent";
 import cable from "../gateway/cable";
+import _ from "lodash";
 
 class DeploymentPage extends React.Component {
   constructor(props) {
@@ -26,7 +27,9 @@ class DeploymentPage extends React.Component {
   }
 
   deploymentUpdated(data) {
-    console.log(data)
+    this.setState({
+      deployment: _.merge({}, deployment, data);
+    });
   }
 };
 
