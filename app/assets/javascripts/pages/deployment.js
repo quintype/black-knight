@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDom from "react-dom";
 import superagent from "superagent";
+import cable from "../gateway/cable";
 
 class DeploymentPage extends React.Component {
   constructor(props) {
@@ -18,7 +19,14 @@ class DeploymentPage extends React.Component {
   }
 
   componentDidMount() {
-    this.getDeployment()
+    this.getDeployment();
+    cable.subscribe({channel: "DeploymentChannel", deployment_id: this.props.deploymentId}, {
+      recieved: this.deploymentUpdated
+    })
+  }
+
+  deploymentUpdated(data) {
+    console.log(data)
   }
 };
 
