@@ -1,13 +1,22 @@
 # This class is hacky. Need to figure out how to test this
 class BuildContainer
-  attr_reader :old_tag, :new_tag, :config_files
+  attr_reader :deployment, :new_tag
 
-  def initialize(deployment, deploy_tag, config_files)
+  def deploy_env
+    deployment.deploy_environment
+  end
+
+  def old_tag
+    deployment.version
+  end
+
+  def config_files
+    JSON.parse(deployment.configuration)
+  end
+
+  def initialize(deployment)
     @deployment = deployment
-    @deploy_env = deployment.deploy_environment
-    @old_tag = deploy_tag
     @new_tag = "#{deploy_env.publisher.username}-#{deploy_env.name}-" + DateTime.now.strftime("%Y%m%d%H%M%S")
-    @config_files = deploy_env.config_files_as_json
   end
 
   def build!
@@ -17,8 +26,8 @@ class BuildContainer
 
     # Run the child process in separate thread so that we can close write
     thread = Thread.new do
-      pid_result = system({"QT_ENV" => Rails.application.secrets.qt_environment, "CYCLE_YARD_DEPLOYMENT" => @deployment.id.to_s},
-                          "#{Rails.root}/bin/docker-build.sh", @deploy_env.publisher.username, @deploy_env.repository, old_tag, new_tag,
+      pid_result = system({"QT_ENV" => Rails.application.secrets.qt_environment, "CYCLE_YARD_DEPLOYMENT" => deployment.id.to_s},
+                          "#{Rails.root}/bin/docker-build.sh", deploy_env.publisher.username, deploy_env.repository, old_tag, new_tag,
                           :in => read_tar, :out => write_output, :err => [:child, :out])
       write_output.close
       {success: pid_result}
@@ -42,7 +51,7 @@ class BuildContainer
     # Run the child process in separate thread so that we can close write
     thread = Thread.new do
       pid_result = system({"KUBE_MASTER" => Rails.application.secrets.kube_master},
-                          "#{Rails.root}/bin/docker-deploy.sh", @deploy_env.app_name, @deploy_env.repository, new_tag,
+                          "#{Rails.root}/bin/docker-deploy.sh", deploy_env.app_name, deploy_env.repository, new_tag,
                           :out => write_output, :err => [:child, :out])
       write_output.close
       {success: pid_result}
@@ -56,7 +65,7 @@ class BuildContainer
   end
 
   def self.build_and_deploy!(deployment)
-    build_container = new(deployment, deployment.version, JSON.parse(deployment.configuration))
+    build_container = new(deployment)
 
     deployment.update!(status: "building",
                        deploy_tag: build_container.new_tag)
