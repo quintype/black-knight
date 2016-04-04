@@ -22,14 +22,10 @@ class DeploymentPage extends React.Component {
   componentDidMount() {
     this.getDeployment();
     cable.subscribe({channel: "DeploymentChannel", deployment_id: this.props.deploymentId}, {
-      received: this.deploymentUpdated
+      received: (data) => this.setState({
+	deployment: _.merge({}, this.state.deployment, data)
+      })
     })
-  }
-
-  deploymentUpdated(data) {
-    this.setState({
-      deployment: _.merge({}, this.state.deployment, data)
-    });
   }
 };
 
