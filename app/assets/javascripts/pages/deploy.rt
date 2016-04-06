@@ -1,34 +1,34 @@
-<div class="wrapper" rt-if="this.state.publishers">
-	<div class="publisher" rt-repeat="publisher in this.state.publishers">
-		<div class="deploy-env" rt-repeat="deployEnv in publisher['deploy_environments']">
-			<h1>{publisher.name} {deployEnv.name}</h1>
+<div class="deployment" rt-if="this.state.publishers">
+  <div class="publisher" rt-repeat="publisher in this.state.publishers">
+    <div class="deploy-env" rt-repeat="deployEnv in publisher['deploy_environments']">
 
-			<div class="enter">
-				<input type="text" placeholder="Enter Tag" onChange="(e) => this.setTag(deployEnv, e)" value="{this.state.tags[deployEnv.id]}">
-				<button onClick="() => this.deploy(deployEnv)">Deploy</button>
-			</div>
+      <h2 class="deployment-publisher-name">{publisher.name}</h2>
+      <a href="javascript:void(0)" class="deployment-environment-name">{deployEnv.name}</a>
 
-			<div class="history">
-				<h2>History</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Id</th>
-							<th>Version</th>
-							<th>Deploy Tag</th>
-							<th>Status</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr rt-repeat="deployment in deployEnv.deployments">
-							<td><a href="/deploy/{deployment.id}">{deployment.id}</a></td>
-							<td>{deployment.version}</td>
-							<td>{deployment.deploy_tag}</td>
-							<td>{deployment.status}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+      <div class="deployment-input-tag">
+	<input type="text" placeholder="Enter the deploy tag" onChange="(e) => this.setTag(deployEnv, e)" value="{this.state.tags[deployEnv.id]}">
+	<button onClick="() => this.deploy(deployEnv)">Deploy</button>
+      </div>
+
+      <h3>History</h3>
+      <table class="deployment-table deployment-table-with-heading">
+	<thead>
+	  <tr>
+	    <th>Id</th>
+	    <th>Version</th>
+	    <th>Deploy Tag</th>
+	    <th>Status</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr rt-repeat="deployment in deployEnv.deployments">
+	    <td><a href="/deploy/{deployment.id}">{deployment.id}</a></td>
+	    <td>{deployment.version}</td>
+	    <td>{deployment.deploy_tag}</td>
+	    <td>{deployment.status}</td>
+	  </tr>
+	</tbody>
+      </table>
+    </div>
+  </div>
 </div>

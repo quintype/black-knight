@@ -27,12 +27,20 @@ a.deployment-environment-name {
 }
 
 .deployment-table {
-    tr:nth-child(2n+1) { background-color: $really-light-gray; }
-    td {
+    td,th {
 	padding: 0 40px;
 	line-height: 32px;
     }
-    margin: 6px 0 40px;
+    margin: 16px 0 40px;
+
+    &.deployment-table-without-heading {
+	tr:nth-child(2n+1) { background-color: $really-light-gray; }
+    }
+
+    &.deployment-table-with-heading {
+	th { background-color: $table-heading-gray; }
+	tr:nth-child(2n) { background-color: $really-light-gray; }
+    }
 }
 
 .deployment-output {
@@ -40,4 +48,32 @@ a.deployment-environment-name {
     padding: 25px;
     font-size: 12px;
     overflow: auto;
+}
+
+.deployment-input-tag {
+    margin: 40px 0;
+
+    input, button {
+	height: 32px;
+	box-sizing: border-box;
+    }
+
+    input {
+	width: 487px;
+	padding: 0 10px;
+    }
+
+    button {
+	margin: 0 20px;
+	background: $bright-blue;
+	font-weight: normal;
+	border: none;
+	border-radius: 5px;
+	width: 120px;
+
+	&:hover {
+	    background: $bright-blue;
+	    cursor: pointer;
+	}
+    }
 }

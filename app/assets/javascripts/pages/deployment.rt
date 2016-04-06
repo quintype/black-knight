@@ -1,7 +1,7 @@
 <div class="deployment-deployment-container" rt-scope="this.state.deployment as deployment">
   <h1 class="deployment-heading">Deployment {deployment.id}</h1>
 
-  <table class="deployment-table">
+  <table class="deployment-table deployment-table-without-heading">
     <tbody>
       <tr>
 	<td>Deployment Id</td>
