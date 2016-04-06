@@ -14,5 +14,6 @@
 
 window.blackKnight = {
   deployPage: require("./pages/deploy"),
-  deploymentPage: require("./pages/deployment")
+  deploymentPage: require("./pages/deployment"),
+  publishersMenu: require("./pages/publisher_menu")
 };

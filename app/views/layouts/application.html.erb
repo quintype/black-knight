@@ -10,6 +10,13 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class="layout-leftbar leftbar">
+      <img class="leftbar-logo" src="<%= image_path('logo.png') %>"/>
+      <%= render partial: "layouts/left_bar" if current_user %>
+    </div>
+    <div class="layout-content"><%= yield %></div>
+    <script type="text/javascript">
+      blackKnight.publishersMenu();
+    </script>
   </body>
 </html>

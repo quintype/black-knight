@@ -1,9 +1,9 @@
 // Place all the styles related to the deploy controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-body {
+.deploy-old {
 	background: #16293F;
-}
+
 .wrapper {
 	width: 60%;
 	margin: 0 auto;
@@ -69,4 +69,5 @@ h2 {
 .enter {
 	width: 60%;
 	margin: 0 auto;
+}
 }
