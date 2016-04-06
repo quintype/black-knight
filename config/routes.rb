@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :users
 
+  root to: "deploy#index"
   get "/deploy" => "deploy#index"
   get "/deploy/:deployment_id" => "deploy#show"
 

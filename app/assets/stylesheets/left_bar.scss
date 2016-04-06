@@ -17,13 +17,14 @@
 
 ul.leftbar-publishers {
     margin: 20px 0;
-    padding: 10px 0;
+    padding: 0;
     list-style: none;
     line-height: 40px;
     border-top: 2px solid $light-gray;
 
     li {
 	padding: 8px 0;
+	&:first-child { padding-top: 18px; }
 	&.publisher-open { background-color: $dark-gray; }
     }
 }
