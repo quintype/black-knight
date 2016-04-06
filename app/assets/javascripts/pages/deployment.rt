@@ -1,46 +1,54 @@
-<div>
-  <table>
-    <tr>
-      <td>Prebuild Tag</td>
-      <td>{this.state.deployment.version}</td>
-    </tr>
-    <tr>
-      <td>Deploy Tag</td>
-      <td>{this.state.deployment.deploy_tag}</td>
-    </tr>
-    <tr>
-      <td>Status</td>
-      <td>{this.state.deployment.status}</td>
-    </tr>
-    <tr>
-      <td>Build Started</td>
-      <td>{this.state.deployment.build_started}</td>
-    </tr>
-    <tr>
-      <td>Build Finished</td>
-      <td>{this.state.deployment.build_ended}</td>
-    </tr>
-    <tr>
-      <td>Build Status</td>
-      <td>{this.state.deployment.build_status}</td>
-    </tr>
-    <tr>
-      <td>Deploy Started</td>
-      <td>{this.state.deployment.deploy_started}</td>
-    </tr>
-    <tr>
-      <td>Deploy Finished</td>
-      <td>{this.state.deployment.deploy_ended}</td>
-    </tr>
-    <tr>
-      <td>Deploy Status</td>
-      <td>{this.state.deployment.deploy_status}</td>
-    </tr>
+<div class="deployment-deployment-container" rt-scope="this.state.deployment as deployment">
+  <h1 class="deployment-heading">Deployment {deployment.id}</h1>
+
+  <table class="deployment-table">
+    <tbody>
+      <tr>
+	<td>Deployment Id</td>
+	<td>{deployment.id}</td>
+      </tr>
+      <tr>
+	<td>Prebuild Tag</td>
+	<td>{deployment.version}</td>
+      </tr>
+      <tr>
+	<td>Deploy Tag</td>
+	<td>{deployment.deploy_tag}</td>
+      </tr>
+      <tr>
+	<td>Status</td>
+	<td>{deployment.status}</td>
+      </tr>
+      <tr>
+	<td>Build Started</td>
+	<td>{deployment.build_started}</td>
+      </tr>
+      <tr>
+	<td>Build Finished</td>
+	<td>{deployment.build_ended}</td>
+      </tr>
+      <tr>
+	<td>Build Status</td>
+	<td>{deployment.build_status}</td>
+      </tr>
+      <tr>
+	<td>Deploy Started</td>
+	<td>{deployment.deploy_started}</td>
+      </tr>
+      <tr>
+	<td>Deploy Finished</td>
+	<td>{deployment.deploy_ended}</td>
+      </tr>
+      <tr>
+	<td>Deploy Status</td>
+	<td>{deployment.deploy_status}</td>
+      </tr>
+    </tbody>
   </table>
 
-  <h2>Build Output</h2>
-  <pre style="background: white">{this.state.deployment.build_output}</pre>
+  <h3>Build Output</h3>
+  <pre class="deployment-output">{deployment.build_output}</pre>
 
-  <h2>Deploy Output</h2>
-  <pre style="background: white">{this.state.deployment.deploy_output}</pre>
+  <h3>Deploy Output</h3>
+  <pre class="deployment-output">{deployment.deploy_output}</pre>
 </div>

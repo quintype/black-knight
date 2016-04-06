@@ -6,5 +6,6 @@ class DeployController < ApplicationController
 
   def show
     @deployment = current_user.deployments.find(params[:deployment_id])
+    @current_deploy_environment = @deployment.deploy_environment
   end
 end

@@ -13,5 +13,5 @@ $left-bar-width: 300px;
 }
 
 .layout-content {
-    margin-left: $left-bar-width;
+    margin: 64px 120px 0 $left-bar-width + 60px;
 }

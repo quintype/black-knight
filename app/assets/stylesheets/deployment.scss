@@ -1,0 +1,43 @@
+@import "colors";
+
+.deployment {
+    font-size: 14px;
+}
+
+.deployment-publisher-name {
+    font-size: 26px;
+    font-weight: bolder;
+    margin: 4px 0;
+}
+
+a.deployment-environment-name {
+    text-decoration: none;
+    color: $bright-blue;
+    font-weight: bolder;
+}
+
+.deployment-deployment-container {
+    margin-top: 45px;
+}
+
+.deployment-heading {
+    font-size: 28px;
+    font-weight: bolder;
+    margin: 10px 0;
+}
+
+.deployment-table {
+    tr:nth-child(2n+1) { background-color: $really-light-gray; }
+    td {
+	padding: 0 40px;
+	line-height: 32px;
+    }
+    margin: 6px 0 40px;
+}
+
+.deployment-output {
+    border: 1px solid $dark-gray;
+    padding: 25px;
+    font-size: 12px;
+    overflow: auto;
+}

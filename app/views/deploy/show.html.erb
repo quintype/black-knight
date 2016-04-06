@@ -1,6 +1,6 @@
-<div class="deploy-old">
-  <h1>Deployment <%= @deployment.id %></h1>
-  <h2><%= @deployment.deploy_environment.name %> (<%= @deployment.publisher.name %>)</h2>
+<div class="deployment">
+  <h2 class="deployment-publisher-name"><%= current_deploy_environment.publisher.name %></h2>
+  <%= link_to current_deploy_environment.name, "javascript:void(0)", class: "deployment-environment-name" %>
 
   <div id="container">
   </div>
