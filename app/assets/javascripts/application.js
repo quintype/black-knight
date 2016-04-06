@@ -12,7 +12,7 @@
 
 //= require action_cable
 
-window.cycleYard = {
+window.blackKnight = {
   deployPage: require("./pages/deploy"),
   deploymentPage: require("./pages/deployment")
 };

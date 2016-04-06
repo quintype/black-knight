@@ -26,7 +26,7 @@ class BuildContainer
 
     # Run the child process in separate thread so that we can close write
     thread = Thread.new do
-      pid_result = system({"QT_ENV" => Rails.application.secrets.qt_environment, "CYCLE_YARD_DEPLOYMENT" => deployment.id.to_s},
+      pid_result = system({"QT_ENV" => Rails.application.secrets.qt_environment, "BLACK_KNIGHT_DEPLOYMENT" => deployment.id.to_s},
                           "#{Rails.root}/bin/docker-build.sh", deploy_env.publisher.username, deploy_env.repository, old_tag, new_tag,
                           :in => read_tar, :out => write_output, :err => [:child, :out])
       write_output.close

@@ -1,5 +1,5 @@
 {
-  "name": "cycle-yard",
+  "name": "black-knight",
   "dependencies": {
     "browserify": "~10.2.4",
     "browserify-incremental": "^3.0.1",
