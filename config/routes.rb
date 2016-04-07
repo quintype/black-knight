@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   root to: "deploy#index"
+  get "/environment/:deploy_environment_id" => "deploy#environment"
   get "/deploy" => "deploy#index"
   get "/deploy/:deployment_id" => "deploy#show"
 
