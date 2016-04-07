@@ -8,4 +8,4 @@ if [ -z "$KUBE_MASTER" ]; then
   exit 1
 fi
 
-kubectl rolling-update "$app_name" "--image=$repo:$tag" "--server=$KUBE_MASTER" --rollback
+kubectl rolling-update "$app_name" "--image=$repo:$tag" "--server=$KUBE_MASTER"
