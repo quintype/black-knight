@@ -1,6 +1,7 @@
 @import "colors";
 
 $left-bar-width: 300px;
+$content-margin: 60px;
 
 .layout-leftbar {
     position: fixed;
@@ -13,5 +14,6 @@ $left-bar-width: 300px;
 }
 
 .layout-content {
-    margin: 64px 120px 0 $left-bar-width + 60px;
+    margin: 64px 120px 0 $left-bar-width + $content-margin;
+    min-width: 1024px - $left-bar-width - $content-margin;
 }
