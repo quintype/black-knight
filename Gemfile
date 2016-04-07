@@ -32,4 +32,5 @@ gem 'tzinfo-data', platforms: [:jruby]
 
 gem 'devise', '~> 4.x'
 gem 'activeadmin', github: 'activeadmin'
+gem "kaminari", github: "amatsuda/kaminari", ref: "0-17-stable"
 gem 'browserify-rails'
