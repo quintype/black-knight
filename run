@@ -2,4 +2,5 @@
 
 cd "$(dirname "$0")"
 
+# This is run on production. The Rails environment is replaced there
 RAILS_ENV=development exec bundle exec puma
