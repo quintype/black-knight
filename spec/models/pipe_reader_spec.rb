@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'rails_helper'
 
 class PipeReaderToEnumerable
   include Enumerable
@@ -12,8 +12,8 @@ class PipeReaderToEnumerable
   end
 end
 
-class PipeReaderTest < ActiveSupport::TestCase
-  test "that it yields a set of outputs" do
+describe PipeReader do
+  it "it yields a set of outputs" do
     r, w = IO.pipe
     thread = Thread.new do
       PipeReaderToEnumerable.new(r).to_a
@@ -22,26 +22,27 @@ class PipeReaderTest < ActiveSupport::TestCase
     w.write("foo")
     w.close
 
-    assert_equal(["foo"], thread.value)
+    expect(thread.value).to eq ["foo"]
   end
 
-  test "that it collapses multiple subsequent reads together" do
+  it "collapses multiple subsequent reads together" do
     r, w = IO.pipe
     thread = Thread.new do
       PipeReaderToEnumerable.new(r).to_a
     end
 
+    sleep(0.005)
     w.write("foo")
-    sleep(0.001)
+    sleep(0.005)
     w.write("bar")
-    sleep(0.001)
+    sleep(0.005)
     w.write("baz")
     w.close
 
-    assert_equal(["foo", "barbaz"], thread.value)
+    expect(thread.value).to eq ["foo", "barbaz"]
   end
 
-  test "that it only yields once every 10ms" do
+  it "only yields once every 10ms" do
     r, w = IO.pipe
     thread = Thread.new do
       times = []
@@ -49,6 +50,7 @@ class PipeReaderTest < ActiveSupport::TestCase
       times
     end
 
+    sleep(0.005)
     w.write("foo")
     sleep(0.005)
     w.write("bar")
