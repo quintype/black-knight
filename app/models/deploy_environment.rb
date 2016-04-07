@@ -8,10 +8,11 @@ class DeployEnvironment < ApplicationRecord
   end
 
   # FIXME: No Test
-  def new_deployment(version)
+  def new_deployment(version, user)
     deployments.new(status: "pending",
                     version: version,
-                    configuration: config_files_as_json.to_json)
+                    configuration: config_files_as_json.to_json,
+                    scheduled_by: user)
   end
 
   # FIXME: No Test

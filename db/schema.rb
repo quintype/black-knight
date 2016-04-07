@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330145838) do
+ActiveRecord::Schema.define(version: 20160407032102) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -72,6 +72,9 @@ ActiveRecord::Schema.define(version: 20160330145838) do
     t.string   "status",                null: false
     t.string   "version",               null: false
     t.text     "configuration",         null: false
+    t.text     "output"
+    t.datetime "started_at"
+    t.datetime "finished_at"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.string   "deploy_tag"
@@ -83,6 +86,9 @@ ActiveRecord::Schema.define(version: 20160330145838) do
     t.datetime "deploy_ended"
     t.string   "deploy_status"
     t.text     "deploy_output"
+    t.integer  "scheduled_by_id"
+    t.datetime "cancelled_at"
+    t.integer  "cancelled_by_id"
   end
 
   add_index "deployments", ["deploy_environment_id"], name: "index_deployments_on_deploy_environment_id"
@@ -93,7 +99,7 @@ ActiveRecord::Schema.define(version: 20160330145838) do
     t.string   "admin_email",              null: false
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.string   "username"
+    t.text     "username"
   end
 
   create_table "user_publishers", force: :cascade do |t|

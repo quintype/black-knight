@@ -8,6 +8,10 @@
 	<td>{deployment.id}</td>
       </tr>
       <tr>
+	<td>Deployed By</td>
+	<td>{deployment.scheduled_by && deployment.scheduled_by.name}</td>
+      </tr>
+      <tr>
 	<td>Prebuild Tag</td>
 	<td>{deployment.version}</td>
       </tr>
