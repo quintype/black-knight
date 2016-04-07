@@ -1,34 +1,33 @@
 import React from "react";
 import ReactDom from "react-dom";
 import superagent from "superagent";
-import _ from "lodash";
 
-class DeployPage extends React.Component {
+class EnvironmentPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      publishers: [],
-      tags: {}
+      deployEnv: null,
+      tag: null
     };
-    this.render = require("./deploy.rt");
+    this.render = require("./environment.rt");
   }
 
   getPublishers() {
     superagent
-      .get("/api/publishers.json")
-      .end((err, response) => this.setState({publishers: response.body.publishers}));
+      .get("/api/deploy_environments/" + this.props.deployEnvironmentId + ".json")
+      .end((err, response) => this.setState({deployEnv: response.body.deploy_environment}));
   }
 
   componentDidMount() {
     this.getPublishers()
   }
 
-  setTag(env, e) {
-    this.setState({tags: _.merge({}, this.state.tags, {[env.id]: e.target.value})});
+  setTag(e) {
+    this.setState({tag:  e.target.value});
   }
 
   deploy(env) {
-    var version = this.state.tags[env.id];
+    var version = this.state.tag;
 
     if(this.state.deploying)
       return;
@@ -50,6 +49,6 @@ class DeployPage extends React.Component {
   }
 };
 
-module.exports = function createComponent(container) {
-  ReactDom.render(React.createElement(DeployPage, {}), container);
+module.exports = function createComponent(container, deployEnvironmentId) {
+  ReactDom.render(React.createElement(EnvironmentPage, {deployEnvironmentId: deployEnvironmentId}), container);
 };

@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   get "/deploy/:deployment_id" => "deploy#show"
 
   namespace :api do
-    resources :publishers, only: :index
     resources :deployments, only: [:show, :create]
+    resources :deploy_environments, only: :show
   end
 
   mount ActionCable.server => '/cable'

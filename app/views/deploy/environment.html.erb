@@ -1,0 +1,9 @@
+<div class="deployment">
+  <h2 class="deployment-publisher-name"><%= current_deploy_environment.publisher.name %></h2>
+  <%= link_to current_deploy_environment.name, "/environment/#{current_deploy_environment.id}", class: "deployment-environment-name" %>
+  <div id="container">
+  </div>
+  <script type="text/javascript">
+    blackKnight.environmentPage(document.getElementById("container"), <%= current_deploy_environment.id %>)
+  </script>
+</div>

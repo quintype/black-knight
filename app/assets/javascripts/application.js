@@ -13,7 +13,7 @@
 //= require action_cable
 
 window.blackKnight = {
-  deployPage: require("./pages/deploy"),
+  environmentPage: require("./pages/environment"),
   deploymentPage: require("./pages/deployment"),
   publishersMenu: require("./pages/publisher_menu")
 };

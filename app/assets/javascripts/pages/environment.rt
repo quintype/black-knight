@@ -1,0 +1,26 @@
+<div rt-if="this.state.deployEnv" rt-scope="this.state.deployEnv as deployEnv">
+  <div class="deployment-input-tag">
+    <input type="text" placeholder="Enter the deploy tag" onChange="(e) => this.setTag(e)" value="{this.state.tag}">
+    <button onClick="() => this.deploy(deployEnv)">Deploy</button>
+  </div>
+
+  <h3>History</h3>
+  <table class="deployment-table deployment-table-with-heading">
+    <thead>
+      <tr>
+	<th>Id</th>
+	<th>Version</th>
+	<th>Deploy Tag</th>
+	<th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr rt-repeat="deployment in deployEnv.deployments" key="{deploymentIndex}">
+	<td><a href="/deploy/{deployment.id}">{deployment.id}</a></td>
+	<td>{deployment.version}</td>
+	<td>{deployment.deploy_tag}</td>
+	<td>{deployment.status}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

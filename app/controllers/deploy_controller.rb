@@ -2,6 +2,7 @@ class DeployController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @current_deploy_environment = "none"
   end
 
   def show
@@ -11,6 +12,5 @@ class DeployController < ApplicationController
 
   def environment
     @current_deploy_environment = current_user.deploy_environments.find(params[:deploy_environment_id])
-    render :index
   end
 end
