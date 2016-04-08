@@ -35,7 +35,7 @@ container_id=`docker create $repo:$new_tag`
 docker cp "$container_id:/app/public/$publisher_name" "toupload/$publisher_name"
 
 echo Uploading to S3
-s3cmd --config ~/.s3cfg sync "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/"
+s3cmd --config ~/.s3cfg sync --add-header="Cache-Control: public,max-age=31104000,s-maxage=31104000" "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/"
 rm -rf toupload
 
 docker push "$repo:$new_tag"
