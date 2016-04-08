@@ -34,6 +34,9 @@ mkdir toupload
 container_id=`docker create $repo:$new_tag`
 docker cp "$container_id:/app/public/$publisher_name" "toupload/$publisher_name"
 
+# Removing statically gzipped files
+find toupload -exec rm -f {}.gz \;
+
 echo Uploading to S3
 s3cmd --config ~/.s3cfg sync --add-header="Cache-Control: public,max-age=31104000,s-maxage=31104000" "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/"
 rm -rf toupload
