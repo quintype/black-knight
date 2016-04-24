@@ -16,7 +16,7 @@ class BuildContainer
 
   def initialize(deployment)
     @deployment = deployment
-    @new_tag = "#{deploy_env.publisher.username}-#{deploy_env.name}-" + DateTime.now.strftime("%Y%m%d%H%M%S")
+    @new_tag = deployment.new_deploy_tag
   end
 
   def build!

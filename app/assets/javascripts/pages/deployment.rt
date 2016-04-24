@@ -1,5 +1,6 @@
 <div class="deployment-deployment-container" rt-scope="this.state.deployment as deployment">
   <h1 class="deployment-heading">Deployment {deployment.id}</h1>
+  <button rt-if="deployment.status == 'success'" class="deployment-redeploy-button" onClick="() => this.confirmRedeploy()">Redeploy</button>
 
   <table class="deployment-table deployment-table-without-heading">
     <tbody>
@@ -13,7 +14,10 @@
       </tr>
       <tr>
 	<td>Prebuild Tag</td>
-	<td>{deployment.version}</td>
+	<td>
+	  <span rt-if="deployment.redeploy_of_id">Redeploy of <a href="/deploy/{deployment.redeploy_of_id}">{deployment.redeploy_of_id}</span>
+	  <span rt-if="!deployment.redeploy_of_id">{deployment.version}</span>
+	</td>
       </tr>
       <tr>
 	<td>Deploy Tag</td>
@@ -23,15 +27,15 @@
 	<td>Status</td>
 	<td>{deployment.status}</td>
       </tr>
-      <tr>
+      <tr rt-if="deployment['buildable?']">
 	<td>Build Started</td>
 	<td>{deployment.build_started}</td>
       </tr>
-      <tr>
+      <tr rt-if="deployment['buildable?']">
 	<td>Build Finished</td>
 	<td>{deployment.build_ended}</td>
       </tr>
-      <tr>
+      <tr rt-if="deployment['buildable?']">
 	<td>Build Status</td>
 	<td>{deployment.build_status}</td>
       </tr>
@@ -50,8 +54,8 @@
     </tbody>
   </table>
 
-  <h3>Build Output</h3>
-  <pre class="deployment-output">{deployment.build_output}</pre>
+  <h3 rt-if="deployment['buildable?']">Build Output</h3>
+  <pre class="deployment-output" rt-if="deployment['buildable?']">{deployment.build_output}</pre>
 
   <h3>Deploy Output</h3>
   <pre class="deployment-output">{deployment.deploy_output}</pre>

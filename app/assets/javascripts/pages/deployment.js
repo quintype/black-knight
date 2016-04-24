@@ -27,6 +27,14 @@ class DeploymentPage extends React.Component {
       })
     })
   }
+
+  confirmRedeploy() {
+    var deployNumber = prompt("Please enter the deployment id to redeploy");
+    if(deployNumber == this.props.deploymentId)
+      superagent
+      .post("/api/deployments/" + this.props.deploymentId + "/redeployment.json")
+      .end((err, response) => window.location = "/deploy/" + response.body.deployment.id)
+  }
 };
 
 module.exports = function createComponent(container, deploymentId) {

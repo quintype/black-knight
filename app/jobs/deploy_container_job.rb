@@ -12,17 +12,18 @@ class DeployContainerJob < ApplicationJob
     @deployment = Deployment.find(deployment_id)
     build_container = BuildContainer.new(@deployment)
 
-    update_deployment(status: "building",
-                      deploy_tag: build_container.new_tag,
-                      build_started: DateTime.now,
-                      build_output: "")
+    if @deployment.buildable?
+      update_deployment(status: "building",
+                        deploy_tag: build_container.new_tag,
+                        build_started: DateTime.now,
+                        build_output: "")
+      result = build_container.build! { |op| update_deployment(build_output: deployment.build_output + op) }
+      update_deployment(build_ended: DateTime.now,
+                        build_status: result[:success] ? "success": "failed",
+                        status: result[:success] ? "deploying" : "failed-build")
 
-    result = build_container.build! { |op| update_deployment(build_output: deployment.build_output + op) }
-    update_deployment(build_ended: DateTime.now,
-                      build_status: result[:success] ? "success": "failed",
-                      status: result[:success] ? "deploying" : "failed-build")
-
-    return deployment if not result[:success]
+      return deployment if not result[:success]
+    end
 
     update_deployment(deploy_started: DateTime.now,
                       deploy_output: "")

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160407032102) do
+ActiveRecord::Schema.define(version: 20160424165315) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -89,9 +89,11 @@ ActiveRecord::Schema.define(version: 20160407032102) do
     t.integer  "scheduled_by_id"
     t.datetime "cancelled_at"
     t.integer  "cancelled_by_id"
+    t.integer  "redeploy_of_id"
   end
 
   add_index "deployments", ["deploy_environment_id"], name: "index_deployments_on_deploy_environment_id"
+  add_index "deployments", ["redeploy_of_id"], name: "index_deployments_on_redeploy_of_id"
 
   create_table "publishers", force: :cascade do |t|
     t.integer  "quintype_id_of_publisher", null: false

@@ -24,9 +24,16 @@ a.deployment-environment-name {
     font-size: 28px;
     font-weight: bolder;
     margin: 10px 0;
+    float: left;
+}
+
+.deployment-redeploy-button {
+    float: right;
+    margin: 10px 0;
 }
 
 .deployment-table {
+    clear: both;
     td,th {
 	padding: 0 40px;
 	line-height: 32px;

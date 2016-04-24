@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   get "/deploy/:deployment_id" => "deploy#show"
 
   namespace :api do
-    resources :deployments, only: [:show, :create]
+    resources :deployments, only: [:show, :create] do
+      post "redeployment", action: :redeployment
+    end
     resources :deploy_environments, only: :show
   end
 
