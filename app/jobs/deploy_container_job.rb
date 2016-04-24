@@ -26,7 +26,8 @@ class DeployContainerJob < ApplicationJob
     end
 
     update_deployment(deploy_started: DateTime.now,
-                      deploy_output: "")
+                      deploy_output: "",
+                      status: "deploying")
     result = build_container.deploy! { |op| update_deployment(deploy_output: deployment.deploy_output + op) }
     update_deployment(deploy_ended: DateTime.now,
                       deploy_status: result[:success] ? "success": "failed",
