@@ -72,9 +72,6 @@ ActiveRecord::Schema.define(version: 20160424165315) do
     t.string   "status",                null: false
     t.string   "version",               null: false
     t.text     "configuration",         null: false
-    t.text     "output"
-    t.datetime "started_at"
-    t.datetime "finished_at"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.string   "deploy_tag"
@@ -101,7 +98,7 @@ ActiveRecord::Schema.define(version: 20160424165315) do
     t.string   "admin_email",              null: false
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.text     "username"
+    t.string   "username"
   end
 
   create_table "user_publishers", force: :cascade do |t|
