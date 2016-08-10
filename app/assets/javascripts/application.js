@@ -11,6 +11,8 @@
 // about supported directives.
 
 //= require action_cable
+//= require jquery
+//= require jquery_ujs
 
 window.blackKnight = {
   environmentPage: require("./pages/environment"),
