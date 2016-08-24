@@ -11,7 +11,7 @@ class Api::DeploymentsController < ApplicationController
     if(deployment.save)
       respond_with({deployment: deployment}, location: "/deploy/#{deployment.id}")
       post_to_slack(environment, deployment)
-      DeployContainerJob.perform_later deployment.id
+      DeployContainerJob.perform_later(deployment.id, current_user.name ||= current_user.email, environment.app_name)
     else
       respond_with deployment
     end
@@ -26,7 +26,7 @@ class Api::DeploymentsController < ApplicationController
     deployment = old_deployment.redeployment(current_user)
     if(deployment.save)
       respond_with({deployment: deployment}, location: "/deploy/#{deployment.id}")
-      DeployContainerJob.perform_later deployment.id
+      DeployContainerJob.perform_later(deployment.id, current_user.name ||= current_user.email, environment.app_name)
     else
       respond_with deployment
     end
