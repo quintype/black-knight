@@ -18,8 +18,8 @@
 ul.leftbar-publishers {
     margin: 20px 0;
     padding: 0;
-    height: 80%;
-    overflow: scroll;
+    height: 81%;
+    overflow-y: scroll;
     list-style: none;
     line-height: 40px;
     border-top: 2px solid $light-gray;
