@@ -9,7 +9,3 @@ if [ -z "$KUBE_MASTER" ]; then
 fi
 
 kubectl rolling-update "$app_name" "--image=$repo:$tag" "--server=$KUBE_MASTER" "--namespace=$username"
-
-curl -X POST https://hooks.slack.com/services/your/hook/here 2>&1 <<-EOF
-  {"channel": "#deploys", "username": "Black Knight", "text": "Deployed $app_name with tag $tag", "icon_emoji": ":wrench:"}
-EOF
