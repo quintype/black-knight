@@ -42,10 +42,15 @@ class DeployContainerJob < ApplicationJob
   def post_slack(deployment)
     user = deployment.scheduled_by
     environment = user.deploy_environments.find(deployment.deploy_environment_id)
-    message = {building: "Building #{environment.app_name} #{environment.name} with tag #{deployment.version}", success: "Deployed #{environment.app_name} with tag #{deployment.deploy_tag}.", deploying: "Build successful. Deploying #{environment.app_name} #{environment.name} with tag #{deployment.version}"}
+    message = {building: "Building `#{environment.app_name}` `#{environment.name}` with tag `#{deployment.version}`",
+               success: "Deployed `#{environment.app_name}` with tag `#{deployment.deploy_tag}`.",
+               deploying: "Build successful. Deploying `#{environment.app_name}` `#{environment.name}` with tag `#{deployment.version}`"}
     if ENV['RAILS_ENV'] != 'development'
       uri = URI('https://hooks.slack.com/services/your/hook/here')
-      params = {channel: "#deploys", username: "#{user.name||=user.email} (Black Knight)", text: message[deployment.status.to_sym], icon_emoji: ":wrench:"}.to_json
+      params = {channel: "#deploys",
+                username: "#{user.name||=user.email} (Black Knight)",
+                text: message[deployment.status.to_sym],
+                icon_emoji: ":wrench:"}.to_json
       request = Net::HTTP::Post.new(uri.request_uri, initheader = {'Content-Type' =>'application/json'})
       request.body = params
       Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https') {|http| http.request(request) }
