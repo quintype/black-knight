@@ -22,20 +22,19 @@ class DeployContainerJob < ApplicationJob
                         build_status: result[:success] ? "success": "failed",
                         status: result[:success] ? "deploying" : "failed-build")
 
+      post_slack(deployment)
       return deployment if not result[:success]
     end
 
     update_deployment(deploy_started: DateTime.now,
                       deploy_output: "",
                       status: "deploying")
-    post_slack(deployment)
+
     result = build_container.deploy! { |op| update_deployment(deploy_output: deployment.deploy_output + op) }
     update_deployment(deploy_ended: DateTime.now,
                       deploy_status: result[:success] ? "success": "failed",
                       status: result[:success] ? "success" : "failed-deploy")
-    if deployment.status == "success"
-      post_slack(deployment)
-    end
+    post_slack(deployment)
   end
 
   private
@@ -44,7 +43,9 @@ class DeployContainerJob < ApplicationJob
     environment = user.deploy_environments.find(deployment.deploy_environment_id)
     message = {building: "Building `#{environment.app_name}` `#{environment.name}` with tag `#{deployment.version}`",
                success: "Deployed `#{environment.app_name}` with tag `#{deployment.deploy_tag}`.",
-               deploying: "Build successful. Deploying `#{environment.app_name}` `#{environment.name}` with tag `#{deployment.version}`"}
+               deploying: "Build successful. Deploying `#{environment.app_name}` `#{environment.name}` with tag `#{deployment.version}`",
+               :"failed-build" => "Build failed `#{environment.app_name}` `#{environment.name}` with tag `#{deployment.version}`",
+               :"failed-deploy" => "Deploy failed `#{environment.app_name}` with tag `#{deployment.deploy_tag}`"}
     if ENV['RAILS_ENV'] != 'development'
       uri = URI('https://hooks.slack.com/services/your/hook/here')
       params = {channel: "#deploys",
