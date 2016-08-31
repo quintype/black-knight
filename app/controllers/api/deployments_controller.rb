@@ -10,7 +10,7 @@ class Api::DeploymentsController < ApplicationController
     deployment = environment.new_deployment(deploy_params[:version], current_user)
     if(deployment.save)
       respond_with({deployment: deployment}, location: "/deploy/#{deployment.id}")
-      DeployContainerJob.perform_later deployment.id
+      DeployContainerJob.perform_later(deployment.id, request.base_url)
     else
       respond_with deployment
     end
@@ -25,7 +25,7 @@ class Api::DeploymentsController < ApplicationController
     deployment = old_deployment.redeployment(current_user)
     if(deployment.save)
       respond_with({deployment: deployment}, location: "/deploy/#{deployment.id}")
-      DeployContainerJob.perform_later deployment.id
+      DeployContainerJob.perform_later(deployment.id, request.base_url)
     else
       respond_with deployment
     end
