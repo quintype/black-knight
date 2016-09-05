@@ -1,0 +1,40 @@
+<div class="deployment">
+  <h2 class="deployment-publisher-name"><%= current_deploy_environment.publisher.name %></h2>
+  <p class: "deployment-environment-name">
+  	<%= link_to current_deploy_environment.name, "/environment/#{current_deploy_environment.id}" %>  |  
+  	<%= link_to "Config Files", config_files_list_path(current_deploy_environment.id) %>
+  </p>
+  <h3>Config File #<%= @config_file.id %></h3>
+
+	<table class="deployment-table deployment-table-without-heading">
+		<tbody>
+		  <tr>
+		<td>Id</td>
+		<td><%= @config_file.id %></td>
+		  </tr>
+		  <tr>
+		<td>Deploy Environment</td>
+		<td><%= link_to @config_file.deploy_environment.name, "/environment/#{@config_file.deploy_environment_id}" %></td>
+		  </tr>
+		  <tr>
+		<td>Path</td>
+		<td>
+		  <%= @config_file.path %>
+		</td>
+		  </tr>
+		  <tr>
+		<td>Value</td>
+		<td><%= @config_file.value %></td>
+		  </tr>
+		  <tr>
+		<td>Created at</td>
+		<td><%= @config_file.created_at %></td>
+		  </tr>
+		  <tr>
+		<td>Updated at</td>
+		<td><%= @config_file.updated_at %></td>
+		  </tr>
+		</tbody>
+	</table>
+
+</div>

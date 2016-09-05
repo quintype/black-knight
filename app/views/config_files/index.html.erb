@@ -1,0 +1,39 @@
+<div class="deployment">
+  <h2 class="deployment-publisher-name"><%= current_deploy_environment.publisher.name %></h2>
+  <p class: "deployment-environment-name">
+  	<%= link_to current_deploy_environment.name, "/environment/#{current_deploy_environment.id}" %>  |  
+  	<%= link_to "Config Files", config_files_list_path %>
+  </p>
+  <h3>Config Files</h3>
+
+  <table class="deployment-table deployment-table-with-heading">
+  	<thead>
+  	  <tr>
+  	  	<th>ID</th>
+  	  	<th>Path</th>
+  	  	<th>Value</th>
+  	  	<th></th>
+  	  </tr>
+  	</thead>
+  	<tbody>
+  	  <% @config_files.each do |config_file| %>
+  	    <tr>
+  	      <td><%= link_to config_file.id, config_file_path(config_file.id) %></td>
+  	      <td><%= config_file.path %></td>
+  	      <td><%= config_file.value %></td>
+  	      <td>
+  	        <%= link_to "View", config_file_path(config_file.id) %>
+  	        <%= link_to "Edit", edit_config_file_path(config_file.id) %>
+  	        <%= link_to "Delete", config_file_path(config_file.id), data: {method: "delete", confirm: "Are you sure?"} %>
+  	      </td>
+  	    </tr>
+  	  <%end%>
+  	</tbody>
+
+  </table>
+<!--   <div id="container">
+  </div>
+  <script type="text/javascript">
+    blackKnight.environmentPage(document.getElementById("container"), <%= current_deploy_environment.id %>)
+  </script> -->
+</div>

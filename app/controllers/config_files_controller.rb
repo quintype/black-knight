@@ -6,10 +6,13 @@ class ConfigFilesController < ApplicationController
 
   def index
   	@current_deploy_environment = current_user.deploy_environments.find(params[:deploy_environment_id])
+  	@config_files = @current_deploy_environment.config_files
+
   end
 
   def show
-  	@config_file = ConfigFile.find(params[:config_file_id])
+  	@config_file = current_user.config_files.find(params[:id])
+    @current_deploy_environment = @config_file.deploy_environment
   end
 
   def create
