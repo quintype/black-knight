@@ -1,9 +1,6 @@
 <div class="config-file">
   <h3>Edit Config File #<%= "#{@config_file.id}" %></h3>
-  <%= form_for @config_file do |f| %>
-    <%= f.label "Deploy Environment".to_sym, class: "config-file__select-label" %>
-    <%= f.collection_select(:deploy_environment_id, current_user.deploy_environments.all, :id, :name) %>
-
+  <%= form_for @config_file, url: environment_config_file_path(current_deploy_environment, @config_file) do |f| %>
     <%= f.label :path, class: "config-file__label" %>
     <%= f.text_field :path, class: "config-file__input" %>
 
