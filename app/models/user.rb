@@ -8,8 +8,7 @@ class User < ApplicationRecord
   has_many :publishers, through: :user_publishers
   has_many :deploy_environments, through: :publishers
   has_many :deployments, through: :deploy_environments
-  has_many :config_files, through: :deploy_environments
-
+  
   def display_name
     "#{name} (#{email})"
   end
