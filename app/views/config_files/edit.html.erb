@@ -1,0 +1,12 @@
+<div class="config-file">
+  <h3>Edit Config File #<%= "#{@config_file.id}" %></h3>
+  <%= form_for @config_file, url: environment_config_file_path(current_deploy_environment, @config_file) do |f| %>
+    <%= f.label :path, class: "config-file__label" %>
+    <%= f.text_field :path, class: "config-file__input" %>
+
+    <%= f.label :value, class: "config-file__label" %>
+    <%= f.text_area :value, size: "24x6", class: "config-file__input" %>
+
+    <%= f.submit "Update", class: "config-file__button" %>
+  <% end %>
+</div>

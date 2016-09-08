@@ -1,0 +1,27 @@
+<div class="deployment">
+  <%= render partial: "layouts/header" %>
+  <h3 class="deployment-heading" >Config Files</h3>
+  <h4 class="deployment-redeploy-button"><%= link_to "New Config File", new_environment_config_file_path(current_deploy_environment) %></h4>
+  <table class="deployment-table deployment-table-with-heading">
+  	<thead>
+  	  <tr>
+  	  	<th>Path</th>
+  	  	<th>Value</th>
+  	  </tr>
+  	</thead>
+  	<tbody>
+  	  <% @config_files.each do |config_file| %>
+  	    <tr>  	      
+  	      <td><%= link_to config_file.path, environment_config_file_path(current_deploy_environment, config_file) %></td>
+  	      <td><%= config_file.value %></td>  	      
+  	    </tr>
+  	  <%end%>
+  	</tbody>
+
+  </table>
+<!--   <div id="container">
+  </div>
+  <script type="text/javascript">
+    blackKnight.environmentPage(document.getElementById("container"), <%= current_deploy_environment.id %>)
+  </script> -->
+</div>

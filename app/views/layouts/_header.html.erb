@@ -1,0 +1,5 @@
+  <h2 class="deployment-publisher-name"><%= "#{current_deploy_environment.name} (#{current_deploy_environment.publisher.name})" %></h2>
+  <p>
+  	<%= link_to "Deploys", "/environments/#{current_deploy_environment.id}", class: "deployment-environment-name" %>  |  
+  	<%= link_to "Config Files", environment_config_files_path(current_deploy_environment.id), class: "deployment-environment-name" %>
+  </p>

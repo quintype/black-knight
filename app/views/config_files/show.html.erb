@@ -1,0 +1,34 @@
+<div class="deployment config-file">
+	<%= render partial: "layouts/header" %>
+	<h3 class="deployment-heading config-file__heading">Config File #<%= @config_file.id %></h3>
+	<h4 class="config-file__delete"><%= link_to "Delete", environment_config_file_path(current_deploy_environment, @config_file.id), data: {method: "delete", confirm: "Are you sure?"} %></h4>
+	<h4 class="config-file__edit"><%= link_to "Edit", edit_environment_config_file_path(current_deploy_environment, @config_file.id) %></h4>
+
+	<table class="deployment-table deployment-table-without-heading">
+		<tbody>
+			<tr>
+				<td>Id</td>
+				<td><%= @config_file.id %></td>
+			</tr>		
+			<tr>
+				<td>Path</td>
+				<td>
+					<%= @config_file.path %>
+				</td>
+			</tr>
+			<tr>
+				<td>Value</td>
+				<td><%= @config_file.value %></td>
+			</tr>
+			<tr>
+				<td>Created at</td>
+				<td><%= @config_file.created_at %></td>
+			</tr>
+			<tr>
+				<td>Updated at</td>
+				<td><%= @config_file.updated_at %></td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>

@@ -1,0 +1,30 @@
+// Place all the styles related to the ConfigFiles controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.config-file {
+  &__input,
+  &__label {
+    display: block;
+    margin: 0 0 10px;
+  }
+
+  &__label,
+  &__select-label {
+    font-weight: 700;
+  }
+
+  &__select-label {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+  }
+
+  &__delete {
+    float: right;
+  }
+
+  &__edit {
+    float: right;
+    margin: 0 10px 0 0;
+  }
+}

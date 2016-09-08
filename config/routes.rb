@@ -3,10 +3,13 @@ Rails.application.routes.draw do
   devise_for :users
 
   root to: "deploy#index"
-  get "/environment/:deploy_environment_id" => "deploy#environment"
   get "/deploy" => "deploy#index"
   get "/deploy/:deployment_id" => "deploy#show"
 
+  resources :environments, only: [:show] do
+    resources :config_files
+  end
+  
   namespace :api do
     resources :deployments, only: [:show, :create] do
       post "redeployment", action: :redeployment
