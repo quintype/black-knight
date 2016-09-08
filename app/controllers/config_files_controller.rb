@@ -3,7 +3,7 @@ class ConfigFilesController < ApplicationController
 
   before_filter :load_current_environment
   def load_current_environment
-    @current_deploy_environment = current_user.deploy_environments.find(params[:deploy_environment_id])
+    @current_deploy_environment = current_user.deploy_environments.find(params[:environment_id])
   end
 
 
