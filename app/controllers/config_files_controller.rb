@@ -22,6 +22,10 @@ class ConfigFilesController < ApplicationController
   end
 
   def destroy
+    @config_file = current_user.config_files.find(params[:id])
+    @current_deploy_environment = @config_file.deploy_environment
+    @config_file.destroy
+    redirect_to action: "index", deploy_environment_id: "#{@current_deploy_environment.id}"
   end
 
   def edit

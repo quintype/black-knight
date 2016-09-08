@@ -1,10 +1,8 @@
 <div class="deployment">
-  <h2 class="deployment-publisher-name"><%= current_deploy_environment.publisher.name %></h2>
-  <p class: "deployment-environment-name">
-  	<%= link_to current_deploy_environment.name, "/environment/#{current_deploy_environment.id}" %>  |  
-  	<%= link_to "Config Files", config_files_list_path(current_deploy_environment.id) %>
-  </p>
-  <h3>Config File #<%= @config_file.id %></h3>
+	<%= render partial: "layouts/header" %>
+  <h3 class="deployment-heading">Config File #<%= @config_file.id %></h3>
+  <h4 class="deployment-redeploy-button"><%= link_to "Delete", config_file_path(@config_file.id), data: {method: "delete", confirm: "Are you sure?"} %></h4>
+  <h4 class="deployment-redeploy-button"><%= link_to "Edit", edit_config_file_path(@config_file.id) %></h4>
 
 	<table class="deployment-table deployment-table-without-heading">
 		<tbody>

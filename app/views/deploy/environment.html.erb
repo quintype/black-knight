@@ -1,9 +1,5 @@
 <div class="deployment">
-  <h2 class="deployment-publisher-name"><%= current_deploy_environment.publisher.name %></h2>
-  <p class: "deployment-environment-name">
-  	<%= link_to current_deploy_environment.name, "/environment/#{current_deploy_environment.id}" %>  |  
-  	<%= link_to "Config Files", config_files_list_path %>
-  </p>
+  <%= render partial: "layouts/header" %>
   <div id="container">
   </div>
   <script type="text/javascript">
