@@ -1,5 +1,5 @@
 <div class="config-file">
-  <h3>New Config File</h3>
+  <h3>Edit Config File #<%= "#{@config_file.id}" %></h3>
   <%= form_for @config_file do |f| %>
     <%= f.label "Deploy Environment".to_sym, class: "config-file__select-label" %>
     <%= f.collection_select(:deploy_environment_id, current_user.deploy_environments.all, :id, :name) %>
@@ -10,6 +10,6 @@
     <%= f.label :value, class: "config-file__label" %>
     <%= f.text_area :value, size: "24x6", class: "config-file__input" %>
 
-    <%= f.submit "Create", class: "config-file__button" %>
+    <%= f.submit "Update", class: "config-file__button" %>
   <% end %>
 </div>

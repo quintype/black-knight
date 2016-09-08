@@ -1,8 +1,8 @@
-<div class="deployment">
+<div class="deployment config-file">
 	<%= render partial: "layouts/header" %>
-  <h3 class="deployment-heading">Config File #<%= @config_file.id %></h3>
-  <h4 class="deployment-redeploy-button"><%= link_to "Delete", config_file_path(@config_file.id), data: {method: "delete", confirm: "Are you sure?"} %></h4>
-  <h4 class="deployment-redeploy-button"><%= link_to "Edit", edit_config_file_path(@config_file.id) %></h4>
+  <h3 class="deployment-heading config-file__heading">Config File #<%= @config_file.id %></h3>
+  <h4 class="config-file__delete"><%= link_to "Delete", config_file_path(@config_file.id), data: {method: "delete", confirm: "Are you sure?"} %></h4>
+  <h4 class="config-file__edit"><%= link_to "Edit", edit_config_file_path(@config_file.id) %></h4>
 
 	<table class="deployment-table deployment-table-without-heading">
 		<tbody>
