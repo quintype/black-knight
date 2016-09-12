@@ -66,6 +66,9 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    acts_as_paranoid (0.5.0)
+      activerecord (>= 4.0, < 5.1)
+      activesupport (>= 4.0, < 5.1)
     arbre (1.0.3)
       activesupport (>= 3.0.0)
     arel (7.0.0)
@@ -248,6 +251,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin!
+  acts_as_paranoid
   browserify-rails
   byebug
   devise (~> 4.x)

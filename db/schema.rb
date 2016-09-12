@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160830065859) do
+ActiveRecord::Schema.define(version: 20160912075726) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20160830065859) do
     t.text     "value",                 null: false
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.date     "deleted_at"
   end
 
   add_index "config_files", ["deploy_environment_id"], name: "index_config_files_on_deploy_environment_id"
@@ -64,6 +65,7 @@ ActiveRecord::Schema.define(version: 20160830065859) do
     t.datetime "updated_at",   null: false
     t.string   "app_name"
     t.string   "repository"
+    t.string   "last_tag"
   end
 
   add_index "deploy_environments", ["publisher_id"], name: "index_deploy_environments_on_publisher_id"
