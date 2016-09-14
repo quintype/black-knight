@@ -5,11 +5,7 @@
 	<h4 class="config-file__edit"><%= link_to "Edit", edit_environment_config_file_path(current_deploy_environment, @config_file.id) %></h4>
 
 	<table class="deployment-table deployment-table-without-heading">
-		<tbody>
-			<tr>
-				<td>Id</td>
-				<td><%= @config_file.id %></td>
-			</tr>		
+		<tbody>					
 			<tr>
 				<td>Path</td>
 				<td>
@@ -17,17 +13,13 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Value</td>
-				<td><pre><%= @config_file.value %></pre></td>
-			</tr>
-			<tr>
-				<td>Created at</td>
-				<td><%= @config_file.created_at %></td>
-			</tr>
-			<tr>
 				<td>Updated at</td>
 				<td><%= @config_file.updated_at %></td>
 			</tr>
+			<tr>
+				<td>Value</td>
+				<td><pre class="config-file-value"><%= @config_file.value %></pre></td>
+			</tr>			
 		</tbody>
 	</table>
 
