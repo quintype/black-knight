@@ -1,9 +1,8 @@
 <div rt-if="this.state.deployEnv" rt-scope="this.state.deployEnv as deployEnv">
   <div class="deployment-input-tag">
-    <input type="text" placeholder="Enter the deploy tag" onChange="(e) => this.setTag(e)" value="{this.state.tag}">
+    <input type="text" placeholder="Enter the deploy tag" defaultValue={this.state.tag} onChange="(e) => this.setTag(e)">
     <button onClick="() => this.deploy(deployEnv)">Deploy</button>
   </div>
-
   <h3>History</h3>
   <table class="deployment-table deployment-table-with-heading">
     <thead>
