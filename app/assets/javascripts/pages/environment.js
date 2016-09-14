@@ -15,7 +15,7 @@ class EnvironmentPage extends React.Component {
   getPublishers() {
     superagent
       .get("/api/deploy_environments/" + this.props.deployEnvironmentId + ".json")
-      .end((err, response) => this.setState({deployEnv: response.body.deploy_environment}));
+      .end((err, response) => this.setState({deployEnv: response.body.deploy_environment, tag: response.body.deploy_environment.last_tag}));
   }
 
   componentDidMount() {
