@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDom from "react-dom";
 import superagent from "superagent";
+import _ from "lodash";
 
 class EnvironmentPage extends React.Component {
   constructor(props) {
@@ -13,9 +14,13 @@ class EnvironmentPage extends React.Component {
   }
 
   getPublishers() {
+    var self = this;
     superagent
-      .get("/api/deploy_environments/" + this.props.deployEnvironmentId + ".json")
-      .end((err, response) => this.setState({deployEnv: response.body.deploy_environment, tag: response.body.deploy_environment.last_tag}));
+      .get("/api/deploy_environments/" + self.props.deployEnvironmentId + ".json")
+      .end((err, response) => {
+        let last_deployment = _.first(response.body.deploy_environment.deployments);
+        self.setState({deployEnv: response.body.deploy_environment, tag: last_deployment.version})
+      });
   }
 
   componentDidMount() {
