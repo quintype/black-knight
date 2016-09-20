@@ -4,7 +4,9 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   def attributes_for_environment_page(deploy_environment, page= nil)
     if page
-      deploy_environment.deployments.all.reverse_order.page(page).per(5)
+      deploy_environment.deployments.all.reverse_order.page(page).per(5).map {|deployment|
+        deployment.attributes.slice("id", "version", "deploy_tag", "status")
+      }
     else
       deploy_environment.attributes.merge(deployments: deploy_environment.deployments.latest.map { |deployment|
         deployment.attributes.slice("id", "version", "deploy_tag", "status")
