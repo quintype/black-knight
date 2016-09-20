@@ -29,7 +29,6 @@ class EnvironmentPage extends React.Component {
           stateToSet['pageToRetrieve'] = self.state.pageToRetrieve + 1
         }
         self.setState(stateToSet)
-        console.log(this.state['pageToRetrieve'])
       });
   }
 
@@ -44,7 +43,6 @@ class EnvironmentPage extends React.Component {
         stateToSet['deployEnv'] = deployEnvironment
         stateToSet['pageToRetrieve'] = this.state.pageToRetrieve + 1
         this.setState(stateToSet)
-        console.log(this.state['pageToRetrieve'])
       })
   }
 
