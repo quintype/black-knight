@@ -14,7 +14,9 @@ Rails.application.routes.draw do
     resources :deployments, only: [:show, :create] do
       post "redeployment", action: :redeployment
     end
-    resources :deploy_environments, only: :show
+    resources :deploy_environments, only: :show do
+      get "deployments", action: :load_more_deployments
+    end
   end
 
   mount ActionCable.server => '/cable'
