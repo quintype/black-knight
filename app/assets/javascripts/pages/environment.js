@@ -10,7 +10,7 @@ class EnvironmentPage extends React.Component {
     this.state = {
       deployEnv: null,
       tag: null,
-      pageToRetrieve: 1
+      pageToRetrieve: 2
     };
     this.render = require("./environment.rt");
   }
@@ -26,9 +26,8 @@ class EnvironmentPage extends React.Component {
         stateToSet['deployEnv'] = deployEnvironment
         if (latestDeployment){
           stateToSet['tag'] = latestDeployment.version
-          stateToSet['pageToRetrieve'] = self.state.pageToRetrieve + 1
         }
-        self.setState(stateToSet)
+        self.setState(stateToSet);
       });
   }
 
