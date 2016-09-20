@@ -18,8 +18,14 @@ class EnvironmentPage extends React.Component {
     superagent
       .get("/api/deploy_environments/" + self.props.deployEnvironmentId + ".json")
       .end((err, response) => {
-        let last_deployment = _.first(response.body.deploy_environment.deployments);
-        self.setState({deployEnv: response.body.deploy_environment, tag: last_deployment.version})
+        let deployEnvironment = response.body.deploy_environment
+        let latestDeployment = _.first(deployEnvironment.deployments);
+        let stateToSet = {}
+        stateToSet['deployEnv'] = deployEnvironment
+        if (latestDeployment){
+          stateToSet['tag'] = latestDeployment.version
+        }
+        self.setState(stateToSet)
       });
   }
 
