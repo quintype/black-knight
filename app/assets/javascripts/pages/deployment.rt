@@ -5,51 +5,51 @@
   <table class="deployment-table deployment-table-without-heading">
     <tbody>
       <tr>
-	<td>Deployment Id</td>
-	<td>{deployment.id}</td>
+        <td>Deployment Id</td>
+        <td>{deployment.id}</td>
       </tr>
       <tr>
-	<td>Deployed By</td>
-	<td>{deployment.scheduled_by && deployment.scheduled_by.name}</td>
+        <td>Deployed By</td>
+        <td>{deployment.scheduled_by && deployment.scheduled_by.name}</td>
       </tr>
       <tr>
-	<td>Prebuild Tag</td>
-	<td>
-	  <span rt-if="deployment.redeploy_of_id">Redeploy of <a href="/deploy/{deployment.redeploy_of_id}">{deployment.redeploy_of_id}</span>
-	  <span rt-if="!deployment.redeploy_of_id">{deployment.version}</span>
-	</td>
+        <td>Prebuild Tag</td>
+        <td>
+          <span rt-if="deployment.redeploy_of_id">Redeploy of <a href="/deploy/{deployment.redeploy_of_id}">{deployment.redeploy_of_id}</span>
+          <span rt-if="!deployment.redeploy_of_id">{deployment.version}</span>
+        </td>
       </tr>
       <tr>
-	<td>Deploy Tag</td>
-	<td>{deployment.deploy_tag}</td>
+        <td>Deploy Tag</td>
+        <td>{deployment.deploy_tag}</td>
       </tr>
       <tr>
-	<td>Status</td>
-	<td>{deployment.status}</td>
+        <td>Status</td>
+        <td>{deployment.status}</td>
       </tr>
       <tr rt-if="deployment['buildable?']">
-	<td>Build Started</td>
-	<td>{deployment.build_started}</td>
+        <td>Build Started</td>
+        <td>{deployment.build_started}</td>
       </tr>
       <tr rt-if="deployment['buildable?']">
-	<td>Build Finished</td>
-	<td>{deployment.build_ended}</td>
+        <td>Build Finished</td>
+        <td>{deployment.build_ended}</td>
       </tr>
       <tr rt-if="deployment['buildable?']">
-	<td>Build Status</td>
-	<td>{deployment.build_status}</td>
+        <td>Build Status</td>
+        <td>{deployment.build_status}</td>
       </tr>
       <tr>
-	<td>Deploy Started</td>
-	<td>{deployment.deploy_started}</td>
+        <td>Deploy Started</td>
+        <td>{deployment.deploy_started}</td>
       </tr>
       <tr>
-	<td>Deploy Finished</td>
-	<td>{deployment.deploy_ended}</td>
+        <td>Deploy Finished</td>
+        <td>{deployment.deploy_ended}</td>
       </tr>
       <tr>
-	<td>Deploy Status</td>
-	<td>{deployment.deploy_status}</td>
+        <td>Deploy Status</td>
+        <td>{deployment.deploy_status}</td>
       </tr>
     </tbody>
   </table>
