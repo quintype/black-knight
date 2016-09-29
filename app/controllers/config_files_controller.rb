@@ -11,7 +11,7 @@ class ConfigFilesController < ApplicationController
     @config_file = @current_deploy_environment.config_files.new
   end
 
-  def index
+  def index  	
   	@config_files = @current_deploy_environment.config_files
   end
 
@@ -20,7 +20,7 @@ class ConfigFilesController < ApplicationController
   end
 
   def create
-    @config_file = @current_deploy_environment.config_files.build(value: params[:config_file][:value].strip, path: params[:config_file][:path])
+    @config_file = @current_deploy_environment.config_files.build(value: params[:config_file][:value], path: params[:config_file][:path])    
     if @config_file.save
       redirect_to action: "show", id: "#{@config_file.id}"
     else
@@ -29,8 +29,8 @@ class ConfigFilesController < ApplicationController
   end
 
   def update
-    @config_file = @current_deploy_environment.config_files.find(params[:id])
-    if @config_file.update(value: params[:config_file][:value].strip, path: params[:config_file][:path])
+    @config_file = @current_deploy_environment.config_files.find(params[:id])    
+    if @config_file.update(value: params[:config_file][:value], path: params[:config_file][:path])
       redirect_to action: "show", id: "#{@config_file.id}"
     else
       render action: "new"
