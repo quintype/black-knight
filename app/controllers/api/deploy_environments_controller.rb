@@ -21,7 +21,7 @@ class Api::DeployEnvironmentsController < ApplicationController
       ScaleContainerJob.perform_later(deploy_environment.id, current_user.id, size)
       render status: 201, json: {"state": "accepted"}
     else
-      render status: 422
+      render status: 422, json: {error: {message: "Cannot Scale This Container"}}
     end
   end
 end
