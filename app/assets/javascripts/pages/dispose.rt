@@ -1,0 +1,7 @@
+<div>
+  <p>
+    <button onClick="() => this.scaleEnvironment(1)">Start Environment</button>
+    <button onClick="() => this.scaleEnvironment(0)">Stop Environment</button>
+  </p>
+  <span>{this.state.message}</span>
+</div>
