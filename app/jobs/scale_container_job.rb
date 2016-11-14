@@ -10,7 +10,7 @@ class ScaleContainerJob < ApplicationJob
 
     if deploy_environment.disposable?
       post_slack("Scaling `#{deploy_environment.app_name}/#{deploy_environment.name}` to #{size}")
-      system({"KUBE_MASTER" => Rails.application.secrets.kube_master}, "#{Rails.root}/bin/docker-scale.sh", deploy_environment.publisher.username, deploy_environment.repository, size.to_s, deploy_environment.app_name)
+      system({"KUBE_MASTER" =>  @deploy_environment.cluster.kube_api_server}, "#{Rails.root}/bin/docker-scale.sh", deploy_environment.publisher.username, deploy_environment.repository, size.to_s, deploy_environment.app_name)
       post_slack("Successfully Scaled `#{deploy_environment.app_name}/#{deploy_environment.name}` to #{size}")
     end
   end

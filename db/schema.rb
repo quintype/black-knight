@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161001110021) do
+ActiveRecord::Schema.define(version: 20161114063322) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -47,6 +47,13 @@ ActiveRecord::Schema.define(version: 20161001110021) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
 
+  create_table "clusters", force: :cascade do |t|
+    t.string   "name",            null: false
+    t.string   "kube_api_server", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
   create_table "config_files", force: :cascade do |t|
     t.integer  "deploy_environment_id"
     t.string   "path",                  null: false
@@ -66,8 +73,10 @@ ActiveRecord::Schema.define(version: 20161001110021) do
     t.string   "app_name"
     t.string   "repository"
     t.boolean  "disposable"
+    t.integer  "cluster_id"
   end
 
+  add_index "deploy_environments", ["cluster_id"], name: "index_deploy_environments_on_cluster_id"
   add_index "deploy_environments", ["publisher_id"], name: "index_deploy_environments_on_publisher_id"
 
   create_table "deployments", force: :cascade do |t|
@@ -75,9 +84,6 @@ ActiveRecord::Schema.define(version: 20161001110021) do
     t.string   "status",                null: false
     t.string   "version",               null: false
     t.text     "configuration",         null: false
-    t.text     "output"
-    t.datetime "started_at"
-    t.datetime "finished_at"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.string   "deploy_tag"
@@ -104,7 +110,7 @@ ActiveRecord::Schema.define(version: 20161001110021) do
     t.string   "admin_email",              null: false
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.text     "username"
+    t.string   "username"
   end
 
   create_table "user_publishers", force: :cascade do |t|
