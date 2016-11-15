@@ -1,6 +1,10 @@
 module ApplicationHelper
   def publishers
-    @publishers ||= current_user.publishers.includes(:deploy_environments)
+    if current_user.super_user?
+      @publishers ||= Publisher.includes(:deploy_environments)
+    else
+      @publishers ||= current_user.publishers.includes(:deploy_environments)
+    end
   end
 
   def current_publisher_id
