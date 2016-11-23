@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
 import superagent from "superagent";
-import cable from "../gateway/cable";
 import _ from "lodash";
 
 class DeploymentPage extends React.Component {
@@ -21,11 +20,6 @@ class DeploymentPage extends React.Component {
 
   componentDidMount() {
     this.getDeployment();
-    cable.subscribe({channel: "DeploymentChannel", deployment_id: this.props.deploymentId}, {
-      received: (data) => this.setState({
-	deployment: _.merge({}, this.state.deployment, data)
-      })
-    })
   }
 
   confirmRedeploy() {
