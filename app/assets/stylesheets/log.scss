@@ -1,0 +1,25 @@
+@import "colors";
+
+.log-container {
+    h3 {
+      margin-top: 45px;
+      font-size: 28px;
+      font-weight: bolder;        
+    }
+    label {
+      display: block;
+    }
+    select {
+      display: inline-block;
+      margin: 10px 0; 
+    }
+    .output {
+      margin-top: 50px;
+    }
+}
+.log-output {
+    border: 1px solid $dark-gray;
+    padding: 25px;
+    font-size: 12px;
+    overflow: auto;
+}

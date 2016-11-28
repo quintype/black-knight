@@ -30,4 +30,12 @@ class DeployEnvironment < ApplicationRecord
       h
     end
   end
+
+  def running_pods(app_name, username)
+    `KUBE_MASTER=#{cluster.kube_api_server} ./bin/kube-status gp #{app_name} #{username} 2>&1`
+  end
+
+  def log_files
+    Rails.application.config.log_files["paths"]
+  end
 end

@@ -1,0 +1,5 @@
+development:
+  paths: ['app/log/development.log', '/storage/logs/laravel.log', '/var/log/nginx/error.log', stdout]
+
+production:
+  paths: ['app/log/production.log', '/storage/logs/laravel.log', '/var/log/nginx/error.log', stdout]
