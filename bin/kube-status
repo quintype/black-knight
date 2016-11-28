@@ -27,7 +27,12 @@ fi
 
 get_logs()
 {
-$kubectl exec  $1 --namespace=$4 -- tail -n $3 $2 
+log_file_name=$2
+if [ "$log_file_name" == "stdout" ];then
+  $kubectl logs $1 --tail $3 --namespace=$4
+else
+  $kubectl exec  $1 --namespace=$4 -- tail -n $3 $log_file_name
+fi
 }
 
 get_pods()
