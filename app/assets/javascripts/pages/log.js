@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
 import superagent from "superagent";
-import cable from "../gateway/cable";
 import _ from "lodash";
 
 class LogsPage extends React.Component {
