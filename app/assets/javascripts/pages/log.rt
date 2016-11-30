@@ -2,7 +2,7 @@
 
   <form onSubmit="(e) => this.submitLogInfo(e)">
   <label> Log File
-    <select>
+    <select onChange="(e) => this.handleLogFileChange(e.target.value)">
       <option rt-repeat="log in this.props.logFiles">{log}</option>
     </select>    
   </label>
