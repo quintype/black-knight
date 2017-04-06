@@ -11,11 +11,11 @@ class Api::DeployEnvironmentsController < ApplicationController
   end
 
   def show
-    respond_with deploy_environment: attributes_for_environment_page(current_user.deploy_environments.find(params[:id]))
+    respond_with deploy_environment: attributes_for_environment_page(current_deploy_environment(params[:id]))
   end
 
   def scale
-    deploy_environment = current_user.deploy_environments.find(params[:deploy_environment_id])
+    deploy_environment = current_deploy_environment(params[:deploy_environment_id])
     size = params[:size]
     if(deploy_environment.disposable? && size < 4)
       ScaleContainerJob.perform_later(deploy_environment.id, current_user.id, size)
