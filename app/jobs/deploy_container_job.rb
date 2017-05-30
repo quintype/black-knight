@@ -39,7 +39,7 @@ class DeployContainerJob < ApplicationJob
 
   private
   # This should be made into a separate class
-  def post_slack(deployment, base_url)
+  def post_slack(deployment, base_url, channel="#deploy-#{Rails.application.secrets[:qt_environment]}")
     user = deployment.scheduled_by
     environment = deployment.deploy_environment
     messages = {"building" => "Deploying `#{environment.app_name}/#{environment.name}` with tag `#{deployment.version}`",
@@ -49,7 +49,7 @@ class DeployContainerJob < ApplicationJob
 
     if message = messages[deployment.status]
       uri = URI('https://hooks.slack.com/services/your/hook/here')
-      params = {channel: "#deploys",
+      params = {channel: channel,
                 username: "#{user.name||=user.email} (Black Knight)",
                 text: message,
                 icon_emoji: ":wrench:"}.to_json
