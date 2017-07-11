@@ -34,7 +34,8 @@ class EnvironmentPage extends React.Component {
   }
 
   setTag(e) {
-    this.setState({tag:  e.target.value});
+    var tagValue = e.target.value.trim()
+    this.setState({tag:  tagValue});
   }
 
   deploy(env) {
