@@ -1,0 +1,33 @@
+<div class="log">
+
+  <form onSubmit="(e) => this.submitLogInfo(e)">
+  <label> Log File
+    <select onChange="(e) => this.handleLogFileChange(e.target.value)">
+      <option rt-repeat="log in this.props.logFiles">{log}</option>
+    </select>    
+  </label>
+
+  <label> Pod name
+    <select onChange="(e) => this.handlePodChange(e.target.value)">
+      <option rt-repeat="pod in this.props.podList">{pod}</option>
+    </select>
+  </label>
+
+
+  <label> Number of lines
+      <select onChange="(e) => this.handleLineChange(e.target.value)">
+        <option value="{10}">10</option>
+        <option value="{100}">100</option>
+        <option value="{1000}">1000</option>
+        <option value="{10000}">10000 </option>
+      </select>  
+  </label>
+
+    <input type="submit" value="submit" name="submit"/>
+  </form>
+
+  <div class="output">
+    <h3>Output</h3>
+    <pre class="log-output">{this.state.logOutput}</pre>
+  </div>
+</div>

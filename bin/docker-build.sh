@@ -21,7 +21,7 @@ cat > Dockerfile <<EOF
 FROM $repo:$old_tag
 
 COPY config.tar /tmp/config.tar
-RUN mkdir -p /app/public/
+RUN mkdir -p /app/public/$publisher_name
 RUN echo "Deployment: $BLACK_KNIGHT_DEPLOYMENT" >> /app/public/round-table.txt
 RUN tar xvf /tmp/config.tar -C /
 EOF

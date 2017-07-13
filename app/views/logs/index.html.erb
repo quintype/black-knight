@@ -1,0 +1,9 @@
+<div class="log-container">
+  <%= render partial: "layouts/header" %>
+  <h3 class="log-heading" >Logs</h3>  
+  <div id="container">
+  </div>
+  <script type="text/javascript">
+    blackKnight.logsPage(document.getElementById("container"), <%= current_deploy_environment.id %>, <%= @log_files.to_json.html_safe %>, <%= @pod_list.to_json.html_safe %>)
+  </script>
+</div>

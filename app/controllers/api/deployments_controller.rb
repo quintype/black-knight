@@ -6,7 +6,7 @@ class Api::DeploymentsController < ApplicationController
 
   def create
     deploy_params = params[:deployment]
-    environment = current_user.deploy_environments.find(deploy_params[:deploy_environment_id])
+    environment = current_deploy_environment(deploy_params[:deploy_environment_id])
     deployment = environment.new_deployment(deploy_params[:version], current_user)
     if(deployment.save)
       respond_with({deployment: deployment}, location: "/deploy/#{deployment.id}")
@@ -17,11 +17,11 @@ class Api::DeploymentsController < ApplicationController
   end
 
   def show
-    respond_with deployment: current_user.deployments.find(params[:id])
+    respond_with deployment: current_deployment(params[:id])
   end
 
   def redeployment
-    old_deployment = current_user.deployments.find(params[:deployment_id])
+    old_deployment = current_deployment(params[:deployment_id])
     deployment = old_deployment.redeployment(current_user)
     if(deployment.save)
       respond_with({deployment: deployment}, location: "/deploy/#{deployment.id}")

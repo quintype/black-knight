@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160914083118) do
+ActiveRecord::Schema.define(version: 20161114132741) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -47,6 +47,13 @@ ActiveRecord::Schema.define(version: 20160914083118) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
 
+  create_table "clusters", force: :cascade do |t|
+    t.string   "name",            null: false
+    t.string   "kube_api_server", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
   create_table "config_files", force: :cascade do |t|
     t.integer  "deploy_environment_id"
     t.string   "path",                  null: false
@@ -65,8 +72,11 @@ ActiveRecord::Schema.define(version: 20160914083118) do
     t.datetime "updated_at",   null: false
     t.string   "app_name"
     t.string   "repository"
+    t.boolean  "disposable"
+    t.integer  "cluster_id"
   end
 
+  add_index "deploy_environments", ["cluster_id"], name: "index_deploy_environments_on_cluster_id"
   add_index "deploy_environments", ["publisher_id"], name: "index_deploy_environments_on_publisher_id"
 
   create_table "deployments", force: :cascade do |t|
@@ -125,6 +135,7 @@ ActiveRecord::Schema.define(version: 20160914083118) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "name"
+    t.boolean  "super_user"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

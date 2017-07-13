@@ -1,0 +1,83 @@
+#!/bin/bash -e
+
+
+usage()
+{
+echo -e "Usage: $0 [status|logs|gp] args
+         $0 status app_name  publisher
+         $0 logs pod_name log_file number_of_lines publisher
+         $0 gp app_name publisher 
+         eg:- 
+         $0 status thequint  publisher
+         $0 logs pod_name log_file number_of_lines publisher
+         $0 gp thequint theuqint"  
+         exit
+}
+
+
+get_rc_status()
+{
+desired=$($kubectl get rc $1 --namespace=$2 | tail -n 1 | awk '{print $2}')
+if [ "$desired" -eq "0" ];then
+    echo 'down'
+else
+    echo 'up'
+fi
+}
+
+get_logs()
+{
+log_file_name=$2
+if [ "$log_file_name" == "stdout" ];then
+  $kubectl logs $1 --tail $3 --namespace=$4
+else
+  $kubectl exec  $1 --namespace=$4 -- tail -n $3 $log_file_name
+fi
+}
+
+get_pods()
+{
+$kubectl get pod --namespace=$2 --selector=app=$1 | grep $1 | awk '{print $1}'
+}
+if [ "$#" -gt 1 ];then
+  if [ -z "$KUBE_MASTER" ]; then
+    echo Please provide a deploy server
+    exit 1
+  fi
+  server=$KUBE_MASTER
+  opt=$1
+  kubectl="kubectl --server=$server"
+  shift 1 
+else
+  usage
+fi
+
+case $opt in
+   status)
+       if [ $# -ne 2 ]; then
+           usage
+           exit 1
+        fi
+        status=$(get_rc_status $1 $2)
+        echo "$status"
+   ;;
+   logs) 
+      if [ $# -ne 4 ]; then
+         usage
+         exit 1
+      fi
+      get_logs $1 $2 $3 $4
+   ;;
+   gp) 
+      if [ $# -ne 2 ]; then
+         usage
+         exit 1
+      fi
+      get_pods $1 $2
+   ;;
+   *) usage 
+   ;;
+esac
+
+
+

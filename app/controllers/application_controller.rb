@@ -3,6 +3,21 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
+    def current_deploy_environment(id)
+      if current_user.super_user?
+        @current_deploy_environment = DeployEnvironment.find(id)
+      else
+        @current_deploy_environment = current_user.deploy_environments.find(id)
+      end
+    end
+
+    def current_deployment(id)
+      if current_user.super_user?
+        Deployment.find(id)
+      else
+        current_user.deployments.find(id)
+      end
+    end
 
   protected
   	def configure_permitted_parameters

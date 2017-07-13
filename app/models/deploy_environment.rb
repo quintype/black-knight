@@ -2,6 +2,7 @@ class DeployEnvironment < ApplicationRecord
   belongs_to :publisher
   has_many :config_files
   has_many :deployments
+  belongs_to :cluster
 
   def display_name
     "#{name} (#{publisher.name})"
@@ -28,5 +29,13 @@ class DeployEnvironment < ApplicationRecord
       h[config_file.path] = config_file.value
       h
     end
+  end
+
+  def running_pods(app_name, username)
+    `KUBE_MASTER=#{cluster.kube_api_server} ./bin/kube-status gp #{app_name} #{username} 2>&1`.split("\n")
+  end
+
+  def log_files
+    Rails.application.config.log_files["paths"]
   end
 end
