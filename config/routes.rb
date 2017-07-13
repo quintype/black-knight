@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   get "/deploy/:deployment_id" => "deploy#show"
 
   resources :environments, only: [:show] do
-    resources :config_files
+    resources :config_files do
+      resources :versions, only: [:show]
+    end
     resources :logs
     get "/dispose" => "environments#dispose", as: :dispose
   end
