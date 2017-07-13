@@ -3,7 +3,7 @@ class Api::DeployEnvironmentsController < ApplicationController
   respond_to :json
   skip_before_filter :verify_authenticity_token, only: [:scale]
 
-  def attributes_for_environment_page(deploy_environment, page= nil)
+  def attributes_for_environment_page(deploy_environment, page=nil)
     if page
       deploy_environment.deployments.all.reverse_order.page(page).per(5).map {|deployment|
         deployment.attributes.slice("id", "version", "deploy_tag", "status")
@@ -32,6 +32,6 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   def load_more_deployments()
     vars = request.query_parameters
-    respond_with more_deployments: attributes_for_environment_page(current_user.deploy_environments.find(params[:deploy_environment_id]), vars['page'])
+    respond_with more_deployments: attributes_for_environment_page(current_deploy_environment(params[:deploy_environment_id]), vars['page'])
   end
 end
