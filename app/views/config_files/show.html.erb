@@ -19,7 +19,11 @@
 			<tr>
 				<td>Value</td>
 				<td><pre class="config-file-value"><%= @config_file.value %></pre></td>
-			</tr>			
+            </tr>			
+			<tr>
+				<td>Version</td>
+				<td><%= select_tag("versions",options_for_select(@config_file.revisions.each_with_index.map{|val,index| index},@config_file.revisions.count - 1))%></td>
+            </tr>			
 		</tbody>
 	</table>
 
