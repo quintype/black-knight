@@ -6,9 +6,11 @@ import _ from "lodash";
 class EnvironmentPage extends React.Component {
   constructor(props) {
     super(props);
+    this.loadMore = this.loadMore.bind(this)
     this.state = {
       deployEnv: null,
-      tag: null
+      tag: null,
+      pageToRetrieve: 2
     };
     this.render = require("./environment.rt");
   }
@@ -25,8 +27,22 @@ class EnvironmentPage extends React.Component {
         if (latestDeployment){
           stateToSet['tag'] = latestDeployment.version
         }
-        self.setState(stateToSet)
+        self.setState(stateToSet);
       });
+  }
+
+  loadMore() {
+    superagent
+      .get("/api/deploy_environments/"+this.props.deployEnvironmentId+"/deployments.json?page="+this.state.pageToRetrieve)
+      .end((err, response) => {
+        let deployEnvironment = this.state.deployEnv
+        let moreDeployments = response.body.more_deployments
+        deployEnvironment.deployments = deployEnvironment.deployments.concat(moreDeployments)
+        let stateToSet = {}
+        stateToSet['deployEnv'] = deployEnvironment
+        stateToSet['pageToRetrieve'] = this.state.pageToRetrieve + 1
+        this.setState(stateToSet)
+      })
   }
 
   componentDidMount() {
@@ -52,10 +68,10 @@ class EnvironmentPage extends React.Component {
     superagent
       .post("/api/deployments.json")
       .send({
-	deployment: {
-	  deploy_environment_id: env.id,
-	  version: version
-	}
+        deployment: {
+          deploy_environment_id: env.id,
+          version: version
+        }
       })
       .end((err, response) => window.location = "/deploy/" + response.body.deployment.id);
   }
