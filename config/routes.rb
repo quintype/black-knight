@@ -17,6 +17,10 @@ Rails.application.routes.draw do
       post "redeployment", action: :redeployment
     end
 
+    resources :deploy_environments, only: :show do
+      get "deployments", action: :load_more_deployments
+    end
+
     resources :logs, only: [:show]
     resources :deploy_environments, only: :show do
       post :scale
