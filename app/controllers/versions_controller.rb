@@ -5,10 +5,12 @@ class VersionsController < ApplicationController
 
   def show
   	@config_version = load_current_config_file.audits.where(version: params[:id]).first
+    render json: @config_version
   end
 
   def index
     @config_versions =  load_current_config_file.audits.all
+    render json: @config_versions
   end
 
   private
