@@ -7,6 +7,10 @@ class VersionsController < ApplicationController
   	@config_version = load_current_config_file.audits.where(version: params[:id]).first
   end
 
+  def index
+    @config_versions =  load_current_config_file.audits.all
+  end
+
   private
 
   def load_current_environment

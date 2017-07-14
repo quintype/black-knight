@@ -22,7 +22,7 @@
             </tr>			
 			<tr>
 				<td>Version</td>
-				<td><%= select_tag("versions",options_for_select(@config_file.revisions.each_with_index.map{|val,index| index},@config_file.revisions.count - 1))%></td>
+				<td><%= select_tag("versions",options_for_select(@config_file.audits.select(:version).each_with_index.map{|rec| rec.version},@config_file.audits.maximum(:version)))%></td>
             </tr>			
 		</tbody>
 	</table>

@@ -8,14 +8,14 @@ Rails.application.routes.draw do
 
   resources :environments, only: [:show] do
     resources :config_files do
-      resources :versions, only: [:show]
+      resources :versions, only: [:index, :show]
     end
     resources :logs
     get "/dispose" => "environments#dispose", as: :dispose
   end
 
   namespace :api do
-    resources :deployments, only: [:show, :create] do
+    resources :deployments, only: [:index, :create] do
       post "redeployment", action: :redeployment
     end
 
