@@ -9,12 +9,12 @@
 			<tr>
 				<td>Path</td>
 				<td>
-					<%= @config_file.path %>
+                    <pre class="config-file-path"><%= @config_file.path %></pre>
 				</td>
 			</tr>
 			<tr>
 				<td>Updated at</td>
-				<td><%= @config_file.updated_at %></td>
+                <td><pre class="config-file-update"><%= @config_file.updated_at %></pre></td>
 			</tr>
 			<tr>
 				<td>Value</td>
@@ -34,7 +34,8 @@
     var selectedVersion = document.getElementById("versions").value;
     var getSelectedConfigValue = <%= @config_file.id %> + "/versions/"+ selectedVersion;
     $.get(getSelectedConfigValue, function(data){
-      $('.config-file-value').text(data['audited_changes'].value);
+      $('.config-file-value').text(data['value']);
+      $('.config-file-path').text(data['path']);
     });
   };
 </script>

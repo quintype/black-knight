@@ -4,12 +4,12 @@ class VersionsController < ApplicationController
   before_filter :load_current_environment
 
   def show
-  	@config_version = load_current_config_file.audits.where(version: params[:id]).first
+  	@config_version = load_current_config_file.revision(params[:id])
     render json: @config_version
   end
 
   def index
-    @config_versions =  load_current_config_file.audits.all
+    @config_versions =  load_current_config_file.revisions
     render json: @config_versions
   end
 
