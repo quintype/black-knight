@@ -5,7 +5,7 @@
 	<h4 class="config-file__edit"><%= link_to "Edit", edit_environment_config_file_path(current_deploy_environment, @config_file.id) %></h4>
 
 	<table class="deployment-table deployment-table-without-heading">
-		<tbody>					
+		<tbody>
 			<tr>
 				<td>Path</td>
 				<td>
@@ -19,12 +19,22 @@
 			<tr>
 				<td>Value</td>
 				<td><pre class="config-file-value"><%= @config_file.value %></pre></td>
-            </tr>			
+            </tr>
 			<tr>
 				<td>Version</td>
-				<td><%= select_tag("versions",options_for_select(@config_file.audits.select(:version).each_with_index.map{|rec| rec.version},@config_file.audits.maximum(:version)))%></td>
-            </tr>			
+        <td>
+          <%= select_tag("versions",options_for_select(@config_file.audits.select(:version).each_with_index.map{|rec| rec.version},@config_file.audits.maximum(:version)),:onchange => "navigateToVersion()")%>
+        </td>
+            </tr>
 		</tbody>
 	</table>
-
 </div>
+<script>
+  function navigateToVersion() {
+    var selectedVersion = document.getElementById("versions").value;
+    var getSelectedConfigValue = window.location.href + "/versions/"+ selectedVersion;
+    $.get(getSelectedConfigValue, function(data){
+      $('.config-file-value').text(data['audited_changes'].value);
+    });
+  };
+</script>
