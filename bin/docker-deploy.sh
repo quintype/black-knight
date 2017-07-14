@@ -64,7 +64,7 @@ start_deploy(){
   kubectl rolling-update "$app_name" "--image=$repo:$tag" "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent"
 }
 
-if  kubectl get rc --namespace=$username  -o go-template='{{index .metadata.annotations "kubectl.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name 2>/dev/null;then
+if  kubectl get rc --namespace=$username  -o go-template='{{index .metadata.annotations "kubectl.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name 2>/dev/null 1>/dev/null;then
 next_deployment_id=$(kubectl get rc --namespace=$username  -o go-template='{{index .metadata.annotations "kubectl.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name)
 if checks; then start_deploy ;exit 0; fi
 else
