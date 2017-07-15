@@ -7,13 +7,15 @@ Rails.application.routes.draw do
   get "/deploy/:deployment_id" => "deploy#show"
 
   resources :environments, only: [:show] do
-    resources :config_files
+    resources :config_files do
+      resources :versions, only: [:index, :show]
+    end
     resources :logs
     get "/dispose" => "environments#dispose", as: :dispose
   end
 
   namespace :api do
-    resources :deployments, only: [:show, :create] do
+    resources :deployments, only: [:index, :create] do
       post "redeployment", action: :redeployment
     end
 
