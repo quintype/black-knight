@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    resources :deployments, only: [:index, :create] do
+    resources :deployments, only: [:show, :create] do
       post "redeployment", action: :redeployment
     end
 
