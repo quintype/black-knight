@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   devise :two_factor_authenticatable,
-         :otp_secret_encryption_key => ENV['TWO_FACTOR_SECRET_KEY']
+         :otp_secret_encryption_key => Rails.application.secrets.TWO_FACTOR_SECRET_KEY
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
