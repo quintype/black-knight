@@ -1,4 +1,4 @@
-class User::TwoFactorsController < ApplicationController
+class Users::TwoFactorsController < ApplicationController
   before_filter :authenticate_user!
 
   def new
@@ -8,7 +8,9 @@ class User::TwoFactorsController < ApplicationController
   #   temp. otp_secret and show the 'new' template.
   # Otherwise we show the 'show' template which will allow the user to disable
   #   the two-factor auth
+  #   .encrypted_otp_secret?
   def show
+    p "in show"
     unless current_user.otp_required_for_login?
       current_user.unconfirmed_otp_secret = User.generate_otp_secret
       current_user.save!
@@ -20,6 +22,7 @@ class User::TwoFactorsController < ApplicationController
   # User#activate_two_factor will return a boolean. When false is returned
   #   we presume the model has some errors.
   def create
+    p "in create"
     permitted_params = params.require(:user).permit :password, :otp_attempt
     if current_user.activate_two_factor permitted_params
       redirect_to root_path, notice: "You have enabled Two Factor Auth"
@@ -30,6 +33,7 @@ class User::TwoFactorsController < ApplicationController
 
   # If the provided password is correct, two-factor is disabled
   def destroy
+    p "in destroy"
     permitted_params = params.require(:user).permit :password
     if current_user.deactivate_two_factor permitted_params
       redirect_to root_path, notice: "You have disabled Two Factor Auth"

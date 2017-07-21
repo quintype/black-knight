@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170721084104) do
+ActiveRecord::Schema.define(version: 20170721142728) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 20170721084104) do
     t.string   "encrypted_otp_secret_salt"
     t.boolean  "otp_required_for_login"
     t.string   "unconfirmed_otp_secret"
+    t.integer  "consumed_timestep"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

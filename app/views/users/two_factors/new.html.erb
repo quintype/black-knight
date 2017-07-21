@@ -6,7 +6,7 @@
 
 <p>Then, verify that the pairing was successful by entering your password and a code below.</p>
 
-<%= form_for current_user, url: [:user, :two_factor], method: 'POST' do |f| %>
+<%= form_for current_user, url: [:users, :two_factor], method: 'POST' do |f| %>
   <div class="field">
     <%= f.label :password %><br />
     <%= f.password_field :password, autocomplete: "off" %>

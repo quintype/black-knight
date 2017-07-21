@@ -1,11 +1,11 @@
 class User < ApplicationRecord
-  devise :two_factor_authenticatable,
+  devise :two_factor_authenticatable,:registerable,
+         :recoverable, :rememberable, :trackable, :validatable,
          :otp_secret_encryption_key => "#{Rails.application.secrets.TWO_FACTOR_SECRET_KEY}"
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         
 
   has_many :user_publishers
   has_many :publishers, through: :user_publishers
@@ -21,7 +21,7 @@ class User < ApplicationRecord
     if !valid_password?(params[:password])
       errors.add :password, :invalid
       false
-    elsif !valid_otp?(params[:otp_attempt], otp_params)
+    elsif !validate_and_consume_otp!(params[:otp_attempt], otp_params)
       errors.add :otp_attempt, :invalid
       false
     else

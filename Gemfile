@@ -34,9 +34,9 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:jruby]
 
-gem 'devise', '~> 4.x'
+gem 'devise', '~> 4.0.0'
 gem 'activeadmin', github: 'activeadmin'
 gem "kaminari", github: "amatsuda/kaminari", ref: "0-17-stable"
 gem 'browserify-rails'
-gem 'devise-two-factor' # for two factor
+gem 'devise-two-factor', '~> 3.0.0' # for two factor
 gem 'rqrcode_png'
