@@ -1,4 +1,4 @@
-class Users::TwoFactorsController < ApplicationController
+class User::TwoFactorsController < ApplicationController
   before_filter :authenticate_user!
 
   def new
@@ -43,10 +43,10 @@ class Users::TwoFactorsController < ApplicationController
   # The url needed to generate the QRCode so it can be acquired by
   #   Google Authenticator
   def two_factor_otp_url
-    "otpauth://totp/%{black-knight}?secret=%{secret}&issuer=%{email}" % {
+    "otpauth://totp/%{app}?secret=%{secret}&issuer=%{app_id}" % {
       :secret => current_user.unconfirmed_otp_secret,
-      :app    => "your-app",
-      :app_id => "YourApp"
+      :app    => "black-knight",
+      :app_id => "#{current_user.email}"
     }
   end
 end

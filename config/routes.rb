@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get "/deploy" => "deploy#index"
   get "/deploy/:deployment_id" => "deploy#show"
 
-  namespace :users do
+  namespace :user do
     get    '/two_factor' => 'two_factors#show', as: 'user_two_factor'
     post   '/two_factor' => 'two_factors#create'
     delete '/two_factor' => 'two_factors#destroy'

@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   devise :two_factor_authenticatable,
-         :otp_secret_encryption_key => Rails.application.secrets.TWO_FACTOR_SECRET_KEY
+         :otp_secret_encryption_key => "#{Rails.application.secrets.TWO_FACTOR_SECRET_KEY}"
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -44,7 +44,6 @@ class User < ApplicationRecord
   
   def activate_two_factor!
     self.otp_required_for_login = true
-    p unconfirmed_otp_secret
     self.otp_secret = unconfirmed_otp_secret
     self.unconfirmed_otp_secret = nil
     save
