@@ -15,7 +15,7 @@ end
 
 group :development, :test do
   gem 'byebug'
-  gem 'sqlite3'
+  gem 'sqlite3', '~> 1.3.13'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end
@@ -38,3 +38,5 @@ gem 'devise', '~> 4.x'
 gem 'activeadmin', github: 'activeadmin'
 gem "kaminari", github: "amatsuda/kaminari", ref: "0-17-stable"
 gem 'browserify-rails'
+gem 'devise-two-factor' # for two factor
+gem 'rqrcode_png'

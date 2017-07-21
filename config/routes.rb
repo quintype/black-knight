@@ -6,6 +6,12 @@ Rails.application.routes.draw do
   get "/deploy" => "deploy#index"
   get "/deploy/:deployment_id" => "deploy#show"
 
+  namespace :user do
+    get    '/two_factor' => 'two_factors#show', as: 'user_two_factor'
+    post   '/two_factor' => 'two_factors#create'
+    delete '/two_factor' => 'two_factors#destroy'
+  end
+
   resources :environments, only: [:show] do
     resources :config_files do
       resources :versions, only: [:index, :show]

@@ -5,4 +5,5 @@ cd "$(dirname "$0")"
 # This is run on production. The Rails environment is replaced there
 RAILS_ENV=development bundle install
 npm install
-RAILS_ENV=development exec bundle exec puma
+export TWO_FACTOR_SECRET_KEY=23172e5dfec6278adbd160cdec250eb48789c01a0ab20d3fa99757cfdcecd68d696de86ec76ff3d6548c449248d5998c1b688eb68191635c2c986a47d4713674
+TWO_FACTOR_SECRET_KEY=23172e5dfec6278adbd160cdec250eb48789c01a0ab20d3fa99757cfdcecd68d696de86ec76ff3d6548c449248d5998c1b688eb68191635c2c986a47d4713674 RAILS_ENV=development exec bundle exec puma
