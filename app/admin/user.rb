@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  permit_params :email, :name, :password, :password_confirmation, :super_user, :otp_required_for_login
+  permit_params :email, :name, :password, :password_confirmation, :super_user, :unconfirmed_mfa
 
   index do
     selectable_column
@@ -9,7 +9,7 @@ ActiveAdmin.register User do
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
-    column :otp_required_for_login, label: 'MFA Enabled'
+    column :unconfirmed_mfa, label: 'MFA Enabled'
     actions
   end
 
@@ -18,7 +18,7 @@ ActiveAdmin.register User do
   filter :current_sign_in_at
   filter :sign_in_count
   filter :created_at
-  filter :otp_required_for_login , label: 'MFA Enabled'
+  filter :unconfirmed_mfa , label: 'MFA Enabled'
 
   form do |f|
     f.inputs "User Details" do
@@ -27,7 +27,7 @@ ActiveAdmin.register User do
       f.input :password
       f.input :password_confirmation
       f.input :super_user, as: :boolean
-      f.input :otp_required_for_login, label: 'Enable MFA', as: :boolean
+      f.input :unconfirmed_mfa, label: 'Enable MFA', as: :boolean
     end
     f.actions
   end

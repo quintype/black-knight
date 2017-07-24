@@ -46,6 +46,7 @@ class User < ApplicationRecord
     self.otp_required_for_login = true
     self.otp_secret = unconfirmed_otp_secret
     self.unconfirmed_otp_secret = nil
+    self.unconfirmed_mfa = false
     save
   end
 end
