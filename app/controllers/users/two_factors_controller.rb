@@ -32,6 +32,7 @@ class Users::TwoFactorsController < ApplicationController
 
   # If the provided password is correct, two-factor is disabled
   def destroy
+    permitted_params = params.require(:user).permit :password
     if current_user.deactivate_two_factor permitted_params
       redirect_to root_path, notice: "You have disabled Two Factor Auth"
     else
