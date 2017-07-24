@@ -49,7 +49,7 @@ class Users::TwoFactorsController < ApplicationController
   def two_factor_otp_url
     "otpauth://totp/%{app}?secret=%{secret}&issuer=%{app_id}" % {
       :secret => current_user.unconfirmed_otp_secret,
-      :app    => "black-knight",
+      :app    => "#{Rails.application.secrets.default_url_options}",
       :app_id => "#{current_user.email}"
     }
   end
