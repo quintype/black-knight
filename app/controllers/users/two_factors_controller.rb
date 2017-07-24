@@ -22,7 +22,6 @@ class Users::TwoFactorsController < ApplicationController
   # User#activate_two_factor will return a boolean. When false is returned
   #   we presume the model has some errors.
   def create
-    p "in create"
     permitted_params = params.require(:user).permit :password, :otp_attempt
     if current_user.activate_two_factor permitted_params
       redirect_to root_path, notice: "You have enabled Two Factor Auth"
@@ -33,7 +32,6 @@ class Users::TwoFactorsController < ApplicationController
 
   # If the provided password is correct, two-factor is disabled
   def destroy
-    p "in destroy"
     permitted_params = params.require(:user).permit :password
     if current_user.deactivate_two_factor permitted_params
       redirect_to root_path, notice: "You have disabled Two Factor Auth"
