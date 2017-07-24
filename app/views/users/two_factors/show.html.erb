@@ -1,0 +1,14 @@
+<div class="page-header"><h2>Disable Two Factor Auth</h2></div>
+
+<p>Type your password to disable <em>Two Factor Auth</em></p>
+
+<%= form_for current_user, url: [:users, :two_factor], method: 'DELETE' do |f| %>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Disable" %>
+  </div>
+<% end %>

@@ -1,0 +1,11 @@
+var stepOne = $('#step-1');
+stepOne.addClass('hidden');
+var email = stepOne.find('#user_email').val();
+var stepTwo = $('#step-2');
+stepTwo.removeClass('hidden');
+stepTwo.find('#user_email').val(email);
+stepTwo.find('#user_password').focus();
+if (<%= @otp_ok === true %>) {
+  console.debug(<%= @otp %>);
+  $('#step-2-otp').removeClass('hidden');
+}

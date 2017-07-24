@@ -1,10 +1,24 @@
 Rails.application.routes.draw do
   default_url_options :host => Rails.application.secrets[:default_url_options]
   devise_for :admin_users, ActiveAdmin::Devise.config
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
+  devise_scope :user do
+    scope :users, as: :users do
+      post 'pre_otp', to: 'users/sessions#pre_otp'
+    end
+  end
+
   root to: "deploy#index"
   get "/deploy" => "deploy#index"
   get "/deploy/:deployment_id" => "deploy#show"
+
+  namespace :users do
+    get    '/two_factor' => 'two_factors#show', as: 'user_two_factor'
+    post   '/two_factor' => 'two_factors#create'
+    delete '/two_factor' => 'two_factors#destroy'
+  end
 
   resources :environments, only: [:show] do
     resources :config_files do

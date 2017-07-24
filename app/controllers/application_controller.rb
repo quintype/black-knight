@@ -22,5 +22,11 @@ class ApplicationController < ActionController::Base
   protected
   	def configure_permitted_parameters
   		devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :name, :password, :password_confirmation])
+        devise_parameter_sanitizer.permit(:sign_in, keys: [:otp_attempt])
   	end
+
+    def unconfirmed_mfa?
+        return true unless current_user && current_user.unconfirmed_mfa?
+        redirect_to :users_user_two_factor
+    end
 end

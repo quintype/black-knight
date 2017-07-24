@@ -1,5 +1,5 @@
 class EnvironmentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!,:unconfirmed_mfa?
 
   def show
     current_deploy_environment(params[:id])

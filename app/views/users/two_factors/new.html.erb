@@ -1,0 +1,23 @@
+<div class="page-header"><h2>Enable Two Factor Auth</h2></div>
+
+<p>To enable <em>Two Factor Auth</em>, scan the following QR Code:</p>
+
+<p class="text-center"><%= image_tag @qr %></p>
+
+<p>Then, verify that the pairing was successful by entering your password and a code below.</p>
+
+<%= form_for current_user, url: [:users, :two_factor], method: 'POST' do |f| %>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :otp_attempt %><br />
+    <%= f.text_field :otp_attempt, autocomplete: "off" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Enable" %>
+  </div>
+<% end %>
