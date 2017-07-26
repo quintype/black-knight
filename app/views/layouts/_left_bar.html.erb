@@ -2,10 +2,10 @@
   <%= current_user.name %> | <%= link_to "Log out", destroy_user_session_path, method: "delete" %>
 </div>
 <ul class="leftbar-publishers">
-  <% publishers.each do |publisher| %>
+  <% publishers.order(:name).each do |publisher| %>
   <li class="leftbar-publisher <%= 'publisher-open' if publisher.id == current_publisher_id %>">
     <%= link_to publisher.name, "javascript:void(0)", class: "leftbar-publisher-name" %>
-    <% publisher.deploy_environments.each do |deploy_env| %>
+    <% publisher.deploy_environments.order(:name).each do |deploy_env| %>
       <%= link_to deploy_env.name, "/environments/#{deploy_env.id}", class: "leftbar-publisher-environment #{'deploy-environment-selected' if deploy_env == current_deploy_environment}" %>
     <% end %>
   </li>
