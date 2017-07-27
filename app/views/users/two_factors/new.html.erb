@@ -1,6 +1,6 @@
 <div class="page-header"><h2>Enable Two Factor Auth</h2></div>
 
-<p>To enable <em>Two Factor Auth</em>, scan the following QR Code:</p>
+<p>To enable <em>Two Factor Auth</em>, scan the following QR Code: Using <h4><%= link_to "Google Authenticator","https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en"%></h4></p>
 
 <p class="text-center"><%= image_tag @qr %></p>
 
@@ -8,12 +8,12 @@
 
 <%= form_for current_user, url: [:users, :two_factor], method: 'POST' do |f| %>
   <div class="field">
-    <%= f.label :password %><br />
+    <%= f.label :password, 'Current password' %><br />
     <%= f.password_field :password, autocomplete: "off" %>
   </div>
 
   <div class="field">
-    <%= f.label "MFA Code" %><br />
+    <%= f.label :otp_attempt , "MFA Code" %><br />
     <%= f.text_field :otp_attempt, autocomplete: "off" %>
   </div>
 
