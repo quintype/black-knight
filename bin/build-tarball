@@ -12,14 +12,14 @@ rm -rf output
 mkdir -p output
 git archive HEAD | tar x -C output
 
-ruby -S bundle install
+bundle install
 npm install
 ./bin/rails assets:precompile
 mv public/assets output/public/assets
 
 cd output
 sed -i.bak 's/development/production/g' run
-ruby -S bundle install --deployment --without development test assets
+bundle install --deployment --without development test assets
 cd ..
 
 tar cf $output -C output . 
