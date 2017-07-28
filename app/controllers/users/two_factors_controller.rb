@@ -1,5 +1,5 @@
 class Users::TwoFactorsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user! 
 
   def new
   end
@@ -10,7 +10,6 @@ class Users::TwoFactorsController < ApplicationController
   #   the two-factor auth
   #   .encrypted_otp_secret?
   def show
-    p "in show"
     unless current_user.otp_required_for_login?
       current_user.unconfirmed_otp_secret = User.generate_otp_secret
       current_user.save!
@@ -26,7 +25,7 @@ class Users::TwoFactorsController < ApplicationController
     if current_user.activate_two_factor permitted_params
       redirect_to root_path, notice: "You have enabled Two Factor Auth"
     else
-      render 'new'
+      redirect_to :users_user_two_factor
     end
   end
 
