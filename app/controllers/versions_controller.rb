@@ -1,5 +1,5 @@
 class VersionsController < ApplicationController
-  before_action :authenticate_user!,:unconfirmed_mfa?
+  before_action :authenticate_user!,:unconfirmed_mfa!
 
   before_filter :load_current_environment
 

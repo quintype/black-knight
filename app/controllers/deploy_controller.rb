@@ -1,5 +1,5 @@
 class DeployController < ApplicationController
-  before_action :authenticate_user!,:unconfirmed_mfa?
+  before_action :authenticate_user!,:unconfirmed_mfa!
 
   def index
     @current_deploy_environment = "none"

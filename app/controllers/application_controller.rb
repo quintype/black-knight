@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
         devise_parameter_sanitizer.permit(:sign_in, keys: [:otp_attempt])
   	end
 
-    def unconfirmed_mfa?
+    def unconfirmed_mfa!
         return true unless current_user && current_user.unconfirmed_mfa?
         redirect_to :users_user_two_factor
     end
