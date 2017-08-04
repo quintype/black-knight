@@ -4,6 +4,11 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
+
+  authenticated :admin_user do
+    mount DelayedJobWeb, at: "/delayed_job"
+  end
+
   devise_scope :user do
     scope :users, as: :users do
       post 'pre_otp', to: 'users/sessions#pre_otp'
