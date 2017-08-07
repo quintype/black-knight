@@ -35,6 +35,7 @@ end
 gem 'tzinfo-data', platforms: [:jruby]
 
 gem 'devise', '~> 4.0.0'
+gem 'simple_token_authentication', '~> 1.0'
 gem 'activeadmin', github: 'activeadmin'
 gem "kaminari", github: "amatsuda/kaminari", ref: "0-17-stable"
 gem 'browserify-rails'

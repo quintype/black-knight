@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  acts_as_token_authenticatable
   devise :two_factor_authenticatable,:registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :otp_secret_encryption_key => "#{Rails.application.secrets.TWO_FACTOR_SECRET_KEY}"
