@@ -3,8 +3,8 @@ ActiveAdmin.register UserPublisher do
   
   form do |f|
     f.inputs "User Publisher Link" do
-      f.input :user, collection: User.all.sort_by { |user | p user.email }
-      f.input :publisher, collection: Publisher.all.sort_by { |publisher| p publisher.name }
+      f.input :user, collection: User.all.sort_by { |user |  user.email }
+      f.input :publisher, collection: Publisher.all.sort_by { |publisher|  publisher.name }
   
     end
   f.actions
