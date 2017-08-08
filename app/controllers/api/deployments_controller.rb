@@ -1,5 +1,5 @@
 class Api::DeploymentsController < ApplicationController
-  before_action :authenticate_user!,:unconfirmed_mfa?
+  before_action :authenticate_user!,:unconfirmed_mfa!
   respond_to :json
 
   skip_before_filter :verify_authenticity_token

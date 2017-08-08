@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   namespace :users do
     get    '/two_factor' => 'two_factors#show', as: 'user_two_factor'
     post   '/two_factor' => 'two_factors#create'
-    delete '/two_factor' => 'two_factors#destroy'
+    #delete '/two_factor' => 'two_factors#destroy'
   end
 
   resources :environments, only: [:show] do
