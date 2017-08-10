@@ -37,7 +37,11 @@ class PipeReader
 
   def read_all_non_blocking(io_file)
     partial = read_part_non_blocking(io_file)
-    partial += next_partial while partial && next_partial = read_part_non_blocking(io_file)
+    loop do
+      next_partial = read_part_non_blocking(io_file)
+      break unless next_partial
+      partial += next_partial
+    end
     partial
   end
 
