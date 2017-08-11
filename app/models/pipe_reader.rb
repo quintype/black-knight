@@ -37,6 +37,7 @@ class PipeReader
 
   def read_all_non_blocking(io_file)
     partial = read_part_non_blocking(io_file)
+    return nil unless partial
     loop do
       next_partial = read_part_non_blocking(io_file)
       break unless next_partial
