@@ -19,4 +19,12 @@ class Api::MigrationsController < ApplicationController
   def show
     respond_with migration: current_migration(params[:id])
   end
+
+  # FIXME: Tejas has given up. This code needs cleanup, ASAP
+  def destroy
+    migration = current_migration(params[:id])
+    cluster = migration.deploy_environment.cluster
+    deploy_env = migration.deploy_environment
+    render json: {message: `KUBE_MASTER=#{cluster.kube_api_server} ABORT=1 ./bin/docker-migration.sh #{deploy_env.publisher.username} #{deploy_env.repository}, #{migration.deploy_tag}, #{deploy_env.app_name} 2>&1`}
+  end
 end

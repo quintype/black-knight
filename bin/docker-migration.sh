@@ -10,5 +10,11 @@ if [ -z "$KUBE_MASTER" ]; then
   exit 1
 fi
 
-kubectl run -i ${app_name}-migrate-$tag --image=${repo}:${tag} --restart=Never --namespace=$username --server=$KUBE_MASTER --command "$@"
-kubectl delete pod ${app_name}-migrate-$tag --namespace=$username
+kubecmd="kubectl --namespace=${username} --server=${KUBE_MASTER}"
+
+if [ "$ABORT" -eq 1 ]; then
+  $kubecmd delete pod ${tag}
+else
+  $kubecmd run -i ${tag} --image=${repo}:${tag} --restart=Never --command "$@"
+  $kubecmd delete pod ${tag}
+fi

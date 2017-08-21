@@ -7,7 +7,8 @@ class MigrationPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      deployment: {}
+      deployment: {},
+      abortOutput: null
     };
     this.render = require("./deployment.rt");
   }
@@ -20,6 +21,14 @@ class MigrationPage extends React.Component {
 
   componentDidMount() {
     this.getMigration();
+  }
+
+  confirmAbort() {
+    var deployNumber = prompt("Please enter the migration id to abort");
+    if(deployNumber == this.props.migrationId)
+      superagent
+      .del("/api/migrations/" + this.props.migrationId)
+      .end((err, response) => { console.log(response.body); this.setState({abortOutput: response.body || {message: "Please check console"}}); } )
   }
 };
 

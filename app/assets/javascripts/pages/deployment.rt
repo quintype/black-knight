@@ -1,6 +1,7 @@
 <div class="deployment-deployment-container" rt-scope="this.state.deployment as deployment">
   <h1 class="deployment-heading">Deployment {deployment.id}</h1>
   <button rt-if="deployment.status == 'success' && this.confirmRedeploy" class="deployment-redeploy-button" onClick="() => this.confirmRedeploy()">Redeploy</button>
+  <button rt-if="this.confirmAbort" class="deployment-redeploy-button" onClick="() => this.confirmAbort()">Abort</button>
 
   <table class="deployment-table deployment-table-without-heading">
     <tbody>
@@ -53,6 +54,9 @@
       </tr>
     </tbody>
   </table>
+
+  <h3 rt-if="this.state.abortOutput">Abort Output</h3>
+  <pre class="deployment-output" rt-if="this.state.abortOutput">{this.state.abortOutput.message}</pre>
 
   <h3 rt-if="deployment['buildable?']">Build Output</h3>
   <pre class="deployment-output" rt-if="deployment['buildable?']">{deployment.build_output}</pre>

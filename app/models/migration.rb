@@ -25,6 +25,6 @@ class Migration < ApplicationRecord
   end
 
   def new_deploy_tag
-    "#{deploy_environment.publisher.username}-#{deploy_environment.name}-mig-" + DateTime.now.strftime("%Y%m%d%H%M%S")
+    "#{deploy_environment.publisher.username}-#{deploy_environment.name}-migrate-" + DateTime.now.strftime("%Y%m%d%H%M%S")
   end
 end
