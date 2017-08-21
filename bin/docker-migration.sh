@@ -16,6 +16,6 @@ kubecmd="kubectl --namespace=${username} --server=${KUBE_MASTER}"
 if [ "$ABORT" -eq 1 ]; then
   $kubecmd delete pod ${tag}
 else
-  $kubecmd run -i ${tag} --image=${repo}:${tag} --restart=Never --command "$@"
+  $kubecmd run -i ${tag} --image=${repo}:${tag} --restart=Never  --overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}]}}' --command -- $@
   $kubecmd delete pod ${tag}
 fi
