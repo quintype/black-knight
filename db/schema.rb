@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170804160505) do
+ActiveRecord::Schema.define(version: 20170821091145) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20170804160505) do
     t.string   "repository"
     t.boolean  "disposable"
     t.integer  "cluster_id"
+    t.string   "migrate"
   end
 
   add_index "deploy_environments", ["cluster_id"], name: "index_deploy_environments_on_cluster_id"
@@ -143,6 +144,28 @@ ActiveRecord::Schema.define(version: 20170804160505) do
   add_index "deployments", ["deploy_environment_id"], name: "index_deployments_on_deploy_environment_id"
   add_index "deployments", ["redeploy_of_id"], name: "index_deployments_on_redeploy_of_id"
 
+  create_table "migrations", force: :cascade do |t|
+    t.text     "migration_command"
+    t.integer  "deploy_environment_id"
+    t.string   "status"
+    t.string   "version"
+    t.text     "configuration"
+    t.string   "deploy_tag"
+    t.datetime "build_started"
+    t.datetime "build_ended"
+    t.string   "build_status"
+    t.text     "build_output"
+    t.datetime "deploy_started"
+    t.datetime "deploy_ended"
+    t.string   "deploy_status"
+    t.text     "deploy_output"
+    t.integer  "scheduled_by_id"
+    t.datetime "cancelled_at"
+    t.integer  "cancelled_by_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
   create_table "publishers", force: :cascade do |t|
     t.integer  "quintype_id_of_publisher", null: false
     t.string   "name",                     null: false
@@ -163,12 +186,12 @@ ActiveRecord::Schema.define(version: 20170804160505) do
   add_index "user_publishers", ["user_id"], name: "index_user_publishers_on_user_id"
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                     default: "", null: false
-    t.string   "encrypted_password",        default: "", null: false
+    t.string   "email",                                default: "", null: false
+    t.string   "encrypted_password",                   default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",             default: 0,  null: false
+    t.integer  "sign_in_count",                        default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"

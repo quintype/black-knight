@@ -52,7 +52,7 @@ class BuildContainer
     # Run the child process in separate thread so that we can close write
     thread = Thread.new do
       pid_result = system({"KUBE_MASTER" => deploy_env.cluster.kube_api_server},
-                          "#{Rails.root}/bin/docker-deploy.sh", deploy_env.publisher.username, deploy_env.repository, new_tag, deploy_env.app_name,
+                          "#{Rails.root}/bin/#{deployment.execute_command}", deploy_env.publisher.username, deploy_env.repository, new_tag, deploy_env.app_name, *deployment.execute_arguments,
                           :out => write_output, :err => [:child, :out])
       write_output.close
       {success: pid_result}

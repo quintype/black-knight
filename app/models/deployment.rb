@@ -30,6 +30,13 @@ class Deployment < ApplicationRecord
     else
       "#{deploy_environment.publisher.username}-#{deploy_environment.name}-" + DateTime.now.strftime("%Y%m%d%H%M%S")
     end
+  end
 
+  def execute_command
+    "docker-deploy.sh"
+  end
+
+  def execute_arguments
+    []
   end
 end

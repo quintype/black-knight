@@ -38,6 +38,8 @@ Rails.application.routes.draw do
       post "redeployment", action: :redeployment
     end
 
+    resources :migrations, only: [:create, :destroy, :show]
+
     resources :deploy_environments, only: :show do
       get "deployments", action: :load_more_deployments
     end

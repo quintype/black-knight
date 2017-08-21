@@ -2,6 +2,7 @@ class DeployEnvironment < ApplicationRecord
   belongs_to :publisher
   has_many :config_files
   has_many :deployments
+  has_many :migrations
   belongs_to :cluster
 
   def display_name
@@ -22,6 +23,14 @@ class DeployEnvironment < ApplicationRecord
                     configuration: deployment.configuration,
                     deploy_tag: deployment.deploy_tag,
                     scheduled_by: user)
+  end
+
+  def new_migration(version, command, user)
+    migrations.new(status: "pending",
+                   migration_command: command.to_json,
+                   version: version,
+                   configuration: config_files_as_json.to_json,
+                   scheduled_by: user)
   end
 
   def config_files_as_json

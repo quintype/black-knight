@@ -7,8 +7,20 @@ class DeployContainerJob < ApplicationJob
     @deployment.update!(attrs)
   end
 
-  def perform(deployment_id, base_url)
-    @deployment = Deployment.find(deployment_id)
+  # This loads the deployment or migration as needed
+  def load_deployable(clazz, deployment_id)
+    case(clazz)
+    when 'Deployment'
+      Deployment.find(deployment_id)
+    when 'Migration'
+      Migration.find(deployment_id)
+    else
+      raise "Unknown deployment type #{clazz}"
+    end
+  end
+
+  def perform(deployment_id, base_url, clazz = 'Deployment')
+    @deployment = load_deployable(clazz, deployment_id)
     build_container = BuildContainer.new(@deployment)
 
     if @deployment.buildable?
