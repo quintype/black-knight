@@ -1,0 +1,8 @@
+<div class="deployment">
+  <%= render partial: "layouts/header" %>
+  <div id="container">
+  </div>
+  <script type="text/javascript">
+    blackKnight.migrationsPage(document.getElementById("container"), <%= current_deploy_environment.id %>)
+  </script>
+</div>

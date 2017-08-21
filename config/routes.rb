@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get "/deploy" => "deploy#index"
   get "/deploy/:deployment_id" => "deploy#show"
 
+
   namespace :users do
     get    '/two_factor' => 'two_factors#show', as: 'user_two_factor'
     post   '/two_factor' => 'two_factors#create'
@@ -31,6 +32,8 @@ Rails.application.routes.draw do
     end
     resources :logs
     get "/dispose" => "environments#dispose", as: :dispose
+    get "/migrations" => "environments#migrations"
+    get '/migration/:migration_id' => "environments#migration_show"
   end
 
   namespace :api do

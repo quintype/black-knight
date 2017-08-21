@@ -8,6 +8,10 @@ class Migration < ApplicationRecord
 
   scope :latest, -> { order("id desc").limit(5) }
 
+  def attributes
+    super.merge(scheduled_by: scheduled_by, cancelled_by: cancelled_by, buildable?: true)
+  end
+
   def execute_command
     "docker-migration.sh"
   end

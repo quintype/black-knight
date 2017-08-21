@@ -1,6 +1,6 @@
 <div class="deployment-deployment-container" rt-scope="this.state.deployment as deployment">
   <h1 class="deployment-heading">Deployment {deployment.id}</h1>
-  <button rt-if="deployment.status == 'success'" class="deployment-redeploy-button" onClick="() => this.confirmRedeploy()">Redeploy</button>
+  <button rt-if="deployment.status == 'success' && this.confirmRedeploy" class="deployment-redeploy-button" onClick="() => this.confirmRedeploy()">Redeploy</button>
 
   <table class="deployment-table deployment-table-without-heading">
     <tbody>

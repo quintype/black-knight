@@ -1,0 +1,28 @@
+<div rt-if="this.state.deployEnv" rt-scope="this.state.deployEnv as deployEnv">
+  <div class="deployment-input-tag">
+    <input type="text" placeholder="Enter the deploy tag" defaultValue={this.state.tag} onChange="(e) => this.setTag(e)">
+    <input type="text" placeholder="Enter the command" defaultValue={this.commandAsString()} onChange="(e) => this.setCommand(e)">
+    <button onClick="() => this.deploy(deployEnv)">Migrate</button>
+  </div>
+  <h3>History</h3>
+  <table class="deployment-table deployment-table-with-heading">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Version</th>
+        <th>Deploy Tag</th>
+        <th>Command</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr rt-repeat="migration in deployEnv.migrations" key="{migrationIndex}">
+        <td><a href="/deploy/{migration.id}">{migration.id}</a></td>
+        <td>{migration.version}</td>
+        <td>{migration.deploy_tag}</td>
+        <td>{JSON.parse(migration.migration_command).join(" ")}</td>
+        <td>{migration.status}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

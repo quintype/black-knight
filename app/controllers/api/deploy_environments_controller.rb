@@ -3,15 +3,21 @@ class Api::DeployEnvironmentsController < ApplicationController
   respond_to :json
   skip_before_filter :verify_authenticity_token, only: [:scale]
 
+  # FIXME: Terrible modelling, this should be as_json(include:). Or use jbuilder.
   def attributes_for_environment_page(deploy_environment, page=nil)
     if page
       deploy_environment.deployments.all.reverse_order.page(page).per(5).map {|deployment|
         deployment.attributes.slice("id", "version", "deploy_tag", "status")
       }
     else
-      deploy_environment.attributes.merge(deployments: deploy_environment.deployments.latest.map { |deployment|
-        deployment.attributes.slice("id", "version", "deploy_tag", "status")
-      })
+      deploy_environment.attributes.merge(
+        deployments: deploy_environment.deployments.latest.map { |deployment|
+          deployment.attributes.slice("id", "version", "deploy_tag", "status")
+        },
+        migrations: deploy_environment.migrations.latest.map { |migration|
+          migration.attributes.slice("id", "version", "deploy_tag", "status", "migration_command")
+        }
+      )
     end
   end
 

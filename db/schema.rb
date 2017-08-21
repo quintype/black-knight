@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170821091145) do
+ActiveRecord::Schema.define(version: 20170821101005) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 20170821091145) do
     t.boolean  "disposable"
     t.integer  "cluster_id"
     t.string   "migrate"
+    t.boolean  "migratable"
   end
 
   add_index "deploy_environments", ["cluster_id"], name: "index_deploy_environments_on_cluster_id"
