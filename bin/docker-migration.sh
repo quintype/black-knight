@@ -3,6 +3,7 @@ username="$1"
 repo="$2"
 tag="$3"
 app_name="$4"
+ABORT="${ABORT:-0}"
 shift 4
 
 if [ -z "$KUBE_MASTER" ]; then
