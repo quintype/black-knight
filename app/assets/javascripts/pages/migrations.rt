@@ -17,7 +17,7 @@
     </thead>
     <tbody>
       <tr rt-repeat="migration in deployEnv.migrations" key="{migrationIndex}">
-        <td><a href="/deploy/{migration.id}">{migration.id}</a></td>
+        <td><a href="/environments/{deployEnv.id}/migration/{migration.id}">{migration.id}</a></td>
         <td>{migration.version}</td>
         <td>{migration.deploy_tag}</td>
         <td>{JSON.parse(migration.migration_command).join(" ")}</td>
