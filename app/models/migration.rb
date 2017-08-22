@@ -34,5 +34,6 @@ class Migration < ApplicationRecord
     command = JSON.parse(migration_command)
     errors.add(:migration_command, "is not an array") and return unless command.is_a? Array
     errors.add(:migration_command, "is empty") and return if command.empty?
+    errors.add(:migration_command, "is invalid") and return if command[0].blank?
   end
 end
