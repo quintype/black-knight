@@ -6,7 +6,7 @@ class Api::DeploymentsController < ApplicationController
 
   def create
     deploy_params = params[:deployment]
-    environment = current_deploy_environment(deploy_params[:deploy_environment_id])
+    environment = current_user.deploy_environments.find(deploy_params[:deploy_environment_id])
     deployment = environment.new_deployment(deploy_params[:version], current_user)
     if(deployment.save)
       respond_with({deployment: deployment}, location: "/deploy/#{deployment.id}")

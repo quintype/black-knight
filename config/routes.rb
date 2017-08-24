@@ -26,11 +26,11 @@ Rails.application.routes.draw do
     #delete '/two_factor' => 'two_factors#destroy'
   end
 
-  resources :environments, only: [:show] do
+  resources :environments, only: [:show], param: :environment_id do
     resources :config_files do
       resources :versions, only: [:index, :show]
     end
-    resources :logs
+    resources :logs, only: :index
     get "/dispose" => "environments#dispose", as: :dispose
     get "/migrations" => "environments#migrations"
     get '/migration/:migration_id' => "environments#migration_show"

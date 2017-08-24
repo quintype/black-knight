@@ -6,7 +6,7 @@ class Api::MigrationsController < ApplicationController
 
   def create
     migration_params = params[:migration]
-    environment = current_deploy_environment(migration_params[:deploy_environment_id])
+    environment = current_user.deploy_environments.find(migration_params[:deploy_environment_id])
     migration = environment.new_migration(migration_params[:version], migration_params[:migration_command], current_user)
     if(migration.save)
       respond_with({migration: migration}, location: "/migration/#{migration.id}")
