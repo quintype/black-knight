@@ -15,6 +15,6 @@ class EnvironmentsController < ApplicationController
 
   def migration_show
     current_deploy_environment(params[:environment_id])
-    @migration = current_migration(params[:migration_id])
+    @migration = current_user.migrations.find(params[:migration_id])
   end
 end

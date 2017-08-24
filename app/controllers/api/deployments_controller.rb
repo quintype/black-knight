@@ -17,11 +17,11 @@ class Api::DeploymentsController < ApplicationController
   end
 
   def show
-    respond_with deployment: current_deployment(params[:id])
+    respond_with deployment: current_user.deployments.find(params[:id])
   end
 
   def redeployment
-    old_deployment = current_deployment(params[:deployment_id])
+    old_deployment = current_user.deployments.find(params[:deployment_id])
     deployment = old_deployment.redeployment(current_user)
     if(deployment.save)
       respond_with({deployment: deployment}, location: "/deploy/#{deployment.id}")
