@@ -18,7 +18,7 @@ class ScaleContainerJob < ApplicationJob
   private
   # This should be made into a separate class
   def post_slack(message,channel="#deploy-#{Rails.application.secrets[:qt_environment]}")
-    uri = URI('https://hooks.slack.com/services/your/hook/here')
+    uri = URI(Rails.application.secrets[:slack_hook])
     params = {channel: channel,
               username: "#{user.name||=user.email} (Black Knight)",
               text: message,

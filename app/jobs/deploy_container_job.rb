@@ -60,7 +60,7 @@ class DeployContainerJob < ApplicationJob
                 "failed-deploy" => "Deploy failed `#{environment.app_name}/#{environment.name}` <#{base_url}/deploy/#{deployment.id}|More Details>"}
 
     if message = messages[deployment.status]
-      uri = URI('https://hooks.slack.com/services/your/hook/here')
+      uri = URI(Rails.application.secrets[:slack_hook])
       params = {channel: channel,
                 username: "#{user.name||=user.email} (Black Knight)",
                 text: message,
