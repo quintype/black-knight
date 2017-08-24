@@ -2,7 +2,7 @@ class User < ApplicationRecord
   acts_as_token_authenticatable
   devise :two_factor_authenticatable,:registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :otp_secret_encryption_key => "#{Rails.application.secrets.TWO_FACTOR_SECRET_KEY}"
+         :otp_secret_encryption_key => "#{Rails.application.secrets[:TWO_FACTOR_SECRET_KEY]}"
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -19,11 +19,10 @@ class User < ApplicationRecord
   end
 
   def activate_two_factor(params)
-    otp_params = { otp_secret: unconfirmed_otp_secret }
     if !valid_password?(params[:password])
       errors.add :password, :invalid
       false
-    elsif !validate_and_consume_otp!(params[:otp_attempt], otp_params)
+    elsif !validate_and_consume_otp!(params[:otp_attempt], otp_secret: unconfirmed_otp_secret)
       errors.add :otp_attempt, :invalid
       false
     else
