@@ -6,19 +6,19 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-         
+
 
   has_many :user_publishers
   has_many :publishers, through: :user_publishers
   has_many :deploy_environments, through: :publishers
   has_many :deployments, through: :deploy_environments
   has_many :migrations, through: :deploy_environments
-  
+
   def display_name
     "#{name} (#{email})"
   end
 
-  def activate_two_factor params
+  def activate_two_factor(params)
     otp_params = { otp_secret: unconfirmed_otp_secret }
     if !valid_password?(params[:password])
       errors.add :password, :invalid
@@ -31,7 +31,7 @@ class User < ApplicationRecord
     end
   end
 
-  def deactivate_two_factor params
+  def deactivate_two_factor(params)
     if !valid_password?(params[:password])
       errors.add :password, :invalid
       false
@@ -43,7 +43,7 @@ class User < ApplicationRecord
   end
 
   private
-  
+
   def activate_two_factor!
     self.otp_required_for_login = true
     self.otp_secret = unconfirmed_otp_secret

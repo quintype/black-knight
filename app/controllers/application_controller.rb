@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   acts_as_token_authentication_handler_for User
   before_action :configure_permitted_parameters, if: :devise_controller?
-    
+
     # FIXME MOVE TO USER
     def current_deploy_environment(id)
       if current_user.super_user?

@@ -1,4 +1,4 @@
-class LogsController < ApplicationController 
+class LogsController < ApplicationController
   before_action :authenticate_user!,:unconfirmed_mfa!
 
   before_action :load_current_environment

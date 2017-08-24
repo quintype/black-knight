@@ -11,9 +11,9 @@
   	</thead>
   	<tbody>
   	  <% @config_files.each do |config_file| %>
-  	    <tr>  	      
+  	    <tr>
   	      <td><%= link_to config_file.path, environment_config_file_path(current_deploy_environment, config_file) %></td>
-  	      <td><pre class="config-file-value"><%= config_file.value %></pre></td> 	      
+  	      <td><pre class="config-file-value"><%= config_file.value %></pre></td>
   	    </tr>
   	  <%end%>
   	</tbody>

@@ -1,11 +1,11 @@
 ActiveAdmin.register UserPublisher do
   permit_params :user_id, :publisher_id
-  
+
   form do |f|
     f.inputs "User Publisher Link" do
       f.input :user, collection: User.all.sort_by { |user |  user.email }
       f.input :publisher, collection: Publisher.all.sort_by { |publisher|  publisher.name }
-  
+
     end
   f.actions
   end
