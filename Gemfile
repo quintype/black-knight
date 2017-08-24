@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>= 5.0.0.beta3', '< 5.1'
+gem 'rails', '>= 5.0.0', '< 5.1'
 gem 'puma'
 gem 'pg'
 gem 'acts_as_paranoid'
@@ -36,8 +36,8 @@ gem 'tzinfo-data', platforms: [:jruby]
 
 gem 'devise', '~> 4.0.0'
 gem 'simple_token_authentication', '~> 1.0'
-gem 'activeadmin', github: 'activeadmin'
-gem "kaminari", github: "amatsuda/kaminari", ref: "0-17-stable"
+gem 'activeadmin', '~> 1.1.0'
+gem "kaminari", "~> 0.17.0"
 gem 'browserify-rails'
 gem 'devise-two-factor', '~> 3.0.0' # for two factor
 gem 'rqrcode_png'

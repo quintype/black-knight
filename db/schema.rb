@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -22,11 +21,10 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.integer  "author_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
+    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
+    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
   end
-
-  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
-  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace"
-  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
 
   create_table "admin_users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -42,10 +40,9 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "name"
+    t.index ["email"], name: "index_admin_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
-
-  add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
-  add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -62,13 +59,12 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.string   "remote_address"
     t.string   "request_uuid"
     t.datetime "created_at"
+    t.index ["associated_id", "associated_type"], name: "associated_index"
+    t.index ["auditable_id", "auditable_type"], name: "auditable_index"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_id", "user_type"], name: "user_index"
   end
-
-  add_index "audits", ["associated_id", "associated_type"], name: "associated_index"
-  add_index "audits", ["auditable_id", "auditable_type"], name: "auditable_index"
-  add_index "audits", ["created_at"], name: "index_audits_on_created_at"
-  add_index "audits", ["request_uuid"], name: "index_audits_on_request_uuid"
-  add_index "audits", ["user_id", "user_type"], name: "user_index"
 
   create_table "clusters", force: :cascade do |t|
     t.string   "name",            null: false
@@ -84,9 +80,8 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.date     "deleted_at"
+    t.index ["deploy_environment_id"], name: "index_config_files_on_deploy_environment_id"
   end
-
-  add_index "config_files", ["deploy_environment_id"], name: "index_config_files_on_deploy_environment_id"
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -100,9 +95,8 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "deploy_environments", force: :cascade do |t|
     t.integer  "publisher_id"
@@ -113,18 +107,19 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.string   "repository"
     t.boolean  "disposable"
     t.integer  "cluster_id"
-    t.string   "migrate"
     t.boolean  "migratable"
+    t.index ["cluster_id"], name: "index_deploy_environments_on_cluster_id"
+    t.index ["publisher_id"], name: "index_deploy_environments_on_publisher_id"
   end
-
-  add_index "deploy_environments", ["cluster_id"], name: "index_deploy_environments_on_cluster_id"
-  add_index "deploy_environments", ["publisher_id"], name: "index_deploy_environments_on_publisher_id"
 
   create_table "deployments", force: :cascade do |t|
     t.integer  "deploy_environment_id"
     t.string   "status",                null: false
     t.string   "version",               null: false
     t.text     "configuration",         null: false
+    t.text     "output"
+    t.datetime "started_at"
+    t.datetime "finished_at"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.string   "deploy_tag"
@@ -140,10 +135,9 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.datetime "cancelled_at"
     t.integer  "cancelled_by_id"
     t.integer  "redeploy_of_id"
+    t.index ["deploy_environment_id"], name: "index_deployments_on_deploy_environment_id"
+    t.index ["redeploy_of_id"], name: "index_deployments_on_redeploy_of_id"
   end
-
-  add_index "deployments", ["deploy_environment_id"], name: "index_deployments_on_deploy_environment_id"
-  add_index "deployments", ["redeploy_of_id"], name: "index_deployments_on_redeploy_of_id"
 
   create_table "migrations", force: :cascade do |t|
     t.text     "migration_command"
@@ -173,7 +167,7 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.string   "admin_email",              null: false
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.string   "username"
+    t.text     "username"
   end
 
   create_table "user_publishers", force: :cascade do |t|
@@ -181,10 +175,9 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.integer  "user_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.index ["publisher_id"], name: "index_user_publishers_on_publisher_id"
+    t.index ["user_id"], name: "index_user_publishers_on_user_id"
   end
-
-  add_index "user_publishers", ["publisher_id"], name: "index_user_publishers_on_publisher_id"
-  add_index "user_publishers", ["user_id"], name: "index_user_publishers_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                                default: "", null: false
@@ -207,10 +200,9 @@ ActiveRecord::Schema.define(version: 20170821101005) do
     t.integer  "consumed_timestep"
     t.boolean  "unconfirmed_mfa"
     t.string   "authentication_token",      limit: 30
+    t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
-
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end
