@@ -1,19 +1,19 @@
 require "rails_helper"
 
 describe DeployEnvironment do
-  let(:deploy_environment) { FactoryGirl.create(:deploy_environment) }
-  let(:user) { FactoryGirl.create(:user) }
+  let(:deploy_environment) { create(:deploy_environment) }
+  let(:user) { create(:user) }
 
   it "can serialize it's configurations" do
-    FactoryGirl.create(:config_file, deploy_environment: deploy_environment,
+    create(:config_file, deploy_environment: deploy_environment,
                        path: "/app/config.yml",
                        value: "foobar")
     expect(deploy_environment.config_files_as_json).to eq({"/app/config.yml" => "foobar"})
   end
 
   it "can schedule a new deployment" do
-    deploy_environment = FactoryGirl.create(:deploy_environment)
-    FactoryGirl.create(:config_file, deploy_environment: deploy_environment,
+    deploy_environment = create(:deploy_environment)
+    create(:config_file, deploy_environment: deploy_environment,
                        path: "/app/config.yml",
                        value: "foobar")
     deployment = deploy_environment.new_deployment("latest", user)
@@ -26,7 +26,7 @@ describe DeployEnvironment do
   end
 
   it "can reschedule a deployment" do
-    FactoryGirl.create(:config_file, deploy_environment: deploy_environment,
+    create(:config_file, deploy_environment: deploy_environment,
                        path: "/app/config.yml",
                        value: "foobar")
     deployment = deploy_environment.new_deployment("latest", user)
