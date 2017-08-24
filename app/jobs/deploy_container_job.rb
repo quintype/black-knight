@@ -59,15 +59,6 @@ class DeployContainerJob < ApplicationJob
                 "failed-build" => "Build failed `#{environment.app_name}/#{environment.name}` <#{base_url}/deploy/#{deployment.id}|More Details>",
                 "failed-deploy" => "Deploy failed `#{environment.app_name}/#{environment.name}` <#{base_url}/deploy/#{deployment.id}|More Details>"}
 
-    if message = messages[deployment.status]
-      uri = URI(Rails.application.secrets[:slack_hook])
-      params = {channel: channel,
-                username: "#{user.name||=user.email} (Black Knight)",
-                text: message,
-                icon_emoji: ":wrench:"}.to_json
-      request = Net::HTTP::Post.new(uri.request_uri, initheader = {'Content-Type' =>'application/json'})
-      request.body = params
-      Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https') {|http| http.request(request) }
-    end
+    PostToSlack.post(messages[deployment.status], user: user.name || user.email)
   end
 end
