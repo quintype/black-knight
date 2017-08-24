@@ -1,7 +1,7 @@
 class VersionsController < ApplicationController
   before_action :authenticate_user!,:unconfirmed_mfa!
 
-  before_filter :load_current_environment
+  before_action :load_current_environment
 
   def show
   	@config_version = load_current_config_file.revision(params[:id])

@@ -2,7 +2,7 @@ class Api::MigrationsController < ApplicationController
   before_action :authenticate_user!,:unconfirmed_mfa!
   respond_to :json
 
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
   def create
     migration_params = params[:migration]

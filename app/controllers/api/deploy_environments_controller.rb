@@ -1,7 +1,7 @@
 class Api::DeployEnvironmentsController < ApplicationController
   before_action :authenticate_user!, :unconfirmed_mfa!
   respond_to :json
-  skip_before_filter :verify_authenticity_token, only: [:scale]
+  skip_before_action :verify_authenticity_token, only: [:scale]
 
   # FIXME: Terrible modelling, this should be as_json(include:). Or use jbuilder.
   def attributes_for_environment_page(deploy_environment, page=nil)

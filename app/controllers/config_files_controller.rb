@@ -1,7 +1,7 @@
 class ConfigFilesController < ApplicationController
   before_action :authenticate_user!,:unconfirmed_mfa!
 
-  before_filter :load_current_environment
+  before_action :load_current_environment
   def load_current_environment
     @current_deploy_environment = current_deploy_environment(params[:environment_id])
   end

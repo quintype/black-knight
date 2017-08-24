@@ -2,7 +2,7 @@ class Api::LogsController < ApplicationController
   before_action :authenticate_user!,:unconfirmed_mfa!
   respond_to :json
 
-  skip_before_filter :verify_authenticity_token, only: [:scale]
+  skip_before_action :verify_authenticity_token, only: [:scale]
 
   before_action :load_current_environment
 
