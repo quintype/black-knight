@@ -165,7 +165,7 @@ GEM
       activerecord (>= 3.0)
     powerpack (0.1.1)
     public_suffix (2.0.5)
-    puma (3.2.0)
+    puma (3.10.0)
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
