@@ -1,7 +1,7 @@
 class Api::DeployEnvironmentsController < ApplicationController
   before_action :authenticate_user!, :unconfirmed_mfa!
   respond_to :json
-  skip_before_action :verify_authenticity_token, only: [:scale]
+  skip_before_filter :verify_authenticity_token, only: [:scale,:create]
 
   # FIXME: Terrible modelling, this should be as_json(include:). Or use jbuilder.
   def attributes_for_environment_page(deploy_environment, page=nil)
@@ -23,6 +23,21 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   def show
     respond_with deploy_environment: attributes_for_environment_page(current_user.deploy_environments.find(params[:id]))
+  end
+
+  def create
+    publisher_id = params[:publisher_id]
+    deploy_env_name = params[:name]
+    repository = params[:repository]
+    app_name = params[:app_name]
+    cluster_id = params[:cluster_id]
+    disposable = params[:disposable] || false
+    migratable = params[:migratable] || false
+
+    deploy_environment = DeployEnvironment.create!(publisher_id: publisher_id , name: deploy_env_name , cluster_id: cluster_id, app_name: app_name ,repository: repository, migratable: migratable, disposable: disposable)
+    kube = CreateKube.new(deploy_environment)
+
+    render json: { deploy_environment: deploy_environment ,kube_output: kube.create! }
   end
 
   def scale
