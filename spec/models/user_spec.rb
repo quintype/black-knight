@@ -39,4 +39,27 @@ describe User do
       expect(user.errors[:password]).not_to be_empty
     end
   end
+
+  context "giving access" do
+    let(:user) { create(:user) }
+    let(:publisher) { create(:publisher) }
+    let(:deploy_environment) { create(:deploy_environment, publisher: publisher) }
+
+    it "does not grant access by default" do
+      expect(user.publishers).not_to include(publisher)
+      expect(user.deploy_environments).not_to include(deploy_environment)
+    end
+
+    it "grants access to deploy environments when granted" do
+      create(:user_publisher, user: user, publisher: publisher)
+      expect(user.publishers).to include(publisher)
+      expect(user.deploy_environments).to include(deploy_environment)
+    end
+
+    it "grants access to everything for the superuser" do
+      user.update_attributes(super_user: true)
+      expect(user.publishers).to include(publisher)
+      expect(user.deploy_environments).to include(deploy_environment)
+    end
+  end
 end

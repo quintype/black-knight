@@ -7,9 +7,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
 
-
   has_many :user_publishers
-  has_many :publishers, through: :user_publishers
+  has_many :publishers, ->(user) { user.super_user? ? unscope(:where, :joins) : all }, through: :user_publishers
   has_many :deploy_environments, through: :publishers
   has_many :deployments, through: :deploy_environments
   has_many :migrations, through: :deploy_environments

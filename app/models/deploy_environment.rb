@@ -9,6 +9,10 @@ class DeployEnvironment < ApplicationRecord
     "#{name} (#{publisher.name})"
   end
 
+  def username
+    publisher.username
+  end
+
   def new_deployment(version, user)
     deployments.new(status: "pending",
                     version: version,
@@ -40,7 +44,7 @@ class DeployEnvironment < ApplicationRecord
     end
   end
 
-  def running_pods(app_name, username)
+  def running_pods
     `KUBE_MASTER=#{cluster.kube_api_server} ./bin/kube-status gp #{app_name} #{username} 2>&1`.split("\n")
   end
 

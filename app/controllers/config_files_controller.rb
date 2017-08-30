@@ -3,9 +3,8 @@ class ConfigFilesController < ApplicationController
 
   before_action :load_current_environment
   def load_current_environment
-    @current_deploy_environment = current_deploy_environment(params[:environment_id])
+    @current_deploy_environment = current_user.deploy_environments.find(params[:environment_id])
   end
-
 
   def new
     @config_file = @current_deploy_environment.config_files.new

@@ -20,4 +20,9 @@ FactoryGirl.define do
     email "foobar1234@quintype.com"
     password "foobar1234"
   end
+
+  factory :user_publisher do
+    user
+    publisher
+  end
 end
