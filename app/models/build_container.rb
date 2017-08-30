@@ -22,9 +22,12 @@ class BuildContainer
   def build!
     shell = RunShell.new({"QT_ENV" => Rails.application.secrets.qt_environment, "BLACK_KNIGHT_DEPLOYMENT" => deployment.id.to_s},
                          "#{Rails.root}/bin/docker-build.sh", deploy_env.publisher.username, deploy_env.repository, old_tag, new_tag)
-    tarball_string = Tarball.new(config_files).to_s
-    shell.stdin.write(tarball_string)
-    shell.stdin.close
+
+    Thread.new do
+      Tarball.new(config_files).write_to_io(shell.stdin)
+      shell.stdin.close
+    end
+
     shell.execute! { |o| yield o }
   end
 
