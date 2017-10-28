@@ -40,10 +40,11 @@ Rails.application.routes.draw do
     resources :deployments, only: [:show, :create] do
       post "redeployment", action: :redeployment
     end
-
+     
+    resources :publishers, only: [:create, :show]
     resources :migrations, only: [:create, :destroy, :show]
 
-    resources :deploy_environments, only: :show do
+    resources :deploy_environments, only: [:show, :create] do
       get "deployments", action: :load_more_deployments
     end
 
