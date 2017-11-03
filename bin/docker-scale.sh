@@ -8,4 +8,4 @@ if [ -z "$KUBE_MASTER" ]; then
   exit 1
 fi
 
-kubectl scale "rc/$app_name" --replicas="$size" --server="$KUBE_MASTER" --namespace="$username" --kubeconfig=../config/kubeconfig
+kubectl scale "rc/$app_name" --replicas="$size" --server="$KUBE_MASTER" --namespace="$username"
