@@ -46,7 +46,7 @@ if [ "$#" -gt 1 ];then
   fi
   server=$KUBE_MASTER
   opt=$1
-  kubectl="kubectl --server=$server"
+  kubectl="kubectl --server=$server --kubeconfig=../config/kubeconfig"
   shift 1 
 else
   usage
