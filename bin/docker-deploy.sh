@@ -35,27 +35,21 @@ if ! is_exist "rc" "$next_deployment_id" ;then
 fi
 
 replicas=$(kubectl get rc $next_deployment_id  -o go-template='{{.spec.replicas}}' --namespace=$username --server=$KUBE_MASTER)
-if [ $replicas -gt 1 ];then
-  echo "Aborting: Some existing deployment is in progress which has one or more pods in ready state."
-  exit 1
-fi
 
 ready=$(kubectl get rc $next_deployment_id --namespace=$username --server=$KUBE_MASTER | tail -n+2 | awk '{print $4}')
-if [ $ready -eq 1 ];then
-  echo "Aborting: Some existing deployment is in progress which has pods in ready state"
-  exit 1
-fi
 
 TIMEOUT=600
 age=$(kubectl get rc $next_deployment_id --namespace=$username --server=$KUBE_MASTER | tail -n+2 | awk '{print $5}')
 age_in_second=$(convert_time_in_second $age)
-if [ $age_in_second -lt $TIMEOUT ];then
-   echo -e "Aborting: Some existing deployment is in progress either wait for it to complete or for timeout\n Time remaining for TIMEOUT is: $(( $TIMEOUT - $age_in_second))"
+
+if ([ $replicas -gt 1 ] && [ $ready -eq 1] && [ $age_in_second -lt $TIMEOUT ]);then
+   echo -e "Aborting: Some existing deployment is in progress.\n Time remaining for TIMEOUT is: $(( $TIMEOUT - $age_in_second))"
    exit 1
 fi
 
-echo "Rolling back the older deployment  rc: $next_deployment_id"
+echo "Rolling back the failed RC: $next_deployment_id"
 rollback_deployment
+echo "Rolled Back"
 return 0
 
 }

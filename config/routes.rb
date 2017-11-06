@@ -26,7 +26,8 @@ Rails.application.routes.draw do
     #delete '/two_factor' => 'two_factors#destroy'
   end
 
-  resources :environments, only: [:show], param: :environment_id do
+  resources :environments, only: [:show], param: :environment_id
+  scope '/environments/:environment_id', as: :environment do
     resources :config_files do
       resources :versions, only: [:index, :show]
     end
