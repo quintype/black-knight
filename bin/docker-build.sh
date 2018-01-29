@@ -39,7 +39,11 @@ docker cp "$container_id:/app/public/$publisher_name" "toupload/$publisher_name"
 find toupload -exec rm -f {}.gz \;
 
 echo Uploading to S3
-s3cmd --config ~/.s3cfg sync --add-header="Cache-Control: public,max-age=31104000,s-maxage=31104000" "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/"
+
+#Place AWS credentials file in the below directory
+source /opt/black-knight/credentials
+aws s3 sync "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/" --cache-control max-age=31536000,public,s-maxage=31104000
+
 rm -rf toupload
 
 docker push "$repo:$new_tag"
