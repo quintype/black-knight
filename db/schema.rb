@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170828204329) do
+ActiveRecord::Schema.define(version: 20180222094035) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -100,14 +100,15 @@ ActiveRecord::Schema.define(version: 20170828204329) do
 
   create_table "deploy_environments", force: :cascade do |t|
     t.integer  "publisher_id"
-    t.string   "name",         null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "name",                null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.string   "app_name"
     t.string   "repository"
     t.boolean  "disposable"
     t.integer  "cluster_id"
     t.boolean  "migratable"
+    t.boolean  "multi_container_pod"
     t.index ["cluster_id"], name: "index_deploy_environments_on_cluster_id"
     t.index ["publisher_id"], name: "index_deploy_environments_on_publisher_id"
   end

@@ -3,6 +3,8 @@ username="$1"
 repo="$2"
 tag="$3"
 app_name="$4"
+multi_container_pod="$5"
+
 if [ -z "$KUBE_MASTER" ]; then
   echo Please provide a deploy server
   exit 1
@@ -55,7 +57,12 @@ return 0
 }
 
 start_deploy(){
-  kubectl rolling-update "$app_name" "--image=$repo:$tag" "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent"
+ if "$multi_container_pod" == "true";then
+ 	echo "Deploying container $app_name in multi container pod"
+  kubectl rolling-update "$app_name" "--image=$repo:$tag" "--container=$app_name" "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent"
+ else
+  kubectl rolling-update "$app_name" "--image=$repo:$tag" "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent"	
+ fi  
 }
 
 if  kubectl get rc --namespace=$username -o go-template='{{index .metadata.annotations "kubectl.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name 2>/dev/null 1>/dev/null;then
