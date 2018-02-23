@@ -33,6 +33,6 @@ class BuildContainer
 
   def deploy!
     RunShell.execute!({"KUBE_MASTER" => deploy_env.cluster.kube_api_server}, "#{Rails.root}/bin/#{deployment.execute_command}",
-                      deploy_env.publisher.username, deploy_env.repository, new_tag, deploy_env.app_name, deploy_env.multi_container_pod, *deployment.execute_arguments) { |o| yield o }
+                      deploy_env.publisher.username, deploy_env.repository, new_tag, deploy_env.app_name, deploy_env.multi_container_pod.to_s, *deployment.execute_arguments) { |o| yield o }
   end
 end
