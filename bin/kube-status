@@ -5,12 +5,12 @@ usage()
 {
 echo -e "Usage: $0 [status|logs|gp] args
          $0 status app_name  publisher
-         $0 logs pod_name log_file number_of_lines publisher
-         $0 gp app_name publisher 
-         eg:- 
+         $0 logs pod_name log_file number_of_lines publisher multi_container_pod
+         $0 gp app_name publisher
+         eg:-
          $0 status thequint  publisher
-         $0 logs pod_name log_file number_of_lines publisher
-         $0 gp thequint theuqint"  
+         $0 logs pod_name log_file number_of_lines publisher true
+         $0 gp thequint theuqint"
          exit
 }
 
@@ -47,7 +47,7 @@ if [ "$#" -gt 1 ];then
   server=$KUBE_MASTER
   opt=$1
   kubectl="kubectl --server=$server"
-  shift 1 
+  shift 1
 else
   usage
 fi
@@ -61,21 +61,21 @@ case $opt in
         status=$(get_rc_status $1 $2)
         echo "$status"
    ;;
-   logs) 
-      if [ $# -ne 4 ]; then
+   logs)
+      if [ $# -ne 5 ]; then
          usage
          exit 1
       fi
-      get_logs $1 $2 $3 $4
+      get_logs $1 $2 $3 $4 $5
    ;;
-   gp) 
+   gp)
       if [ $# -ne 2 ]; then
          usage
          exit 1
       fi
       get_pods $1 $2
    ;;
-   *) usage 
+   *) usage
    ;;
 esac
 
