@@ -7,7 +7,7 @@ echo -e "Usage: $0 [status|logs|gp] args
          $0 status app_name  publisher
          $0 logs pod_name log_file number_of_lines publisher multi_container_pod
          $0 gp app_name publisher
-         eg:-
+         eg:- 
          $0 status thequint  publisher
          $0 logs pod_name log_file number_of_lines publisher true
          $0 gp thequint theuqint"
@@ -25,13 +25,34 @@ else
 fi
 }
 
+#Function to parse container name from pod name
+get_app_name()
+{
+    name=$1
+    first="$(echo "$name" | cut -d'-' -f1)"
+    second="$(echo "$name" | cut -d'-' -f2)"
+    third="$(echo "$name" | cut -d'-' -f3)"
+    app_name="$first-$second-$third"
+    echo $app_name
+}
+
 get_logs()
 {
 log_file_name=$2
 if [ "$log_file_name" == "stdout" ];then
-  $kubectl logs $1 --tail $3 --namespace=$4
+  if "$5" == "true"; then
+    app_name=$(get_app_name "$1")
+    $kubectl logs $1 --tail $3 --namespace=$4 --container="$app_name" 
+  else
+    $kubectl logs $1 --tail $3 --namespace=$4
+  fi
 else
-  $kubectl exec  $1 --namespace=$4 -- tail -n $3 $log_file_name
+  if "$5" == "true"; then
+    app_name=$(get_app_name "$1")
+    $kubectl exec  $1 --namespace=$4 -- tail -n $3 $log_file_name --container="$app_name"
+  else
+    $kubectl exec  $1 --namespace=$4 -- tail -n $3 $log_file_name
+  fi
 fi
 }
 
@@ -61,7 +82,7 @@ case $opt in
         status=$(get_rc_status $1 $2)
         echo "$status"
    ;;
-   logs)
+   logs) 
       if [ $# -ne 5 ]; then
          usage
          exit 1
@@ -78,6 +99,3 @@ case $opt in
    *) usage
    ;;
 esac
-
-
-
