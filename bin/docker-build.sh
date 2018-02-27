@@ -40,8 +40,6 @@ find toupload -exec rm -f {}.gz \;
 
 echo Uploading to S3
 
-#Place AWS credentials file in the below directory
-source /opt/black-knight/credentials
 aws s3 sync "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/" --cache-control max-age=31536000,public,s-maxage=31104000
 
 rm -rf toupload
