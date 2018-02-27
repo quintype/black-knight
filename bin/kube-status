@@ -39,7 +39,7 @@ get_app_name()
 get_logs()
 {
   KUBE_OPTS=""
-  if "$MULTIPLE_CONTAINER_PODS" == "true"; then
+  if [ "$MULTIPLE_CONTAINER_PODS" == "true" ]; then
     KUBE_OPTS="$KUBE_OPTS --container='$(get_app_name "$1")'"
   else
   

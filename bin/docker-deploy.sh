@@ -58,7 +58,7 @@ return 0
 start_deploy(){
  KUBE_OPTS=""
  
- if "$MULTIPLE_CONTAINER_PODS" == "true"; then
+ if [ "$MULTIPLE_CONTAINER_PODS" == "true" ]; then
    KUBE_OPTS="$KUBE_OPTS --container=$app_name"
  fi
 
