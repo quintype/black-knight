@@ -40,14 +40,14 @@ get_logs()
 {
   KUBE_OPTS=""
   if [ "$MULTIPLE_CONTAINER_PODS" == "true" ]; then
-    KUBE_OPTS="$KUBE_OPTS --container='$(get_app_name "$1")'"
+    KUBE_OPTS="$KUBE_OPTS --container=$(get_app_name "$1")"
   fi
   
   log_file_name=$2
   if [ "$log_file_name" == "stdout" ]; then
     $kubectl logs $1 --tail $3 --namespace=$4 $KUBE_OPTS
   else
-    $kubectl exec  $1 --namespace=$4 -- tail -n $3 $log_file_name $KUBE_OPTS
+    $kubectl exec  $1 --namespace=$4 $KUBE_OPTS -- tail -n $3 $log_file_name
   fi
 }
 
