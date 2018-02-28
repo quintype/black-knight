@@ -5,7 +5,7 @@
     "babelify": "^7.2.0",
     "browserify": "~10.2.4",
     "browserify-incremental": "^3.0.1",
-    "jquery": "^2.2.4",
+    "jquery": "^3.3.1",
     "lodash": "^4.6.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
