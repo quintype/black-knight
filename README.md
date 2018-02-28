@@ -1,24 +1,7 @@
-## README
+## Black Knight
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Black knight is a wrapper over kubernetes that can be used to manage deployments.
 
-Things you may want to cover:
+It's follows a simple philosophy. A deployment = code + config.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Black Knight allows you to update config files for an environment, and then deploy a docker image to the kube cluster.
