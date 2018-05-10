@@ -15,6 +15,17 @@
     text-align: center;
 }
 
+.leftbar-search {
+  width: 100%;
+  text-align:center;
+  input {
+    width: 70%;
+    padding: 10px;
+    margin: 12px 0 0 0;
+    border: none;
+  }
+}
+
 ul.leftbar-publishers {
     margin: 20px 0;
     padding: 0;
