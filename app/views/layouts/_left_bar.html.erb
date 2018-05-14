@@ -2,7 +2,7 @@
   <%= current_user.name %> | <%= link_to "Log out", destroy_user_session_path, method: "delete" %>
 </div>
 <div class="leftbar-search">
-  <input type="text" oninput="blackKnight.searchPub(event)" placeholder="Search..." />
+  <input type="text" onchange="blackKnight.searchPub(event)" placeholder="Search..." />
 </div>
 <ul class="leftbar-publishers">
   <% publishers.order(:name).each do |publisher| %>
