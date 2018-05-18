@@ -40,6 +40,9 @@ ul.leftbar-publishers {
 	&:first-child { padding-top: 18px; }
 	&.publisher-open { background-color: $dark-gray; }
     }
+    li.hide-item {
+      display: none;
+    }
 }
 
 $leftbar-publisher-margin: 30px;
