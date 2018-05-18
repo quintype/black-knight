@@ -20,5 +20,6 @@ window.blackKnight = {
   migrationPage: require("./pages/migration"),
   disposePage: require("./pages/dispose"),
   publishersMenu: require("./pages/publisher_menu"),
-  logsPage: require("./pages/log")
+  logsPage: require("./pages/log"),
+  searchPub: require("./util/search")
 };

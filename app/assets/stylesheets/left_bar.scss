@@ -15,6 +15,17 @@
     text-align: center;
 }
 
+.leftbar-search {
+  width: 100%;
+  text-align:center;
+  input {
+    width: 70%;
+    padding: 10px;
+    margin: 12px 0 0 0;
+    border: none;
+  }
+}
+
 ul.leftbar-publishers {
     margin: 20px 0;
     padding: 0;
@@ -28,6 +39,9 @@ ul.leftbar-publishers {
 	padding: 8px 0;
 	&:first-child { padding-top: 18px; }
 	&.publisher-open { background-color: $dark-gray; }
+    }
+    li.hide-item {
+      display: none;
     }
 }
 
