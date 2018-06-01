@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '>= 5.0.0', '< 5.1'
 gem 'puma'
-gem 'pg'
+gem 'pg', '1.0.0'
 gem 'acts_as_paranoid'
 
 gem 'jbuilder', '~> 2.0'
