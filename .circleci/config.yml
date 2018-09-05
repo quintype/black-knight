@@ -60,6 +60,8 @@ jobs:
     machine: true
 
     steps:
+      - checkout
+
       - run: 
           name: Install aws cli
           command: pip install awscli
