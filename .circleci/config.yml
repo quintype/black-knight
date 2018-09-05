@@ -46,11 +46,14 @@ jobs:
             make create-tar
             mkdir -p /tmp/workspace
             mv black-knight.tar /tmp/workspace/black-knight.tar
+            date '+%Y-%m-%d-%T' > /tmp/workspace/time.txt
+
 
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
             - black-knight.tar
+            - time.txt
         
       - store_artifacts:
           path: /tmp/workspace/black-knight.tar
@@ -60,14 +63,16 @@ jobs:
     machine: true
 
     steps:
-      - checkout
 
       - run: 
           name: Install aws cli
           command: pip install awscli
       - run:
           name: upload artifact
-          command: make upload-artifact
+          command: |
+            #make upload-artifact
+            ls /tmp/workspace
+            aws s3 cp /tmp/workspace/black-knight.tar  s3://qt-deploy-artifacts/black-knight/$(cat /tmp/workspace/time.txt)/black-knight.tar
 
       - attach_workspace:
           at: /tmp/workspace
