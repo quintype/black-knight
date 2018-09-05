@@ -56,8 +56,8 @@ jobs:
             - time.txt
         
       - store_artifacts:
-          path: /tmp/workspace/black-knight.tar
-          destination: black-knight.tar
+          path: /tmp/workspace/time.txt
+          destination: time.txt
 
   upload-artifact:
     docker:
