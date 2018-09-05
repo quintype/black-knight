@@ -16,4 +16,5 @@ create-tar:
 	tar rf $(APP_NAME).tar whoami.yml
 
 upload-artifact:
-	aws s3 cp /tmp/workspace/$(APP_NAME).tar  s3://quintype-deploys/$(APP_NAME)/$(APP_NAME).tar	
+	timestamp="$(date '+%Y-%m-%d-%T')"
+	aws s3 cp /tmp/workspace/$(APP_NAME).tar  s3://quintype-deploys/$(APP_NAME)/$(timestamp)/$(APP_NAME).tar

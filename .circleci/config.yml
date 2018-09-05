@@ -57,10 +57,12 @@ jobs:
           destination: black-knight.tar
 
   upload-artifact:
-    docker:
-       - image: circleci/ruby:2.4.1-node-browsers
+    machine: true
 
     steps:
+      - run: 
+          name: Install aws cli
+          command: pip install awscli
       - run:
           name: upload artifact
           command: make upload-artifact
@@ -76,3 +78,4 @@ workflows:
       - upload-artifact:
           requires:
             - create-tar
+          context: artifacts
