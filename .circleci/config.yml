@@ -60,22 +60,21 @@ jobs:
           destination: black-knight.tar
 
   upload-artifact:
-    machine: true
+    docker:
+       - image: python:2.7-alpine3.7
 
     steps:
+      - attach_workspace:
+          at: /tmp/workspace
 
       - run: 
           name: Install aws cli
           command: pip install awscli
+
       - run:
           name: upload artifact
           command: |
-            #make upload-artifact
-            ls /tmp/workspace
             aws s3 cp /tmp/workspace/black-knight.tar  s3://qt-deploy-artifacts/black-knight/$(cat /tmp/workspace/time.txt)/black-knight.tar
-
-      - attach_workspace:
-          at: /tmp/workspace
 
 workflows:
   version: 2
