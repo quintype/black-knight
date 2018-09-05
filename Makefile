@@ -17,4 +17,4 @@ create-tar:
 
 upload-artifact:
 	timestamp="$(date '+%Y-%m-%d-%T')"
-	aws s3 cp /tmp/workspace/$(APP_NAME).tar  s3://quintype-deploys/$(APP_NAME)/$(timestamp)/$(APP_NAME).tar
+	aws s3 cp /tmp/workspace/$(APP_NAME).tar  s3://qt-deploy-artifacts/$(APP_NAME)/$(timestamp)/$(APP_NAME).tar
