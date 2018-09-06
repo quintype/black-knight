@@ -6,6 +6,10 @@ class BuildContainer
     deployment.deploy_environment
   end
 
+  def deployable_containers
+    deploy_env.deployable_containers
+  end
+
   def old_tag
     deployment.version
   end
@@ -32,7 +36,10 @@ class BuildContainer
   end
 
   def deploy!
-    RunShell.execute!({"KUBE_MASTER" => deploy_env.cluster.kube_api_server, "MULTIPLE_CONTAINER_PODS" => deploy_env.multi_container_pod.to_s}, "#{Rails.root}/bin/#{deployment.execute_command}",
+    RunShell.execute!({"KUBE_MASTER" => deploy_env.cluster.kube_api_server,
+                       "MULTIPLE_CONTAINER_PODS" => deploy_env.multi_container_pod.to_s,
+                       "DEPLOYABLE_CONTAINERS" => deployable_containers},
+                      "#{Rails.root}/bin/#{deployment.execute_command}",
                       deploy_env.publisher.username, deploy_env.repository, new_tag, deploy_env.app_name, *deployment.execute_arguments) { |o| yield o }
   end
 end

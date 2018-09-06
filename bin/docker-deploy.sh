@@ -57,12 +57,19 @@ return 0
 
 start_deploy(){
  KUBE_OPTS=""
- 
+
  if [ "$MULTIPLE_CONTAINER_PODS" == "true" ]; then
    KUBE_OPTS="$KUBE_OPTS --container=$app_name"
  fi
 
- kubectl rolling-update "$app_name" "--image=$repo:$tag" $KUBE_OPTS "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent"	
+ kubectl rolling-update "$app_name" "--image=$repo:$tag" $KUBE_OPTS "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent"
+
+ if [ "$MULTIPLE_CONTAINER_PODS" == "true" ]; then
+     for container in `echo $DEPLOYABLE_CONTAINERS | sed -n 1'p' | tr ',' '\n'`
+     do
+         kubectl rolling-update "$app_name" "--image=$repo:$tag" "--container=$container" "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent"
+     done
+ fi
 }
 
 if  kubectl get rc --namespace=$username -o go-template='{{index .metadata.annotations "kubectl.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name 2>/dev/null 1>/dev/null;then
