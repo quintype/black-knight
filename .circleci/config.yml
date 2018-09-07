@@ -2,7 +2,7 @@ version: 2
 jobs:
   create-tar:
     docker:
-       - image: circleci/ruby:2.4.1-node-browsers
+       - image: circleci/ruby:2.3-node-browsers
 
     steps:
       - checkout
@@ -41,7 +41,7 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
 
       - run:
-          name: create tar 
+          name: create tar
           command: |
             make create-tar
             mkdir -p /tmp/workspace
@@ -54,7 +54,7 @@ jobs:
           paths:
             - black-knight.tar
             - time.txt
-        
+
       - store_artifacts:
           path: /tmp/workspace/time.txt
           destination: time.txt
@@ -67,7 +67,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
 
-      - run: 
+      - run:
           name: Install aws cli
           command: pip install awscli
 
