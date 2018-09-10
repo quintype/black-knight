@@ -3,7 +3,7 @@
 cd "$(dirname "$0")"
 
 # This is run on production. The Rails environment is replaced there
-RAILS_ENV=development bundle install --without development test --deployment
+RAILS_ENV=development bundle install --without test --deployment
 npm install
 RAILS_ENV=development ./bin/delayed_job restart -n 3
 RAILS_ENV=development exec bundle exec puma
