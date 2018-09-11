@@ -67,7 +67,7 @@ start_deploy(){
  IFS=', ' read -r -a containers <<< "$DEPLOYABLE_CONTAINERS"
  for container in "${containers[@]}"
  do
-     kubectl rolling-update "$container" "--image=$repo:$tag" "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent"
+     kubectl rolling-update "$app_name" "--image=$repo:$tag" "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent" "--container=$container"
  done
 }
 
