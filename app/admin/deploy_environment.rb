@@ -1,7 +1,7 @@
 ActiveAdmin.register DeployEnvironment do
   permit_params :publisher_id, :name, :app_name, :repository, :disposable, :cluster_id, :migratable, :multi_container_pod, :deployable_containers
 
-  filter :publisher
+  filter :publisher_id
   filter :name
   filter :app_name
   filter :repository
