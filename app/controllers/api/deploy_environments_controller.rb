@@ -43,26 +43,42 @@ class Api::DeployEnvironmentsController < ApplicationController
     respond_with more_deployments: attributes_for_environment_page(current_user.deploy_environments.find(params[:deploy_environment_id]), params[:page])
   end
 
-  SCHEMA_VALIDATION_SUPPORTED_EXT = ['.yml']
-
   def validate_config_file
-    render status: 422, json: {error: {message: "Schema Validation not supported for given file format. Supported formats: #{SCHEMA_VALIDATION_SUPPORTED_EXT}"}} and return unless SCHEMA_VALIDATION_SUPPORTED_EXT.include?(File.extname(params["config_file_path"]))
+    render status: 422, json: {error: {message: "Schema Validation not supported for given file format. Supported formats: #{SCHEMA_VALIDATION_SUPPORTED_EXT}"}} and return unless schema_validation_supported_format?
 
-    environment = current_user.deploy_environments.find(params[:deploy_environment_id])
-
-    config_file = environment.config_files.select{ |config_file| config_file.path == params["config_file_path"] }&.first
     render status: 422, json: {error: {message: "No config_file found matching given path"}} and return unless config_file
 
-    temp_schema_file_path = "/tmp/#{SecureRandom.uuid}_schema"
-    result = system({}, "docker run --rm -v /tmp:/tmp #{environment.repository}:#{params["version"]} sh -c 'cp #{params["corresponding_schema_file_path"]} #{temp_schema_file_path}'")
-    render status: 422, json: {error: {message: "File not found"}} and return unless result
+    render status: 422, json: {error: {message: "File not found"}} and return unless schema_file_tmp_path
 
     rx = Rx.new({ :load_core => true })
-    schema = rx.make_schema(YAML.load_file(temp_schema_file_path))
+    schema = rx.make_schema(YAML.load_file(schema_file_tmp_path))
     schema.check!(YAML.load(config_file.value))
   rescue Exception => e
     render status: 422, json: {error: {message: "Schema validation did not pass. #{e.message}"}}
   ensure
-    File.delete(temp_schema_file_path) if temp_schema_file_path.present? && File.exist?(temp_schema_file_path)
+    File.delete(schema_file_tmp_path) if schema_file_tmp_path.present? && File.exist?(schema_file_tmp_path)
+  end
+
+  private
+
+  def schema_file_tmp_path
+    return @schema_file_tmp_path if defined? @schema_file_tmp_path
+    @schema_file_tmp_path = "/tmp/#{SecureRandom.uuid}_schema"
+    result = system({}, "docker run --rm -v /tmp:/tmp #{current_environment.repository}:#{params["version"]} sh -c 'cp #{params["corresponding_schema_file_path"]} #{@schema_file_tmp_path}'")
+    result ? @schema_file_tmp_path : ""
+  end
+
+  SCHEMA_VALIDATION_SUPPORTED_EXT = ['.yml']
+
+  def schema_validation_supported_format?
+    SCHEMA_VALIDATION_SUPPORTED_EXT.include?(File.extname(params["config_file_path"]))
+  end
+
+  def config_file
+    @config_file ||= current_environment.config_files.select{ |config_file| config_file.path == params["config_file_path"] }&.first
+  end
+
+  def current_environment
+    @current_environment ||= current_user.deploy_environments.find(params[:deploy_environment_id])
   end
 end
