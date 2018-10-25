@@ -17,7 +17,7 @@ jobs:
       - run:
           name: install ruby dependencies
           command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
+            RAILS_ENV=production bundle install --deployment --jobs=4 --retry=3
 
       - save_cache:
           paths:
