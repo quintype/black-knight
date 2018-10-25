@@ -12,7 +12,7 @@ rm -rf output
 mkdir -p output
 git archive HEAD | tar x -C output
 
-ruby -S bundle install --path vendor/bundle
+ruby -S bundle install --deployment
 npm install
 ./bin/rails assets:precompile
 mv public/assets output/public/assets
