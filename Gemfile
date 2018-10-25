@@ -15,7 +15,6 @@ end
 
 group :development, :test do
   gem 'byebug'
-  gem 'sqlite3', '~> 1.3.13'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end
