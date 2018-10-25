@@ -64,7 +64,7 @@ class Api::DeployEnvironmentsController < ApplicationController
   def schema_file_tmp_path
     return @schema_file_tmp_path if defined? @schema_file_tmp_path
     @schema_file_tmp_path = "/tmp/#{SecureRandom.uuid}_schema"
-    result = system({}, "docker run --rm -v /tmp:/tmp #{current_environment.repository}:#{params["version"]} sh -c 'cp #{params["corresponding_schema_file_path"]} #{@schema_file_tmp_path}'")
+    result = system({}, "docker run --rm -v /tmp:/tmp #{current_environment.repository}:#{params["version"]} sh -c 'cp #{params["corresponding_schema_file_path"]} #{@schema_file_tmp_path}  && chmod a+rwX #{@schema_file_tmp_path}'")
     result ? @schema_file_tmp_path : ""
   end
 
