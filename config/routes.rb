@@ -46,12 +46,11 @@ Rails.application.routes.draw do
 
     resources :deploy_environments, only: :show do
       get "deployments", action: :load_more_deployments
+      post :scale
+      get "validate_config_file", action: :validate_config_file
     end
 
     resources :logs, only: [:show]
-    resources :deploy_environments, only: :show do
-      post :scale
-    end
   end
 
   ActiveAdmin.routes(self)
