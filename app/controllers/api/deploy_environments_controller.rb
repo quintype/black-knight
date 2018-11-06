@@ -59,6 +59,10 @@ class Api::DeployEnvironmentsController < ApplicationController
     system({}, "docker run --rm -v /tmp:/tmp #{current_environment.repository}:#{params["version"]} sh -c 'rm #{schema_file_tmp_path}'")
   end
 
+  def create
+     p "triggered deploy_environment api"
+  end
+
   private
 
   def schema_file_tmp_path
