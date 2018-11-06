@@ -4,7 +4,7 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   before_action :authenticate_user!, :unconfirmed_mfa!
   respond_to :json
-  skip_before_action :verify_authenticity_token, only: [:scale]
+  skip_before_action :verify_authenticity_token, only: [:scale, :create ]
 
   # FIXME: Terrible modelling, this should be as_json(include:). Or use jbuilder.
   def attributes_for_environment_page(deploy_environment, page=nil)
@@ -61,6 +61,11 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   def create
      p "triggered deploy_environment api"
+     deploy_environment = current_user.deploy_environments.find(params[:deploy_env_id])
+     p deploy_environment
+     p "************************"
+     new_deploy_environment_name = deploy_environment[:name] + "-" + params[:pr_num]
+     p new_deploy_environment_name
   end
 
   private
