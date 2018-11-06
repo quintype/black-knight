@@ -61,11 +61,16 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   def create
      p "triggered deploy_environment api"
-     deploy_environment = current_user.deploy_environments.find(params[:deploy_env_id])
-     p deploy_environment
-     p "************************"
-     new_deploy_environment_name = deploy_environment[:name] + "-" + params[:pr_num]
-     p new_deploy_environment_name
+     deploy_environment = current_user.deploy_environments.find(params[:pr_deployment_environment_id])
+     temp_environment_name = deploy_environment[:name].split("-")
+     temp_environment_name[temp_environment_name.length - 1] = "pr" + params[:pr_num].to_s
+     new_deploy_environment_name = temp_environment_name.join("-")
+
+     new_deploy_environment = deploy_environment.dup
+     new_deploy_environment.name         = new_deploy_environment_name
+     new_deploy_environment.app_name     = new_deploy_environment_name
+     new_deploy_environment.publisher_id = params[:pr_publisher_id]
+     new_deploy_environment.save
   end
 
   private
