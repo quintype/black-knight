@@ -66,7 +66,7 @@ class Api::DeployEnvironmentsController < ApplicationController
      temp_environment_name[temp_environment_name.length - 1] = "pr" + params[:pr_num].to_s
      new_deploy_environment_name = temp_environment_name.join("-")
 
-     new_deploy_environment = deploy_environment.dup
+     new_deploy_environment              = deploy_environment.amoeba_dup
      new_deploy_environment.name         = new_deploy_environment_name
      new_deploy_environment.app_name     = new_deploy_environment_name
      new_deploy_environment.publisher_id = params[:pr_publisher_id]

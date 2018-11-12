@@ -5,6 +5,10 @@ class DeployEnvironment < ApplicationRecord
   has_many :migrations
   belongs_to :cluster
 
+  amoeba do
+    enable
+  end
+
   def display_name
     "#{name} (#{publisher.name})"
   end
