@@ -48,6 +48,7 @@ Rails.application.routes.draw do
       get "deployments", action: :load_more_deployments
       post :scale
       get "validate_config_file", action: :validate_config_file
+      post "clone_as_pr", action: :clone_as_pr
     end
 
     resources :logs, only: [:show]

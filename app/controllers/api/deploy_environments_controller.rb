@@ -4,7 +4,7 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   before_action :authenticate_user!, :unconfirmed_mfa!
   respond_to :json
-  skip_before_action :verify_authenticity_token, only: [:scale]
+  skip_before_action :verify_authenticity_token, only: [:scale, :clone_as_pr ]
 
   # FIXME: Terrible modelling, this should be as_json(include:). Or use jbuilder.
   def attributes_for_environment_page(deploy_environment, page=nil)
@@ -59,7 +59,26 @@ class Api::DeployEnvironmentsController < ApplicationController
     system({}, "docker run --rm -v /tmp:/tmp #{current_environment.repository}:#{params["version"]} sh -c 'rm #{schema_file_tmp_path}'")
   end
 
+  def clone_as_pr
+     new_deploy_environment              = current_environment.amoeba_dup
+     new_deploy_environment.assign_attributes(name: pr_deploy_environment_name,
+                                              app_name: pr_deploy_environment_name,
+                                              publisher_id: params[:pr_publisher_id])
+
+    if new_deploy_environment.save
+        render json: new_deploy_environment
+    else
+        render status: 422, json: {error: {message: "Error cloning deploy environment"}}
+    end
+  end
+
   private
+
+  def pr_deploy_environment_name
+    temp_environment_name = current_environment.name.split("-")
+    temp_environment_name[temp_environment_name.length - 1] = "pr" + params[:pr_num].to_s
+    temp_environment_name.join("-")
+  end
 
   def schema_file_tmp_path
     return @schema_file_tmp_path if defined? @schema_file_tmp_path
