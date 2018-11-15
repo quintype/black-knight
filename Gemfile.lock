@@ -323,7 +323,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin (~> 1.1.0)
   acts_as_paranoid
-  amoeba
+  amoeba (~> 3.1.0)
   audited (~> 4.5)
   bigdecimal
   browserify-rails
