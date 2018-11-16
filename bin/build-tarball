@@ -1,5 +1,5 @@
 #!/bin/sh -e
-
+export PATH="/root/.rbenv/shims:$PATH"
 export RAILS_ENV=production
 output="$1"
 
