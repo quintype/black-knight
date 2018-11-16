@@ -17,8 +17,8 @@ jobs:
       - run:
           name: install ruby dependencies
           command: |
-	    cd /app/black-knight/
- 	    /root/.rbenv/shims/gem install bundler
+            cd /app/black-knight/
+            /root/.rbenv/shims/gem install bundler
             RAILS_ENV=production bundle install --deployment --jobs=4 --retry=3
 
       - save_cache:
