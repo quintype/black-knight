@@ -2,7 +2,7 @@ version: 2
 jobs:
   create-tar:
     docker:
-       - image: quay.io/quintype/black-knight:development
+       - image: quay.io/quintype/black-knight:rbenv-nodejs-ruby2.3.0
 
     steps:
       - checkout
