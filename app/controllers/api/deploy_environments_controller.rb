@@ -76,7 +76,7 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   def pr_deploy_environment_name
     temp_environment_name = current_environment.name.split("-")
-    temp_environment_name[temp_environment_name.length - 1] = "pr" + params[:pr_num].to_s
+    temp_environment_name[temp_environment_name.length - 1] = params[:pr_num].to_s
     temp_environment_name.join("-")
   end
 

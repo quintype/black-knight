@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     resources :deploy_environments, only: :show do
       get "deployments", action: :load_more_deployments
       post :scale
+      #delete "/delete_deployements" => "deploy_environments#destroy"
       get "validate_config_file", action: :validate_config_file
       post "clone_as_pr", action: :clone_as_pr
     end
