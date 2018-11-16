@@ -2,7 +2,7 @@ version: 2
 jobs:
   create-tar:
     docker:
-       - image: circleci/ruby:2.3-node-browsers
+       - image: quay.io/quintype/black-knight:development
 
     steps:
       - checkout

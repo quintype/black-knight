@@ -28,6 +28,23 @@ class Api::DeployEnvironmentsController < ApplicationController
     respond_with deploy_environment: attributes_for_environment_page(current_user.deploy_environments.find(params[:id]))
   end
 
+  def delete
+    p "hello delete"
+    # deploy_environment = current_user.deploy_environments.find(params[:id])
+    # p deploy_environment
+    # deploy_environment.destroy
+
+  end
+
+  def destroy
+    p "hello destroy"
+    # deploy_environment = current_user.deploy_environments.find(params[:id])
+    # p deploy_environment
+    # deploy_environment.destroy
+
+  end
+
+
   def scale
     deploy_environment = current_user.deploy_environments.find(params[:deploy_environment_id])
     size = params[:size]
@@ -76,7 +93,7 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   def pr_deploy_environment_name
     temp_environment_name = current_environment.name.split("-")
-    temp_environment_name[temp_environment_name.length - 1] = "pr" + params[:pr_num].to_s
+    temp_environment_name[temp_environment_name.length - 1] = params[:pr_num].to_s
     temp_environment_name.join("-")
   end
 
