@@ -18,7 +18,7 @@ jobs:
           name: install ruby dependencies
           command: |
             export PATH="/root/.rbenv/shims:$PATH"
-            export PATH="/app/black-knight/bin:$PATH
+            export PATH="/app/black-knight/bin:$PATH"
             cd /app/black-knight/
             /root/.rbenv/shims/gem install bundler
             RAILS_ENV=production bundle install --deployment --jobs=4 --retry=3
