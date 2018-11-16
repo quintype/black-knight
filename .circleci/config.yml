@@ -2,7 +2,7 @@ version: 2
 jobs:
   create-tar:
     docker:
-       - image: quay.io/quintype/bk-base
+       - image: quay.io/quintype/black-knight:bk-base
 
     steps:
       - checkout
