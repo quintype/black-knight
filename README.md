@@ -1,5 +1,4 @@
 ## Black Knight
-
 Black knight is a wrapper over kubernetes that can be used to manage deployments.
 
 It's follows a simple philosophy. A deployment = code + config.
