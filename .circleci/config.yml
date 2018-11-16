@@ -17,7 +17,7 @@ jobs:
       - run:
           name: install ruby dependencies
           command: |
-            RAILS_ENV=production bundle install --deployment --jobs=4 --retry=3
+            RAILS_ENV=production /root/.rbenv/shims/bundle install --deployment --jobs=4 --retry=3
 
       - save_cache:
           paths:
