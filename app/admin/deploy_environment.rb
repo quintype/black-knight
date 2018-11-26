@@ -8,6 +8,22 @@ ActiveAdmin.register DeployEnvironment do
   filter :cluster_id
   filter :disposable
 
+    begin
+      before_destroy do |deploy_environment|
+        if deploy_environment
+          if not deploy_environment.deployments.empty?
+            deploy_environment.deployments.delete_all
+          end
+
+          if not deploy_environment.config_files.empty?
+            deploy_environment.config_files.delete_all!
+          end
+        end
+      end
+    rescue Exception => e
+      raise e
+    end
+
   form do |f|
     f.inputs "User Publisher Link" do
       f.input :publisher, collection: Publisher.all.sort_by { |publisher|  publisher.name }
