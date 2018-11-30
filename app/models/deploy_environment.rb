@@ -1,9 +1,10 @@
 class DeployEnvironment < ApplicationRecord
   belongs_to :publisher
-  has_many :config_files
-  has_many :deployments
+  has_many :config_files, :dependent => :delete_all
+  has_many :deployments, :dependent => :delete_all
   has_many :migrations
   belongs_to :cluster
+
 
   amoeba do
     enable

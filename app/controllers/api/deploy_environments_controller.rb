@@ -4,7 +4,8 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   before_action :authenticate_user!, :unconfirmed_mfa!
   respond_to :json
-  skip_before_action :verify_authenticity_token, only: [:scale, :clone_as_pr ]
+
+  skip_before_action :verify_authenticity_token, only: [:scale, :clone_as_pr, :destroy]
 
   # FIXME: Terrible modelling, this should be as_json(include:). Or use jbuilder.
   def attributes_for_environment_page(deploy_environment, page=nil)
@@ -70,6 +71,11 @@ class Api::DeployEnvironmentsController < ApplicationController
     else
         render status: 422, json: {error: {message: "Error cloning deploy environment"}}
     end
+  end
+
+  def destroy
+        current_user.deploy_environments.find(params[:id]).destroy
+        render status: 204, json: {"state": "deleted"}
   end
 
   private

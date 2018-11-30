@@ -44,7 +44,7 @@ Rails.application.routes.draw do
 
     resources :migrations, only: [:create, :destroy, :show]
 
-    resources :deploy_environments, only: :show do
+    resources :deploy_environments, only: [:show, :destroy] do
       get "deployments", action: :load_more_deployments
       post :scale
       #delete "/delete_deployements" => "deploy_environments#destroy"
