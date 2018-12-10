@@ -50,25 +50,4 @@ describe DeployEnvironment do
     redeploy = deployment.redeployment(user)
     expect(redeploy).not_to be_buildable
   end
-
-  describe "destroy" do
-    before do
-      create(:config_file, deploy_environment: deploy_environment,
-                         path: "/app/config.yml",
-                         value: "foobar")
-      deployment = deploy_environment.new_deployment("latest", user)
-      deployment.save
-    end
-
-    it "deletes dependent associations on delete of itself" do
-      expect(deploy_environment.config_files.count).to eq(1)
-      expect(deploy_environment.deployments.count).to eq(1)
-
-      deploy_environment.destroy
-
-      expect(DeployEnvironment.where(id: deploy_environment.id).first).to be_nil
-      expect(deploy_environment.config_files.count).to eq(0)
-      expect(deploy_environment.deployments.count).to eq(0)
-    end
-  end
 end
