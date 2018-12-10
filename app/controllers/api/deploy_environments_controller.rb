@@ -40,6 +40,10 @@ class Api::DeployEnvironmentsController < ApplicationController
     end
   end
 
+  def index
+    render status: 200, json: current_user.publishers.find(params['publisher_id']).deploy_environments
+  end
+
   def load_more_deployments
     respond_with more_deployments: attributes_for_environment_page(current_user.deploy_environments.find(params[:deploy_environment_id]), params[:page])
   end
@@ -74,8 +78,8 @@ class Api::DeployEnvironmentsController < ApplicationController
   end
 
   def destroy
-        current_user.deploy_environments.find(params[:id]).destroy
-        render status: 204, json: {"state": "deleted"}
+     current_user.deploy_environments.find(params[:id]).destroy
+     render status: 204
   end
 
   private
