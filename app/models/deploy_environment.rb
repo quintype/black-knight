@@ -1,4 +1,5 @@
 class DeployEnvironment < ApplicationRecord
+        acts_as_paranoid
   belongs_to :publisher
   has_many :config_files
   has_many :deployments
