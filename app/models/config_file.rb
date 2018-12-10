@@ -1,5 +1,5 @@
 class ConfigFile < ApplicationRecord
-	acts_as_paranoid
+	# acts_as_paranoid
   belongs_to :deploy_environment
 
   audited
