@@ -16,11 +16,10 @@
 
   <label> Number of lines
       <select onChange="(e) => this.handleLineChange(e.target.value)">
-        <option value="{10}">10</option>
         <option value="{100}">100</option>
         <option value="{1000}">1000</option>
         <option value="{10000}">10000 </option>
-      </select>  
+      </select>
   </label>
 
     <input type="submit" value="submit" name="submit"/>
