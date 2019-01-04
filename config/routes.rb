@@ -44,7 +44,7 @@ Rails.application.routes.draw do
 
     resources :migrations, only: [:create, :destroy, :show]
 
-    resources :publishers, only: [:show] do
+    resources :publishers do
        resources :deploy_environments, only: [:index]
     end
 
