@@ -41,7 +41,11 @@ class Api::DeployEnvironmentsController < ApplicationController
   end
 
   def index
-    render status: 200, json: current_user.publishers.find(params['publisher_id']).deploy_environments
+    if(params['publisher_id'])
+        render status: 200, json: current_user.publishers.find(params['publisher_id']).deploy_environments
+    else
+        render status: 200, json: current_user.deploy_environments.order("created_at DESC").limit(30)
+    end
   end
 
   def load_more_deployments
