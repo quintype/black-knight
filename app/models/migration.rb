@@ -15,7 +15,7 @@ class Migration < ApplicationRecord
   end
 
   def execute_command
-    "docker-deploy.sh"
+    "docker-migration.sh"
   end
 
   def execute_arguments
