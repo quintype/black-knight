@@ -17,7 +17,7 @@ jobs:
       - run:
           name: install ruby dependencies
           command: |
-            /root/.rbenv/shims/bundle install
+            /root/.rbenv/shims/bundle update 
 
       - save_cache:
           paths:
