@@ -18,7 +18,7 @@ jobs:
           name: install ruby dependencies
           command: |
             RAILS_ENV=development /root/.rbenv/shims/bundle install --no-deployment
-            /root/.rbenv/shims/bundle update
+            /root/.rbenv/shims/bundle update delayed_job
             RAILS_ENV=production /root/.rbenv/shims/bundle install --deployment --jobs=4 --retry=3
 
       - save_cache:
