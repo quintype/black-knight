@@ -17,6 +17,7 @@ ActiveAdmin.register DeployEnvironment do
       f.input :repository
       f.input :disposable
       f.input :migratable
+      f.input :migrate_with_sidecar
       f.input :multi_container_pod
       f.input :deployable_containers
     end
