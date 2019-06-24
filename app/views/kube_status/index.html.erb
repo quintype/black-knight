@@ -1,0 +1,9 @@
+<div class="log-container">
+  <%= render partial: "layouts/header" %>
+  <h3 class="log-heading" >Kube Status</h3>
+  <div id="container">
+  </div>
+  <script type="text/javascript">
+    blackKnight.kubeStatusPage(document.getElementById("container"), <%= @current_deploy_environment.id %>, <%= @app_status.to_json.html_safe %>)
+  </script>
+</div>

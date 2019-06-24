@@ -7,23 +7,38 @@ echo -e "Usage: $0 [status|logs|gp] args
          $0 status app_name  publisher
          $0 logs pod_name log_file number_of_lines publisher multi_container_pod
          $0 gp app_name publisher
-         eg:- 
+         eg:-
          $0 status thequint  publisher
          $0 logs pod_name log_file number_of_lines publisher true
          $0 gp thequint theuqint"
          exit
 }
 
+get_rc()
+{
+  $kubectl get rc $1 --namespace=$2 | tail -n 1
+}
 
 get_rc_status()
 {
-desired=$($kubectl get rc $1 --namespace=$2 | tail -n 1 | awk '{print $2}')
+desired=$(get_rc $1 $2)
 if [ "$desired" -eq "0" ];then
     echo 'down'
 else
     echo 'up'
 fi
 }
+
+get_svc_status()
+{
+$kubectl get svc $1 --namespace=$2 | tail -n 1 | awk '{print $1,$3}'
+}
+
+get_ing_status()
+{
+$kubectl get ing $1 --namespace=$2 -o wide | tail -n 1 | awk '{print $2,$4}'
+}
+
 
 #Function to parse container name from pod name
 get_app_name()
@@ -55,6 +70,17 @@ get_pods()
 {
   $kubectl get pod --namespace=$2 --selector=app=$1 | grep $1 | awk '{print $1}'
 }
+
+get_kube_status()
+{
+  pods=$(get_pods $1 $2)
+  rcs=$(get_rc $1 $2)
+  svc=$(get_svc_status $1 $2)
+  ing=$(get_ing_status $1 $2)
+
+  "$pods\n$rcs\n$svc"
+}
+
 if [ "$#" -gt 1 ];then
   if [ -z "$KUBE_MASTER" ]; then
     echo Please provide a deploy server
@@ -90,6 +116,13 @@ case $opt in
          exit 1
       fi
       get_pods $1 $2
+   ;;
+   kube_status)
+        if [ $# -ne 2 ]; then
+           usage
+           exit 1
+        fi
+        get_kube_status $1 $2
    ;;
    *) usage
    ;;

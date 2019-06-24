@@ -54,6 +54,10 @@ class DeployEnvironment < ApplicationRecord
     `KUBE_MASTER=#{cluster.kube_api_server} ./bin/kube-status gp #{app_name} #{username} 2>&1`.split("\n")
   end
 
+  def kube_status
+    `KUBE_MASTER=#{cluster.kube_api_server} ./bin/kube-status kube_status #{app_name} #{username} 2>&1`.split("\n")
+  end
+
   def log_files
     Rails.application.config.log_files["paths"]
   end

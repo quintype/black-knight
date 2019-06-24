@@ -35,6 +35,8 @@ Rails.application.routes.draw do
     get "/dispose" => "environments#dispose", as: :dispose
     get "/migrations" => "environments#migrations"
     get '/migration/:migration_id' => "environments#migration_show"
+
+    get '/kube_status' => "kube_status#index"
   end
 
   namespace :api do
