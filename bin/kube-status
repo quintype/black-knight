@@ -62,7 +62,7 @@ get_logs()
   if [ "$MULTIPLE_CONTAINER_PODS" == "true" ]; then
     KUBE_OPTS="$KUBE_OPTS --container=$(get_app_name "$1")"
   fi
-  
+
   log_file_name=$2
   if [ "$log_file_name" == "stdout" ]; then
     $kubectl logs $1 --tail $3 --namespace=$4 $KUBE_OPTS
@@ -78,18 +78,18 @@ get_pods()
 
 get_kube_status()
 {
-  rcs=$(get_rc $1 $2)
+  rcs=$(get_rc_info $1 $2)
   echo -e "Replication Contoller\n\n${rcs}\t"
 
   echo -e "Pods\n\n"
   pods=$(get_pods_info $1 $2)
   echo -e "${pods}\t"
 
-  svc=$(get_svc_status $1 $2)
+  svc=$(get_svc_info $1 $2)
   echo -e "Service\n\n${svc}\t"
 
   echo -e "Ingress Controller\n\n"
-  ing=$(get_ing_status $1 $2)
+  ing=$(get_ing_info $1 $2)
   echo -e "${ing}"
 }
 
