@@ -12,9 +12,8 @@ class KubeStatusPage extends React.Component {
     this.render = require("./kube_status.rt");
   }
 
-
 };
 
-module.exports = function createComponent(container, envId, appStatus) {
+module.exports = function createComponent(container, appStatus) {
   ReactDom.render(React.createElement(KubeStatusPage, {appStatus: appStatus}), container);
 };

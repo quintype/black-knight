@@ -1,8 +1,5 @@
 <div class="log">
-
-Kube Status
-<div class="output">
-    <h3>Output</h3>
-    <pre class="log-output">{this.state.appStatus}</pre>
+    <div class="output" rt-repeat="appInfo in this.state.appStatus">
+        <pre class="log-output">{appInfo}</pre>
+    </div>
 </div>
-
