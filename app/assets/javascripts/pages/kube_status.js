@@ -1,7 +1,5 @@
 import React from "react";
 import ReactDom from "react-dom";
-import superagent from "superagent";
-import _ from "lodash";
 
 class KubeStatusPage extends React.Component {
   constructor(props) {
