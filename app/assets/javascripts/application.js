@@ -21,5 +21,6 @@ window.blackKnight = {
   disposePage: require("./pages/dispose"),
   publishersMenu: require("./pages/publisher_menu"),
   logsPage: require("./pages/log"),
+  kubeStatusPage: require("./pages/kube_status"),
   searchPub: require("./util/search")
 };

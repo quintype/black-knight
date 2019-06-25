@@ -1,0 +1,5 @@
+<div class="log">
+    <div class="output" rt-repeat="appInfo in this.state.appStatus">
+        <pre class="log-output">{appInfo}</pre>
+    </div>
+</div>

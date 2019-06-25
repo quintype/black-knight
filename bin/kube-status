@@ -7,23 +7,43 @@ echo -e "Usage: $0 [status|logs|gp] args
          $0 status app_name  publisher
          $0 logs pod_name log_file number_of_lines publisher multi_container_pod
          $0 gp app_name publisher
-         eg:- 
+         eg:-
          $0 status thequint  publisher
          $0 logs pod_name log_file number_of_lines publisher true
          $0 gp thequint theuqint"
          exit
 }
 
+get_rc_info()
+{
+  $kubectl get rc $1 --namespace=$2
+}
 
 get_rc_status()
 {
-desired=$($kubectl get rc $1 --namespace=$2 | tail -n 1 | awk '{print $2}')
-if [ "$desired" -eq "0" ];then
+desired=$(get_rc_info $1 $2)
+if [ "$desired" -eq "1" ];then
     echo 'down'
 else
     echo 'up'
 fi
 }
+
+get_svc_info()
+{
+$kubectl get svc $1 --namespace=$2
+}
+
+get_ing_info()
+{
+$kubectl get ing --namespace=$2 -o wide
+}
+
+get_pods_info()
+{
+  $kubectl get pod --namespace=$2 --selector=app=$1 -o wide
+}
+
 
 #Function to parse container name from pod name
 get_app_name()
@@ -42,7 +62,7 @@ get_logs()
   if [ "$MULTIPLE_CONTAINER_PODS" == "true" ]; then
     KUBE_OPTS="$KUBE_OPTS --container=$(get_app_name "$1")"
   fi
-  
+
   log_file_name=$2
   if [ "$log_file_name" == "stdout" ]; then
     $kubectl logs $1 --tail $3 --namespace=$4 $KUBE_OPTS
@@ -55,6 +75,24 @@ get_pods()
 {
   $kubectl get pod --namespace=$2 --selector=app=$1 | grep $1 | awk '{print $1}'
 }
+
+get_kube_status()
+{
+  rcs=$(get_rc_info $1 $2)
+  echo -e "Replication Contoller\n\n${rcs}\t"
+
+  echo -e "Pods\n\n"
+  pods=$(get_pods_info $1 $2)
+  echo -e "${pods}\t"
+
+  svc=$(get_svc_info $1 $2)
+  echo -e "Service\n\n${svc}\t"
+
+  echo -e "Ingress Controller\n\n"
+  ing=$(get_ing_info $1 $2)
+  echo -e "${ing}"
+}
+
 if [ "$#" -gt 1 ];then
   if [ -z "$KUBE_MASTER" ]; then
     echo Please provide a deploy server
@@ -90,6 +128,13 @@ case $opt in
          exit 1
       fi
       get_pods $1 $2
+   ;;
+   kube_status)
+        if [ $# -ne 2 ]; then
+           usage
+           exit 1
+        fi
+        get_kube_status $1 $2
    ;;
    *) usage
    ;;
