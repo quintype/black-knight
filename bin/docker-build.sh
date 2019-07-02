@@ -40,7 +40,7 @@ find toupload -exec rm -f {}.gz \;
 
 echo Uploading to S3
 
-aws s3 sync "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/" --cache-control max-age=31536000,public,s-maxage=31104000
+aws s3 sync "toupload/$publisher_name/" "s3://quintype-frontend-assets/$QT_ENV/$publisher_name/" --cache-control max-age=31536000,public,s-maxage=31104000 --profile prod-bot
 
 rm -rf toupload
 
