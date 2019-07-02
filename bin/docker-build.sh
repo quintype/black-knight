@@ -2,6 +2,9 @@
 
 # local files come from stdin
 
+echo "This build is running on "
+hostname -f
+
 publisher_name="$1"
 repo="$2"
 old_tag="$3"
