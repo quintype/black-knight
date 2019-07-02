@@ -4,7 +4,7 @@ class VersionsController < ApplicationController
   before_action :load_current_environment_and_config
 
   def show
-  	@config_version = @current_config_file.revision(params[:id])
+  	@config_version = @current_config_file.revision(params[:id].to_i)
     render json: @config_version
   end
 
