@@ -14,14 +14,31 @@ echo -e "Usage: $0 [status|logs|gp] args
          exit
 }
 
+DEPLOYMENT="true"
+
 get_rc_info()
 {
   $kubectl get rc $1 --namespace=$2
 }
 
+get_deployments_info()
+{
+  $kubectl get deployments $1 --namespace=$2
+}
+
 get_rc_status()
 {
 desired=$(get_rc_info $1 $2)
+if [ "$desired" -eq "1" ];then
+    echo 'down'
+else
+    echo 'up'
+fi
+}
+
+get_deployments_status()
+{
+desired=$(get_deployments_info $1 $2)
 if [ "$desired" -eq "1" ];then
     echo 'down'
 else
@@ -44,6 +61,10 @@ get_pods_info()
   $kubectl get pod --namespace=$2 --selector=app=$1 -o wide
 }
 
+get_deployments_info()
+{
+$kubectl get deployments --namespace=$2 -o wide
+}
 
 #Function to parse container name from pod name
 get_app_name()
@@ -93,6 +114,23 @@ get_kube_status()
   echo -e "${ing}"
 }
 
+get_kube_deployments_status()
+{
+  deployments=$(get_deployments_info $1 $2)
+  echo -e "Deployments\n\n${deployments}\t"
+
+  echo -e "Pods\n\n"
+  pods=$(get_pods_info $1 $2)
+  echo -e "${pods}\t"
+
+  svc=$(get_svc_info $1 $2)
+  echo -e "Service\n\n${svc}\t"
+
+  echo -e "Ingress Controller\n\n"
+  ing=$(get_ing_info $1 $2)
+  echo -e "${ing}"
+}
+
 if [ "$#" -gt 1 ];then
   if [ -z "$KUBE_MASTER" ]; then
     echo Please provide a deploy server
@@ -112,10 +150,15 @@ case $opt in
            usage
            exit 1
         fi
-        status=$(get_rc_status $1 $2)
+
+        if [[ $EKS == 0 ]]; then
+            status=$(get_rc_status $1 $2)
+        else
+            status=$(get_deployments_status $1 $2)
+        fi
         echo "$status"
    ;;
-   logs) 
+   logs)
       if [ $# -ne 4 ]; then
          usage
          exit 1
@@ -134,7 +177,11 @@ case $opt in
            usage
            exit 1
         fi
-        get_kube_status $1 $2
+        if [[ $DEPLOYMENT == "true" ]]; then
+            get_kube_deployments_status $1 $2
+        else
+            get_kube_status $1 $2
+        fi
    ;;
    *) usage
    ;;
