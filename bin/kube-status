@@ -1,5 +1,5 @@
 #!/bin/bash -e
-
+KUBECTL="/usr/local/bin/kubectl"
 
 usage()
 {
@@ -18,12 +18,12 @@ DEPLOYMENT="true"
 
 get_rc_info()
 {
-  $kubectl get rc $1 --namespace=$2
+  $KUBECTL get rc $1 --namespace=$2
 }
 
 get_deployments_info()
 {
-  $kubectl get deployments $1 --namespace=$2
+  $KUBECTL get deployments $1 --namespace=$2
 }
 
 get_rc_status()
@@ -48,22 +48,22 @@ fi
 
 get_svc_info()
 {
-$kubectl get svc $1 --namespace=$2
+$KUBECTL get svc $1 --namespace=$2
 }
 
 get_ing_info()
 {
-$kubectl get ing --namespace=$2 -o wide
+$KUBECTL get ing --namespace=$2 -o wide
 }
 
 get_pods_info()
 {
-  $kubectl get pod --namespace=$2 --selector=app=$1 -o wide
+  $KUBECTL get pod --namespace=$2 --selector=app=$1 -o wide
 }
 
 get_deployments_info()
 {
-$kubectl get deployments --namespace=$2 -o wide
+$KUBECTL get deployments --namespace=$2 -o wide
 }
 
 #Function to parse container name from pod name
@@ -86,15 +86,15 @@ get_logs()
 
   log_file_name=$2
   if [ "$log_file_name" == "stdout" ]; then
-    $kubectl logs $1 --tail $3 --namespace=$4 $KUBE_OPTS
+    $KUBECTL logs $1 --tail $3 --namespace=$4 $KUBE_OPTS
   else
-    $kubectl exec  $1 --namespace=$4 $KUBE_OPTS -- tail -n $3 $log_file_name
+    $KUBECTL exec  $1 --namespace=$4 $KUBE_OPTS -- tail -n $3 $log_file_name
   fi
 }
 
 get_pods()
 {
-  $kubectl get pod --namespace=$2 --selector=app=$1 | grep $1 | awk '{print $1}'
+  $KUBECTL get pod --namespace=$2 --selector=app=$1 | grep $1 | awk '{print $1}'
 }
 
 get_kube_status()
@@ -136,9 +136,8 @@ if [ "$#" -gt 1 ];then
     echo Please provide a deploy server
     exit 1
   fi
-  server=$KUBE_MASTER
   opt=$1
-  kubectl="kubectl --server=$server"
+  KUBECTL="$KUBECTL --server=$KUBE_MASTER"
   shift 1
 else
   usage

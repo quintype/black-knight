@@ -4,6 +4,7 @@ repo="$2"
 size="$3"
 app_name="$4"
 DEPLOYMENT="true"
+KUBECTL="/usr/local/bin/kubectl"
 
 if [ -z "$KUBE_MASTER" ]; then
   echo Please provide a deploy server
