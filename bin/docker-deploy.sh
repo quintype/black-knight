@@ -104,8 +104,16 @@ start_deploy_rc(){
 
 
 start_deploy_deployments(){
-    $KUBECTL set image  "deployments/$app_name" "$app_name=$repo:$tag" "--server=$KUBE_MASTER" "--namespace=$username"
+    all_containers="$app_name=$repo:$tag"
+    IFS=', ' read -r -a containers <<< "$DEPLOYABLE_CONTAINERS"
+    for container in "${containers[@]}"
+      do
+          all_containers="$all_containers $container=$repo:$tag"
+    done
+    $KUBECTL  set image  "deployments/$app_name" $all_containers "--server=$KUBE_MASTER" "--namespace=$username"
+    $KUBECTL rollout status  "deployments/$app_name" "--server=$KUBE_MASTER" "--namespace=$username"
 }
+
 
 if [ $DEPLOYMENT == "true" ]; then
     if  $KUBECTL get deployments --namespace=$username -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name 2>/dev/null 1>/dev/null;then
