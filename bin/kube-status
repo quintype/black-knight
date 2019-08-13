@@ -23,7 +23,7 @@ get_rc_info()
 
 get_deployments_info()
 {
-  $KUBECTL get deployments $1 --namespace=$2
+  $KUBECTL get deployments $1 --namespace=$2 --selector=app=$1
 }
 
 get_rc_status()
@@ -59,11 +59,6 @@ $KUBECTL get ing --namespace=$2 -o wide
 get_pods_info()
 {
   $KUBECTL get pod --namespace=$2 --selector=app=$1 -o wide
-}
-
-get_deployments_info()
-{
-$KUBECTL get deployments --namespace=$2 -o wide
 }
 
 #Function to parse container name from pod name

@@ -114,12 +114,23 @@ start_deploy_deployments(){
     $KUBECTL rollout status  "deployments/$app_name" "--server=$KUBE_MASTER" "--namespace=$username"
 }
 
+redeploy_deployments(){
+    echo "Redeploying ...."
+    all_containers="$app_name=$repo:$tag"
+    IFS=', ' read -r -a containers <<< "$DEPLOYABLE_CONTAINERS"
+    for container in "${containers[@]}"
+      do
+          all_containers="$all_containers $container=$repo:$tag"
+    done
+    $KUBECTL patch "deployments/$app_name" -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}" "--server=$KUBE_MASTER" "--namespace=$username"
+    $KUBECTL rollout status  "deployments/$app_name" "--server=$KUBE_MASTER" "--namespace=$username"
+}
 
 if [ $DEPLOYMENT == "true" ]; then
     if  $KUBECTL get deployments --namespace=$username -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name 2>/dev/null 1>/dev/null;then
         next_deployment_id=$($KUBECTL get deployments --namespace=$username  -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name)
         if checks_deployments; then
-           start_deploy_deployments ;exit 0;
+           redeploy_deployments ;exit 0;
         fi
     else
         start_deploy_deployments
