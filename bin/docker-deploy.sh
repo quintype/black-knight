@@ -110,18 +110,19 @@ start_deploy_deployments(){
       do
           all_containers="$all_containers $container=$repo:$tag"
     done
+    echo "Starting new-deployment for $all_containers"
     $KUBECTL  set image  "deployments/$app_name" $all_containers "--server=$KUBE_MASTER" "--namespace=$username"
     $KUBECTL rollout status  "deployments/$app_name" "--server=$KUBE_MASTER" "--namespace=$username"
 }
 
 redeploy_deployments(){
-    echo "Redeploying ...."
     all_containers="$app_name=$repo:$tag"
     IFS=', ' read -r -a containers <<< "$DEPLOYABLE_CONTAINERS"
     for container in "${containers[@]}"
       do
           all_containers="$all_containers $container=$repo:$tag"
     done
+    echo "Starting re-deployment for $all_containers"
     $KUBECTL patch "deployments/$app_name" -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}" "--server=$KUBE_MASTER" "--namespace=$username"
     $KUBECTL rollout status  "deployments/$app_name" "--server=$KUBE_MASTER" "--namespace=$username"
 }
@@ -129,10 +130,8 @@ redeploy_deployments(){
 if [ $DEPLOYMENT == "true" ]; then
     existing_tag=$($KUBECTL describe deploy $app_name --namespace=$username --server=$KUBE_MASTER | grep Image | sed -n '1p' | cut -f3 -d ':' | xargs)
     if [ $existing_tag == $tag ]; then
-       echo "starting re-deployment for $app_name with tag $tag"
        redeploy_deployments ;exit 0;
     else
-       echo "starting new deployment for $app_name with tag $tag"
        start_deploy_deployments ;exit 0;
     fi
 else
