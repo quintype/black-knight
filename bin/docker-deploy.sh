@@ -127,14 +127,13 @@ redeploy_deployments(){
 }
 
 if [ $DEPLOYMENT == "true" ]; then
-    if  $KUBECTL get deployments --namespace=$username -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name 2>/dev/null 1>/dev/null;then
-        next_deployment_id=$($KUBECTL get deployments --namespace=$username  -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name)
-        if checks_deployments; then
-           redeploy_deployments ;exit 0;
-        fi
+    existing_tag=$($KUBECTL describe deploy $app_name --namespace=$username --server=$KUBE_MASTER | grep Image | sed -n '1p' | cut -f3 -d ':' | xargs)
+    if [ $existing_tag == $tag ]; then
+       echo "starting re-deployment for $app_name with tag $tag"
+       redeploy_deployments ;exit 0;
     else
-        start_deploy_deployments
-        exit 0
+       echo "starting new deployment for $app_name with tag $tag"
+       start_deploy_deployments ;exit 0;
     fi
 else
     if  $KUBECTL get rc --namespace=$username -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name 2>/dev/null 1>/dev/null;then
