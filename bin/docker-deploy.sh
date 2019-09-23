@@ -11,6 +11,12 @@ if [ -z "$KUBE_MASTER" ]; then
   exit 1
 fi
 
+if [[ $KUBE_MASTER =~ "eks" ]]
+then
+  KUBECTL="/opt/bin/kubectl"
+fi
+
+
 is_exist(){
     resource=$1
     resource_name=$2
