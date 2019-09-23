@@ -11,7 +11,14 @@ if [ -z "$KUBE_MASTER" ]; then
   exit 1
 fi
 
-kubecmd="kubectl --namespace=${username} --server=${KUBE_MASTER}"
+KUBECTL="/usr/local/bin/kubectl"
+
+if [[ $KUBE_MASTER =~ "eks" ]]
+then
+  KUBECTL="/opt/bin/kubectl"
+fi
+
+kubecmd="${KUBECTL} --namespace=${username} --server=${KUBE_MASTER}"
 
 if [ "$ABORT" -eq 1 ]; then
   $kubecmd delete pod ${tag}
