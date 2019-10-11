@@ -6,10 +6,8 @@ app_name="$4"
 KUBECTL="/usr/local/bin/kubectl"
 DEPLOYMENT="true"
 
-if [ -z "$KUBE_MASTER" ]; then
-  echo Please provide a deploy server
-  exit 1
-fi
+echo "This deploy is triggered from  "
+hostname -f
 
 if [[ $KUBE_MASTER =~ "eks" ]]
 then
@@ -17,10 +15,17 @@ then
 fi
 
 
+if [ -z "$KUBE_MASTER" ]; then
+  echo Please provide a deploy server
+  exit 1
+fi
+
+KUBECTL="$KUBECTL --server=$KUBE_MASTER"
+
 is_exist(){
     resource=$1
     resource_name=$2
-    if $KUBECTL get $resource  $resource_name --namespace=$username --server=$KUBE_MASTER 2>/dev/null 1>/dev/null ;then return 0; else return 1; fi
+    if $KUBECTL get $resource  $resource_name --namespace=$username 2>/dev/null 1>/dev/null ;then return 0; else return 1; fi
 }
 
 convert_time_in_second(){
@@ -35,11 +40,11 @@ convert_time_in_second(){
 }
 
 rollback_rc(){
-    $KUBECTL rolling-update $app_name --rollback  --namespace=$username --server=$KUBE_MASTER
+    $KUBECTL rolling-update $app_name --rollback  --namespace=$username
 }
 
 rollback_deployments(){
-    $KUBECTL rollout undo deployments/$app_name  --namespace=$username --server=$KUBE_MASTER
+    $KUBECTL rollout undo deployments/$app_name  --namespace=$username
 }
 
 checks(){
@@ -47,12 +52,12 @@ checks(){
      return 0
     fi
 
-    replicas=$($KUBECTL get rc $next_deployment_id  -o go-template='{{.spec.replicas}}' --namespace=$username --server=$KUBE_MASTER)
+    replicas=$($KUBECTL get rc $next_deployment_id  -o go-template='{{.spec.replicas}}' --namespace=$username )
 
-    ready=$($KUBECTL get rc $next_deployment_id --namespace=$username --server=$KUBE_MASTER | tail -n+2 | awk '{print $4}')
+    ready=$($KUBECTL get rc $next_deployment_id --namespace=$username  | tail -n+2 | awk '{print $4}')
 
     TIMEOUT=600
-    age=$($KUBECTL get rc $next_deployment_id --namespace=$username --server=$KUBE_MASTER | tail -n+2 | awk '{print $5}')
+    age=$($KUBECTL get rc $next_deployment_id --namespace=$username  | tail -n+2 | awk '{print $5}')
     age_in_second=$(convert_time_in_second $age)
 
     if ([ $replicas -gt 1 ] && [ $ready -eq 1] && [ $age_in_second -lt $TIMEOUT ]);then
@@ -72,12 +77,12 @@ checks_deployments(){
      return 0
     fi
 
-    replicas=$($KUBECTL get deployments $next_deployment_id  -o go-template='{{.spec.replicas}}' --namespace=$username --server=$KUBE_MASTER)
+    replicas=$($KUBECTL get deployments $next_deployment_id  -o go-template='{{.spec.replicas}}' --namespace=$username )
 
-    ready=$($KUBECTL get deployments $next_deployment_id --namespace=$username --server=$KUBE_MASTER | tail -n+2 | awk '{print $4}')
+    ready=$($KUBECTL get deployments $next_deployment_id --namespace=$username  | tail -n+2 | awk '{print $4}')
 
     TIMEOUT=600
-    age=$($KUBECTL get deployments $next_deployment_id --namespace=$username --server=$KUBE_MASTER | tail -n+2 | awk '{print $5}')
+    age=$($KUBECTL get deployments $next_deployment_id --namespace=$username  | tail -n+2 | awk '{print $5}')
     age_in_second=$(convert_time_in_second $age)
 
     if ([ $replicas -gt 1 ] && [ $ready -eq 1] && [ $age_in_second -lt $TIMEOUT ]);then
@@ -99,12 +104,12 @@ start_deploy_rc(){
     KUBE_OPTS="$KUBE_OPTS --container=$app_name"
     fi
 
-    $KUBECTL rolling-update "$app_name" "--image=$repo:$tag" $KUBE_OPTS "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent"
+    $KUBECTL rolling-update "$app_name" "--image=$repo:$tag" $KUBE_OPTS  "--namespace=$username" "--image-pull-policy=IfNotPresent"
 
     IFS=', ' read -r -a containers <<< "$DEPLOYABLE_CONTAINERS"
     for container in "${containers[@]}"
     do
-        $KUBECTL rolling-update "$app_name" "--image=$repo:$tag" "--server=$KUBE_MASTER" "--namespace=$username" "--image-pull-policy=IfNotPresent" "--container=$container"
+        $KUBECTL rolling-update "$app_name" "--image=$repo:$tag"  "--namespace=$username" "--image-pull-policy=IfNotPresent" "--container=$container"
     done
 }
 
@@ -117,8 +122,8 @@ start_deploy_deployments(){
           all_containers="$all_containers $container=$repo:$tag"
     done
     echo "Starting new-deployment for $all_containers"
-    $KUBECTL  set image  "deployments/$app_name" $all_containers "--server=$KUBE_MASTER" "--namespace=$username"
-    $KUBECTL rollout status  "deployments/$app_name" "--server=$KUBE_MASTER" "--namespace=$username"
+    $KUBECTL  set image  "deployments/$app_name" $all_containers  "--namespace=$username"
+    $KUBECTL rollout status  "deployments/$app_name"  "--namespace=$username"
 }
 
 redeploy_deployments(){
@@ -129,20 +134,20 @@ redeploy_deployments(){
           all_containers="$all_containers $container=$repo:$tag"
     done
     echo "Starting re-deployment for $all_containers"
-    $KUBECTL patch "deployments/$app_name" -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}" "--server=$KUBE_MASTER" "--namespace=$username"
-    $KUBECTL rollout status  "deployments/$app_name" "--server=$KUBE_MASTER" "--namespace=$username"
+    $KUBECTL patch "deployments/$app_name" -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}"  "--namespace=$username"
+    $KUBECTL rollout status  "deployments/$app_name"  "--namespace=$username"
 }
 
 if [ $DEPLOYMENT == "true" ]; then
-    existing_tag=$($KUBECTL describe deploy $app_name --namespace=$username --server=$KUBE_MASTER | grep Image | sed -n '1p' | cut -f3 -d ':' | xargs)
+    existing_tag=$($KUBECTL describe deploy $app_name --namespace=$username  | grep Image | sed -n '1p' | cut -f3 -d ':' | xargs)
     if [ $existing_tag == $tag ]; then
        redeploy_deployments ;exit 0;
     else
        start_deploy_deployments ;exit 0;
     fi
 else
-    if  $KUBECTL get rc --namespace=$username -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name 2>/dev/null 1>/dev/null;then
-        next_deployment_id=$($KUBECTL get rc --namespace=$username  -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}' --server=$KUBE_MASTER $app_name)
+    if  $KUBECTL get rc --namespace=$username -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}'  $app_name 2>/dev/null 1>/dev/null;then
+        next_deployment_id=$($KUBECTL get rc --namespace=$username  -o go-template='{{index .metadata.annotations "$KUBECTL.kubernetes.io/next-controller-id"}}'  $app_name)
         if checks; then
            start_deploy_rc ;exit 0;
         fi

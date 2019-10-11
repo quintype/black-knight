@@ -1,5 +1,5 @@
 #!/bin/bash -e
-KUBECTL="/usr/local/bin/kubectl"
+KUBECTL="/usr/local/bin/kubectl --username frodo --password i4gotagain"
 
 usage()
 {
@@ -14,6 +14,13 @@ echo -e "Usage: $0 [status|logs|gp] args
          exit
 }
 
+
+if [[ "$KUBE_MASTER" =~ "eks" ]]
+then
+  KUBECTL="/opt/bin/kubectl"
+fi
+
+KUBECTL="$KUBECTL --server=$KUBE_MASTER"
 DEPLOYMENT="true"
 
 get_rc_info()
@@ -132,7 +139,6 @@ if [ "$#" -gt 1 ];then
     exit 1
   fi
   opt=$1
-  KUBECTL="$KUBECTL --server=$KUBE_MASTER"
   shift 1
 else
   usage
