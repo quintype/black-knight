@@ -15,7 +15,7 @@ echo -e "Usage: $0 [status|logs|gp] args
 }
 
 
-if [[ "$KUBE_MASTER" =~ "eks" ]]
+if [[ $KUBE_MASTER =~ "eks" ]]
 then
   KUBECTL="/opt/bin/kubectl"
 fi

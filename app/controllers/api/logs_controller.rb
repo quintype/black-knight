@@ -11,7 +11,7 @@ class Api::LogsController < ApplicationController
       pod_name = params[:pod]
       log_file = params[:log_file]
       lines = params[:lines].to_i
-      respond_with log_output: `KUBE_MASTER=#{deploy_environment.cluster.kube_api_server} MULTIPLE_CONTAINER_PODS=#{deploy_environment.multi_container_pod.to_s} ./bin/kube-status logs #{pod_name} #{log_file} #{lines} #{deploy_environment.username} 2>&1`
+      respond_with log_output: `KUBE_MASTER="#{deploy_environment.cluster.kube_api_server}" MULTIPLE_CONTAINER_PODS=#{deploy_environment.multi_container_pod.to_s} ./bin/kube-status logs #{pod_name} #{log_file} #{lines} #{deploy_environment.username} 2>&1`
     else
       respond_with log_output: "Validation Error!"
     end
