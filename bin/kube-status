@@ -14,6 +14,12 @@ echo -e "Usage: $0 [status|logs|gp] args
          exit
 }
 
+
+if [[ $KUBE_MASTER =~ "eks" ]]
+then
+  KUBECTL="/opt/bin/kubectl"
+fi
+
 DEPLOYMENT="true"
 
 get_rc_info()
