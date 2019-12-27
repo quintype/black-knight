@@ -51,7 +51,7 @@ class DeployEnvironment < ApplicationRecord
   end
 
   def running_pods
-    `KUBE_MASTER=#{cluster.kube_api_server} ./bin/kube-status gp #{app_name} #{username} 2>&1`.split("\n")
+    `KUBE_MASTER="#{cluster.kube_api_server}" ./bin/kube-status gp #{app_name} #{username} 2>&1`.split("\n")
   end
 
   def kube_status
