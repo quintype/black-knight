@@ -11,8 +11,16 @@ if [ -z "$KUBE_MASTER" ]; then
   exit 1
 fi
 
+if [[ $KUBE_MASTER =~ "eks" ]]
+then
+  KUBECTL="/opt/bin/kubectl"
+fi
+
+
+KUBECTL="$KUBECTL --server=$KUBE_MASTER"
+
 if [ $DEPLOYMENT == "true" ]; then
-  $KUBECTL scale "deployments/$app_name" --replicas="$size" --server="$KUBE_MASTER" --namespace="$username"
+  $KUBECTL scale "deployments/$app_name" --replicas="$size" --namespace="$username"
 else
-  $KUBECTL scale "rc/$app_name" --replicas="$size" --server="$KUBE_MASTER" --namespace="$username"
+  $KUBECTL scale "rc/$app_name" --replicas="$size" --namespace="$username"
 fi
