@@ -45,8 +45,10 @@ class DeployContainerJob < ApplicationJob
 
     if clazz == 'Migration'
         message = " Find logs in kibana.\n Select your app from index filter.\n Add a filter with kubernetes.pod.name is " + build_container.new_tag + "\n"
-        build_container.deploy! { |op| update_deployment(deploy_output: message) }
-        update_deployment(deploy_ended: DateTime.now, deploy_status: "success", status: "success" )
+        result = build_container.deploy! { |op| update_deployment(deploy_output: message) }
+        update_deployment(deploy_ended: DateTime.now,
+         deploy_status: result[:success] ? "success": "failed",
+         status: result[:success] ? "success": "failed" )
         update_deployment(deploy_output: message)
     else
         result = build_container.deploy! { |op|
