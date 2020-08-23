@@ -25,4 +25,5 @@
       </tr>
     </tbody>
   </table>
+  <button onClick="{this.loadMore}">Load More</button>
 </div>

@@ -7,24 +7,6 @@ class Api::DeployEnvironmentsController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: [:scale, :clone_as_pr, :destroy]
 
-  # FIXME: Terrible modelling, this should be as_json(include:). Or use jbuilder.
-  def attributes_for_environment_page(deploy_environment, page=nil)
-    if page
-      deploy_environment.deployments.all.reverse_order.page(page).per(5).map {|deployment|
-        deployment.attributes.slice("id", "version", "deploy_tag", "status")
-      }
-    else
-      deploy_environment.attributes.merge(
-        deployments: deploy_environment.deployments.latest.map { |deployment|
-          deployment.attributes.slice("id", "version", "deploy_tag", "status")
-        },
-        migrations: deploy_environment.migrations.latest.map { |migration|
-          migration.attributes.slice("id", "version", "deploy_tag", "status", "migration_command")
-        }
-      )
-    end
-  end
-
   def show
     respond_with deploy_environment: attributes_for_environment_page(current_user.deploy_environments.find(params[:id]))
   end
@@ -49,7 +31,11 @@ class Api::DeployEnvironmentsController < ApplicationController
   end
 
   def load_more_deployments
-    respond_with more_deployments: attributes_for_environment_page(current_user.deploy_environments.find(params[:deploy_environment_id]), params[:page])
+    respond_with more_deployments: more_deployments(current_user.deploy_environments.find(params[:deploy_environment_id]), params[:page])
+  end
+
+  def load_more_migrations
+    respond_with more_migrations: more_migrations(current_user.deploy_environments.find(params[:deploy_environment_id]), params[:page])
   end
 
   def validate_config_file
@@ -87,6 +73,30 @@ class Api::DeployEnvironmentsController < ApplicationController
   end
 
   private
+
+  # FIXME: Terrible modelling, this should be as_json(include:). Or use jbuilder.
+  def attributes_for_environment_page(deploy_environment)
+    deploy_environment.attributes.merge(
+      deployments: deploy_environment.deployments.latest.map { |deployment|
+        deployment.attributes.slice("id", "version", "deploy_tag", "status")
+      },
+      migrations: deploy_environment.migrations.latest.map { |migration|
+        migration.attributes.slice("id", "version", "deploy_tag", "status", "migration_command")
+      }
+    )
+  end
+
+  def more_deployments(deploy_environment, page)
+    deploy_environment.deployments.all.reverse_order.page(page).per(5).map {|deployment|
+        deployment.attributes.slice("id", "version", "deploy_tag", "status")
+      }
+  end
+
+  def more_migrations(deploy_environment, page)
+    deploy_environment.migrations.all.reverse_order.page(page).per(5).map {|deployment|
+      migration.attributes.slice("id", "version", "deploy_tag", "status", "migration_command")
+      }
+  end
 
   def pr_deploy_environment_name
     temp_environment_name = current_environment.name.split("-")

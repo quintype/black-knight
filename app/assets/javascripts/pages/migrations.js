@@ -6,6 +6,7 @@ import _ from "lodash";
 class Migrations extends React.Component {
   constructor(props) {
     super(props);
+    this.loadMore = this.loadMore.bind(this)
     this.state = {
       deployEnv: null,
       command: [],
@@ -30,6 +31,20 @@ class Migrations extends React.Component {
         }
         self.setState(stateToSet);
       });
+  }
+
+  loadMore() {
+    superagent
+      .get("/api/deploy_environments/"+this.props.deployEnvironmentId+"/migrations.json?page="+this.state.pageToRetrieve)
+      .end((err, response) => {
+        let deployEnvironment = this.state.deployEnv
+        let moreMigrations = response.body.more_migrations
+        deployEnvironment.migrations = deployEnvironment.migrations.concat(moreMigrations)
+        let stateToSet = {}
+        stateToSet['deployEnv'] = deployEnvironment
+        stateToSet['pageToRetrieve'] = this.state.pageToRetrieve + 1
+        this.setState(stateToSet)
+      })
   }
 
   componentDidMount() {
