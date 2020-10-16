@@ -39,7 +39,7 @@ done
 if [ "$ABORT" -eq 1 ]; then
   $kubecmd delete pod ${tag}
 else
-  $kubecmd run -i ${tag} --image=${repo}:${tag} --labels app=${app_name}-migrate --restart=Never  --overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}]}}' --command -- $@
+  $kubecmd run -i ${tag} --image=${repo}:${tag} --labels app=${app_name}-migrate --restart=Never $secrets_string --overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}]}}' --command -- $@
   $kubecmd delete pod ${tag}
 fi
 
