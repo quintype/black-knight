@@ -93,7 +93,7 @@ class Api::DeployEnvironmentsController < ApplicationController
   end
 
   def more_migrations(deploy_environment, page)
-    deploy_environment.migrations.all.reverse_order.page(page).per(5).map {|deployment|
+    deploy_environment.migrations.all.reverse_order.page(page).per(5).map {|migration|
       migration.attributes.slice("id", "version", "deploy_tag", "status", "migration_command")
       }
   end
