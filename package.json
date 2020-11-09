@@ -10,7 +10,7 @@
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-templatify": "^0.3.2",
-    "superagent": "^1.8.3"
+    "superagent": "^3.7.0"
   },
   "browserify": {
     "transform": [
