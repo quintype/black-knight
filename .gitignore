@@ -23,6 +23,3 @@
 
 /.idea/
 .DS_Store
-
-.log/
-vendor/bundle
