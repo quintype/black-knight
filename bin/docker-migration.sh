@@ -35,6 +35,8 @@ do
       secrets_string="$secrets_string --env=$secret_key=$updated_base64_value"
     fi
 done
+#Running migration pods in different namespace
+kubecmd="${KUBECTL} --namespace=quintype-all-migrations --server=${KUBE_MASTER}"
 
 if [ "$ABORT" -eq 1 ]; then
   $kubecmd delete pod ${tag}
