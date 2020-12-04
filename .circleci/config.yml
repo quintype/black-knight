@@ -3,7 +3,6 @@ jobs:
   create-tar:
     docker:
        - image: quay.io/quintype/black-knight:bk-rubyupgrade
-
     steps:
       - checkout
 
