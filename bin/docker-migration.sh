@@ -27,7 +27,8 @@ for kv in $kube_secrets_arr
 do
     IFS='::' read -r -a secret_kv <<< "$kv"
     secret_key=${secret_kv[0]}
-    if [[ "$secret_key" =~ "namespace" ]] || [[ "$secret_key" =~ "ca.crt" ]] || [[ "$secret_key" =~ "token" ]] || [[ "$secret_key" =~ ".dockerconfigjson" ]]; then
+# TODO : fix migration secrets properly
+if [[ "$secret_key" =~ "namespace" ]] || [[ "$secret_key" =~ "ca.crt" ]] || [[ "$secret_key" =~ "token" ]] || [[ "$secret_key" =~ ".dockerconfigjson" ]] || [[ "$secret_key" =~ "license" ]] || [[ "$secret_key" =~ "licenseKey" ]] || [[ "$secret_key" =~ "tls.crt" ]] || [[ "$secret_key" =~ "tls.key" ]] || [[ "$secret_key" =~ "release" ]]; then
       echo "ignoring certs secret. ${secret_kv[0]}"
     else
       base64_decode_value=$(echo ${secret_kv[2]} | base64 --decode)
