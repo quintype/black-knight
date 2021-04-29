@@ -54,7 +54,7 @@ kubecmd="${KUBECTL} --namespace=quintype-all-migrations --server=${KUBE_MASTER}"
 if [ "$ABORT" -eq 1 ]; then
   $kubecmd delete pod ${tag}
 else
-  $kubecmd run -i ${tag} --image=${repo}:${tag} --labels app=${app_name}-migrate --restart=Never $secrets_string --overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}]}}' --command -- $@
+  $kubecmd run -i ${tag} --image=${repo}:${tag} --labels app=${app_name}-migrate --restart=Never $secrets_string --overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "all"}}}' --command -- $@
   $kubecmd delete pod ${tag}
 fi
 
