@@ -50,7 +50,7 @@
       </tr>
       <tr>
         <td>Deploy Status</td>
-        <td>{deployment.deploy_status}</td>
+        <td>{deployment.deploy_status} <a rt-if="deployment.deploy_status == 'failed' && (Date.now() - Date.parse(deployment.created_at)) < 86400000" style="text-decoration:none" href="/environments/{deployment.deploy_environment_id}/logs">Please check logs!</a><a rt-if="deployment.deploy_status == 'failed' && (Date.now() - Date.parse(deployment.created_at)) < 86400000" href="/environments/{deployment.deploy_environment_id}/kube_status" style="text-decoration:none"> Please check kube status!</a></td>
       </tr>
     </tbody>
   </table>

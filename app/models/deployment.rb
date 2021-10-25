@@ -1,5 +1,5 @@
 class Deployment < ApplicationRecord
-        acts_as_paranoid
+  acts_as_paranoid
   belongs_to :deploy_environment
   belongs_to :scheduled_by, class_name: "User"
   belongs_to :cancelled_by, class_name: "User"
