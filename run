@@ -2,6 +2,9 @@
 
 cd "$(dirname "$0")"
 
+# Specify ruby version bcz it was taking system's ruby version on staging
+rbenv local 2.6.0
+gem install bundler:1.17.2
 # This is run on production. The Rails environment is replaced there
 RAILS_ENV=development bundle install --deployment
 npm install
