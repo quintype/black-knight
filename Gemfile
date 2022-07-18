@@ -49,3 +49,4 @@ gem 'daemons'
 gem 'delayed_job_web'
 gem 'bigdecimal', "~> 1.4.3"
 gem 'amoeba', "~> 3.1.0"
+
