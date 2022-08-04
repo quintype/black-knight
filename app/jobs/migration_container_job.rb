@@ -1,10 +1,10 @@
 class MigrationContainerJob < DeploymentBaseJob
   queue_as :migration
-  attr_reader :migration
+  attr_accessor :migration
 
   def perform(migration_id, base_url)
-    @migration ||= Migration.find(migration_id)
-    build_container = BuildContainer.new(@deployment)
+    @migration = Migration.find(migration_id)
+    build_container = BuildContainer.new(migration)
 
     update_migration(status: "building",
                       deploy_tag: build_container.new_tag,
@@ -36,6 +36,6 @@ class MigrationContainerJob < DeploymentBaseJob
   end
 
   def update_migration(attrs)
-    @migration.update!(attrs)
+    migration.update!(attrs)
   end
 end

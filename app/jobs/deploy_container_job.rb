@@ -1,7 +1,7 @@
 class DeployContainerJob < DeploymentBaseJob
   queue_as :deployment
 
-  attr_reader :deployment
+  attr_accessor :deployment
 
   def update_deployment(attrs)
     deployment.update!(attrs)
