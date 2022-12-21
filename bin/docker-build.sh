@@ -9,6 +9,7 @@ publisher_name="$1"
 repo="$2"
 old_tag="$3"
 new_tag="$4"
+target_platform="$5"
 
 if [ -z "$QT_ENV" ]; then
   echo Please provide an environment
@@ -30,7 +31,7 @@ RUN tar xvf /tmp/config.tar -C /
 EOF
 
 echo Building Container
-docker build -t "$repo:$new_tag" .
+docker buildx build --platform=$target_platform -t "$repo:$new_tag" .
 docker rmi "$repo:$old_tag"
 
 echo Copying assets from /app/public/$publisher_name
