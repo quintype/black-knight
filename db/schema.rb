@@ -110,7 +110,6 @@ ActiveRecord::Schema.define(version: 20221221124852) do
     t.boolean  "migratable"
     t.boolean  "multi_container_pod",   default: false
     t.string   "deployable_containers"
-    t.date     "deleted_at"
     t.string   "target_platform"
     t.index ["cluster_id"], name: "index_deploy_environments_on_cluster_id"
     t.index ["publisher_id"], name: "index_deploy_environments_on_publisher_id"
@@ -136,7 +135,6 @@ ActiveRecord::Schema.define(version: 20221221124852) do
     t.datetime "cancelled_at"
     t.integer  "cancelled_by_id"
     t.integer  "redeploy_of_id"
-    t.date     "deleted_at"
     t.index ["deploy_environment_id"], name: "index_deployments_on_deploy_environment_id"
     t.index ["redeploy_of_id"], name: "index_deployments_on_redeploy_of_id"
   end
