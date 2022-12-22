@@ -31,7 +31,12 @@ RUN tar xvf /tmp/config.tar -C /
 EOF
 
 echo Building Container
-docker buildx build --platform=$target_platform -t "$repo:$new_tag" .
+export DOCKER_CLI_EXPERIMENTAL=enabled
+docker context create multi-arch-build
+docker buildx create --use multi-arch-build
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --push --platform $target_platform -t "$repo:$new_tag" .
 docker rmi "$repo:$old_tag"
 
 echo Copying assets from /app/public/$publisher_name
@@ -50,7 +55,7 @@ echo S3 upload has been completed
 
 rm -rf toupload
 
-docker push "$repo:$new_tag"
+# docker push "$repo:$new_tag"
 
 docker rm "$container_id"
 docker rmi "$repo:$new_tag"
