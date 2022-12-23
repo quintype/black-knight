@@ -58,8 +58,6 @@ echo S3 upload has been completed
 
 rm -rf toupload
 
-# docker push "$repo:$new_tag"
-
 docker rm "$container_id"
 docker rmi "$repo:$new_tag"
 
