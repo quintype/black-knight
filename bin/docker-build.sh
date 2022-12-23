@@ -40,7 +40,6 @@ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 echo "Black-Knight: Done warming up "
 echo "Black-Knight: I am building Docker Image for platform $target_platform"
 DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform=$target_platform --progress=plain -t "$repo:$new_tag" --push .
-docker rmi "$repo:$old_tag"
 
 echo Copying assets from /app/public/$publisher_name
 mkdir toupload
