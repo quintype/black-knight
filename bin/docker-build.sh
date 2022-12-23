@@ -30,13 +30,16 @@ RUN echo "Deployment: $BLACK_KNIGHT_DEPLOYMENT" >> /app/public/round-table.txt
 RUN tar xvf /tmp/config.tar -C /
 EOF
 
-echo Building Container
+echo "Black-Knight: I am Upgraded To Support Buiding Multi-Arch Docker Images"
 export DOCKER_CLI_EXPERIMENTAL=enabled
-docker context create multi-arch-build
+echo "Black-Knight: I will be calling you "
 docker buildx create --use multi-arch-build
+echo "for this session "
+echo "Black-Knight: I am warming up "
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-
-DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --push --platform $target_platform -t "$repo:$new_tag" .
+echo "Black-Knight: Done warming up "
+echo "Black-Knight: I am building Docker Image for platform $target_platform"
+DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform=$target_platform --progress=plain -t "$repo:$new_tag" --push .
 docker rmi "$repo:$old_tag"
 
 echo Copying assets from /app/public/$publisher_name
@@ -59,3 +62,5 @@ rm -rf toupload
 
 docker rm "$container_id"
 docker rmi "$repo:$new_tag"
+
+echo "Black-Knight: Thanks Bye"

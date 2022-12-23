@@ -1,7 +1,7 @@
 # This class is hacky. Need to figure out how to test this
 class BuildContainer
   attr_reader :deployment, :new_tag
-  VALID_PLATFORMS = ['linux/arm64', 'linux/amd64'].freeze
+  VALID_PLATFORMS = ['linux/arm64/v8,linux/amd64', 'linux/arm64/v8', 'linux/arm64', 'linux/amd64'].freeze
 
   def deploy_env
     deployment.deploy_environment
