@@ -32,14 +32,11 @@ EOF
 
 echo "Black-Knight: I am Upgraded To Support Buiding Multi-Arch Docker Images"
 export DOCKER_CLI_EXPERIMENTAL=enabled
-echo "Black-Knight: I will be calling you "
-docker buildx create --use multi-arch-build
-echo "for this session "
-echo "Black-Knight: I am warming up "
+echo "Black-Knight: I am creating binaries for multi-arch support"
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-echo "Black-Knight: Done warming up "
+echo "Black-Knight: Done Creating binaries for multi-arch support"
 echo "Black-Knight: I am building Docker Image for platform $target_platform"
-DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform=$target_platform --progress=plain -t "$repo:$new_tag" --push .
+docker buildx build --platform=$target_platform --progress=plain -t "$repo:$new_tag" --push .
 
 echo Copying assets from /app/public/$publisher_name
 mkdir toupload
