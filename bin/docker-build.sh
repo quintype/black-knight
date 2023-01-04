@@ -57,4 +57,4 @@ rm -rf toupload
 docker rm "$container_id"
 docker rmi "$repo:$new_tag"
 
-echo "Black-Knight: Thanks Bye"
+echo "Black-Knight: Goodbye!"
