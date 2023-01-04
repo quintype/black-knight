@@ -1,26 +1,14 @@
-class DeployContainerJob < ApplicationJob
-  queue_as :default
+class DeployContainerJob < DeploymentBaseJob
+  queue_as :deployment
 
-  attr_reader :deployment
+  attr_accessor :deployment
 
   def update_deployment(attrs)
-    @deployment.update!(attrs)
-  end
-
-  # This loads the deployment or migration as needed
-  def load_deployable(clazz, deployment_id)
-    case(clazz)
-    when 'Deployment'
-      Deployment.find(deployment_id)
-    when 'Migration'
-      Migration.find(deployment_id)
-    else
-      raise "Unknown deployment type #{clazz}"
-    end
+    deployment.update!(attrs)
   end
 
   def perform(deployment_id, base_url, clazz = 'Deployment')
-    @deployment = load_deployable(clazz, deployment_id)
+    @deployment = Deployment.find(deployment_id)
     build_container = BuildContainer.new(@deployment)
 
     if @deployment.buildable?
@@ -42,37 +30,14 @@ class DeployContainerJob < ApplicationJob
                       deploy_output: "",
                       status: "deploying")
 
+    result = build_container.deploy! { |op|
+        update_deployment(deploy_output: deployment.deploy_output + op)
+    }
 
-    if clazz == 'Migration'
-        message = " Find logs in kibana.\n Select your app from index filter.\n Add a filter with kubernetes.pod.name is " + build_container.new_tag + "\n"
-        result = build_container.deploy! { |op| update_deployment(deploy_output: message) }
-        update_deployment(deploy_ended: DateTime.now,
-         deploy_status: result[:success] ? "success": "failed",
-         status: result[:success] ? "success": "failed-deploy" )
-        update_deployment(deploy_output: message)
-    else
-        result = build_container.deploy! { |op|
-            update_deployment(deploy_output: deployment.deploy_output + op)
-        }
-
-        update_deployment(deploy_ended: DateTime.now,
-                          deploy_status: result[:success] ? "success": "failed",
-                          status: result[:success] ? "success" : "failed-deploy")
-    end
+    update_deployment(deploy_ended: DateTime.now,
+                      deploy_status: result[:success] ? "success": "failed",
+                      status: result[:success] ? "success" : "failed-deploy")
 
     post_slack(deployment,base_url)
-  end
-
-  private
-  # This should be made into a separate class
-  def post_slack(deployment, base_url, channel="#deploy-#{Rails.application.secrets[:qt_environment]}")
-    user = deployment.scheduled_by
-    environment = deployment.deploy_environment
-    messages = {"building" => "Deploying `#{environment.app_name}/#{environment.name}` with tag `#{deployment.version}`",
-                "success" => "Deployed `#{environment.app_name}/#{environment.name}` with tag `#{deployment.deploy_tag}`.",
-                "failed-build" => "Build failed `#{environment.app_name}/#{environment.name}` <#{base_url}/deploy/#{deployment.id}|More Details>",
-                "failed-deploy" => "Deploy failed `#{environment.app_name}/#{environment.name}` <#{base_url}/deploy/#{deployment.id}|More Details>"}
-
-    PostToSlack.post(messages[deployment.status], user: user.name || user.email)
   end
 end

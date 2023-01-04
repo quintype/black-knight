@@ -10,7 +10,7 @@ class Api::MigrationsController < ApplicationController
     migration = environment.new_migration(migration_params[:version], migration_params[:migration_command], current_user)
     if(migration.save)
       respond_with({migration: migration}, location: "/migration/#{migration.id}")
-      DeployContainerJob.perform_later(migration.id, request.base_url, 'Migration')
+      MigrationContainerJob.perform_later(migration.id, request.base_url)
     else
       respond_with migration
     end
