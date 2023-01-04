@@ -2,7 +2,7 @@
 
 # local files come from stdin
 
-echo "This build is running on "
+echo "Black-Knight: This build is running on "
 hostname -f
 
 publisher_name="$1"
