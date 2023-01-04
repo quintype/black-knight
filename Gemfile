@@ -37,10 +37,10 @@ gem 'tzinfo-data', platforms: [:jruby]
 gem 'devise', git: 'https://github.com/plataformatec/devise'
 gem 'simple_token_authentication', '~> 1.0'
 gem 'activeadmin', '~> 1.1.0'
+gem "kaminari", "~> 1.2.1"
 gem 'activeadmin_addons'
-gem "kaminari", "~> 1.0.0"
 gem 'browserify-rails'
-gem 'devise-two-factor', '~> 3.0.0' # for two factor
+gem 'devise-two-factor', '~> 4.0.2' # for two factor
 gem 'rqrcode_png'
 
 gem 'delayed_job', "~> 4.1.4"
