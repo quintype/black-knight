@@ -32,10 +32,7 @@ EOF
 
 echo "Black-Knight: I am Upgraded To Support Buiding Multi-Arch Docker Images"
 export DOCKER_CLI_EXPERIMENTAL=enabled
-echo "Black-Knight: clearing old inactive buildx session"
-docker buildx rm --all-inactive
-echo "Black-Knight: I will be calling this session as"
-docker buildx create --use multi-arch-build
+BUILDER_NAME=$(docker buildx create --use multi-arch-build)
 echo "Black-Knight: I am creating binaries for multi-arch support"
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 echo "Black-Knight: Done Creating binaries for multi-arch support"
@@ -60,5 +57,5 @@ rm -rf toupload
 
 docker rm "$container_id"
 docker rmi "$repo:$new_tag"
-
+echo "y"| docker buildx rm $BUILDER_NAME
 echo "Black-Knight: Goodbye!"
