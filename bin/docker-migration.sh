@@ -52,16 +52,16 @@ fi
 
 kubecmd="${KUBECTL} --namespace=quintype-all-migrations --server=${KUBE_MASTER}"
 
-if [ $target_platform == "linux/arm64/v8" ]
-  overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "devops"}}}'
+if [ ${target_platform} == "linux/arm64/v8" ]; then
+    overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "devops"}}}'
 else
-  overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "all"}}}'
+    overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "all"}}}'
 fi
 
 if [ "$ABORT" -eq 1 ]; then
-  $kubecmd delete pod ${tag}
+    $kubecmd delete pod ${tag}
 else
     $kubecmd run -i ${tag} --image=${repo}:${tag} --labels app=${app_name}-migrate --restart=Never $secrets_string --overrides=${overrides} --command -- $@
-  $kubecmd delete pod ${tag}
+    $kubecmd delete pod ${tag}
 fi
 
