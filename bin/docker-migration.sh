@@ -3,8 +3,9 @@ username="$1"
 repo="$2"
 tag="$3"
 app_name="$4"
+target_platform="$5"
 ABORT="${ABORT:-0}"
-shift 4
+shift 5
 
 if [ -z "$KUBE_MASTER" ]; then
   echo Please provide a deploy server
@@ -51,10 +52,16 @@ fi
 
 kubecmd="${KUBECTL} --namespace=quintype-all-migrations --server=${KUBE_MASTER}"
 
+if [ "$target_platform" -eq "linux/arm64/v8" ]
+  overrides = '{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "devops"}}}'
+else
+  overrides = '{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "all"}}}'
+fi
+
 if [ "$ABORT" -eq 1 ]; then
   $kubecmd delete pod ${tag}
 else
-  $kubecmd run -i ${tag} --image=${repo}:${tag} --labels app=${app_name}-migrate --restart=Never $secrets_string --overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "all"}}}' --command -- $@
+    $kubecmd run -i ${tag} --image=${repo}:${tag} --labels app=${app_name}-migrate --restart=Never $secrets_string --overrides=$overrides --command -- $@
   $kubecmd delete pod ${tag}
 fi
 
