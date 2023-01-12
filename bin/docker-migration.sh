@@ -52,10 +52,10 @@ fi
 
 kubecmd="${KUBECTL} --namespace=quintype-all-migrations --server=${KUBE_MASTER}"
 
-if [ "$target_platform" -eq "linux/arm64/v8" ]
-  overrides = '{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "devops"}}}'
+if [ $target_platform == "linux/arm64/v8" ]
+  overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "devops"}}}'
 else
-  overrides = '{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "all"}}}'
+  overrides='{"spec":{"imagePullSecrets":[{"name":"myregistrykey"}],"nodeSelector": {"minion_role": "all"}}}'
 fi
 
 if [ "$ABORT" -eq 1 ]; then
