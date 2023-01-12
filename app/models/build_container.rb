@@ -1,7 +1,9 @@
 # This class is hacky. Need to figure out how to test this
 class BuildContainer
   attr_reader :deployment, :new_tag
-  VALID_PLATFORMS = ['linux/arm64/v8,linux/amd64', 'linux/arm64/v8', 'linux/arm64', 'linux/amd64'].freeze
+  ARM = 'linux/arm64/v8'
+  AMD = 'linux/amd64'
+  VALID_PLATFORMS = [ARM, AMD].freeze
 
   def deploy_env
     deployment.deploy_environment
@@ -18,8 +20,7 @@ class BuildContainer
   def target_platform
     platform = deploy_env.target_platform
     return platform if VALID_PLATFORMS.include?(platform)
-
-    'linux/amd64'
+    AMD
   end
 
   def config_files
