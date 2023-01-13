@@ -3,8 +3,9 @@ username="$1"
 repo="$2"
 tag="$3"
 app_name="$4"
+target_platform="$5"
 ABORT="${ABORT:-0}"
-shift 4
+shift 5
 
 if [ -z "$KUBE_MASTER" ]; then
   echo Please provide a deploy server

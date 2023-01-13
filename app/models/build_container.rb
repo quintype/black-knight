@@ -48,6 +48,6 @@ class BuildContainer
                        "MULTIPLE_CONTAINER_PODS" => deploy_env.multi_container_pod.to_s,
                        "DEPLOYABLE_CONTAINERS" => deployable_containers},
                       "#{Rails.root}/bin/#{deployment.execute_command}",
-                      deploy_env.publisher.username, deploy_env.repository, new_tag, deploy_env.app_name, *deployment.execute_arguments) { |o| yield o }
+                      deploy_env.publisher.username, deploy_env.repository, new_tag, deploy_env.app_name, target_platform, *deployment.execute_arguments) { |o| yield o }
   end
 end
