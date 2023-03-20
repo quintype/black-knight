@@ -1,6 +1,7 @@
 # This class is hacky. Need to figure out how to test this
 class BuildContainer
   attr_reader :deployment, :new_tag
+  VALID_PLATFORMS = ['linux/arm64/v8,linux/amd64', 'linux/arm64/v8', 'linux/arm64', 'linux/amd64'].freeze
 
   def deploy_env
     deployment.deploy_environment
@@ -14,6 +15,13 @@ class BuildContainer
     deployment.version
   end
 
+  def target_platform
+    platform = deploy_env.target_platform
+    return platform if VALID_PLATFORMS.include?(platform)
+
+    'linux/amd64'
+  end
+
   def config_files
     JSON.parse(deployment.configuration)
   end
@@ -25,7 +33,7 @@ class BuildContainer
 
   def build!
     shell = RunShell.new({"QT_ENV" => Rails.application.secrets.qt_environment, "BLACK_KNIGHT_DEPLOYMENT" => deployment.id.to_s},
-                         "#{Rails.root}/bin/docker-build.sh", deploy_env.publisher.username, deploy_env.repository, old_tag, new_tag)
+                         "#{Rails.root}/bin/docker-build.sh", deploy_env.publisher.username, deploy_env.repository, old_tag, new_tag, target_platform)
 
     Thread.new do
       Tarball.new(config_files).write_to_io(shell.stdin)
