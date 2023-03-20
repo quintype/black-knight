@@ -2,13 +2,14 @@
 
 # local files come from stdin
 
-echo "This build is running on "
+echo "Black-Knight: This build is running on "
 hostname -f
 
 publisher_name="$1"
 repo="$2"
 old_tag="$3"
 new_tag="$4"
+target_platform="$5"
 
 if [ -z "$QT_ENV" ]; then
   echo Please provide an environment
@@ -29,9 +30,14 @@ RUN echo "Deployment: $BLACK_KNIGHT_DEPLOYMENT" >> /app/public/round-table.txt
 RUN tar xvf /tmp/config.tar -C /
 EOF
 
-echo Building Container
-docker build -t "$repo:$new_tag" .
-docker rmi "$repo:$old_tag"
+echo "Black-Knight: I am Upgraded To Support Buiding Multi-Arch Docker Images"
+export DOCKER_CLI_EXPERIMENTAL=enabled
+BUILDER_NAME=$(docker buildx create --use multi-arch-build)
+echo "Black-Knight: I am creating binaries for multi-arch support"
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+echo "Black-Knight: Done Creating binaries for multi-arch support"
+echo "Black-Knight: I am building Docker Image for platform $target_platform"
+docker buildx build --platform=$target_platform --progress=plain -t "$repo:$new_tag" --push .
 
 echo Copying assets from /app/public/$publisher_name
 mkdir toupload
@@ -49,7 +55,7 @@ echo S3 upload has been completed
 
 rm -rf toupload
 
-docker push "$repo:$new_tag"
-
 docker rm "$container_id"
 docker rmi "$repo:$new_tag"
+echo "y"| docker buildx rm $BUILDER_NAME
+echo "Black-Knight: Goodbye!"

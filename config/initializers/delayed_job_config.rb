@@ -1,5 +1,5 @@
 Delayed::Worker.destroy_failed_jobs = false
-Delayed::Worker.sleep_delay = 60
+Delayed::Worker.sleep_delay = 15
 Delayed::Worker.max_attempts = 1
 Delayed::Worker.max_run_time = 7.days
 Delayed::Worker.read_ahead = 5
