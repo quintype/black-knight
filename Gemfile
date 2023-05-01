@@ -6,7 +6,7 @@ gem 'pg'
 gem 'acts_as_paranoid'
 
 gem 'jbuilder', '~> 2.0'
-gem "audited", "~> 4.5"
+gem "audited", "~> 5.3"
 
 group :assets do
   gem 'sass-rails', '~> 5.0'
