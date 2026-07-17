@@ -32,7 +32,9 @@ EOF
 
 echo "Black-Knight: I am Upgraded To Support Buiding Multi-Arch Docker Images"
 export DOCKER_CLI_EXPERIMENTAL=enabled
-BUILDER_NAME=$(docker buildx create --use multi-arch-build)
+# Pin buildkit image by digest: buildx-stable-1 was updated and broke builds (2026-07-17)
+BUILDKIT_IMAGE="moby/buildkit:buildx-stable-1@sha256:2f5adac4ecd194d9f8c10b7b5d7bceb5186853db1b26e5abd3a657af0b7e26ec"
+BUILDER_NAME=$(docker buildx create --use multi-arch-build --driver-opt image=$BUILDKIT_IMAGE)
 echo "Black-Knight: I am creating binaries for multi-arch support"
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 echo "Black-Knight: Done Creating binaries for multi-arch support"
